@@ -7,33 +7,21 @@
 //
 
 import UIKit
+import CoreData 
 
 class DetailViewController: UIViewController {
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var entryTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
-
-    var detailItem: AnyObject? {
-        didSet {
-            // Update the view.
-            self.configureView()
-        }
-    }
-
-    func configureView() {
-        // Update the user interface for the detail item.
-        if let detail = self.detailItem {
-            if let label = self.detailDescriptionLabel {
-                label.text = detail.valueForKey("timeStamp")!.description
-            }
-        }
-    }
+    var managedObjectContext: NSManagedObjectContext? = nil
+    var entry: Entry?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.configureView()
+        
+        setupView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,6 +35,17 @@ class DetailViewController: UIViewController {
         print("save")
     }
     
+    
+    // MARK: - Helper Methods
+    
+    private func setupView() {
+        if let entry = entry {
+            dateLabel.text = "\(entry.created_at)"
+            entryTextView.text = entry.text
+        } else {
+            dateLabel.text = "\(NSDate())"
+        }
+    }
 
 }
 
