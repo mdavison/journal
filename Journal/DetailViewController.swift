@@ -11,6 +11,7 @@ import UIKit
 class DetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
 
 
     var detailItem: AnyObject? {
@@ -40,6 +41,12 @@ class DetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    
+    
+    @IBAction func save(sender: UIBarButtonItem) {
+        print("save")
+    }
+    
 
 }
 
