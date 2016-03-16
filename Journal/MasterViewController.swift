@@ -99,8 +99,8 @@ class MasterViewController: UITableViewController {
             if let entry = entry {
                 coreDataStack.managedObjectContext.deleteObject(entry)
                 coreDataStack.saveContext()
-                // LEFT OFF HERE - Deleting in main if it's selected in detail, doesn't clear it in detail
-                // send notification
+                
+                // Send notification
                 NSNotificationCenter.defaultCenter().postNotificationName(EntryWasDeletedNotificationKey, object: entry)
             }
         }
