@@ -26,10 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
         let controller = masterNavigationController.topViewController as! MasterViewController
         controller.managedObjectContext = coreDataStack.managedObjectContext
+        controller.coreDataStack = coreDataStack
         
-        let detailNavigationController = splitViewController.viewControllers[1] as! UINavigationController
-        let detailController = detailNavigationController.topViewController as! DetailViewController
-        detailController.managedObjectContext = coreDataStack.managedObjectContext
+        let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
+        let entryController = entryNavigationController.topViewController as! EntryViewController
+        entryController.coreDataStack = coreDataStack
         
         return true
     }
@@ -63,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController else { return false }
+        guard let topAsDetailController = secondaryAsNavController.topViewController as? EntryViewController else { return false }
 //        if topAsDetailController.detailItem == nil {
 //            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
 //            return true

@@ -10,7 +10,7 @@
 		9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054569C1C937AD300645C39 /* AppDelegate.swift */; };
 		905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9054569E1C937AD300645C39 /* Journal.xcdatamodeld */; };
 		905456A21C937AD300645C39 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A11C937AD300645C39 /* MasterViewController.swift */; };
-		905456A41C937AD300645C39 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A31C937AD300645C39 /* DetailViewController.swift */; };
+		905456A41C937AD300645C39 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A31C937AD300645C39 /* EntryViewController.swift */; };
 		905456A71C937AD300645C39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 905456A51C937AD300645C39 /* Main.storyboard */; };
 		905456A91C937AD300645C39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 905456A81C937AD300645C39 /* Assets.xcassets */; };
 		905456AC1C937AD300645C39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 905456AA1C937AD300645C39 /* LaunchScreen.storyboard */; };
@@ -43,7 +43,7 @@
 		9054569C1C937AD300645C39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9054569F1C937AD300645C39 /* Journal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Journal.xcdatamodel; sourceTree = "<group>"; };
 		905456A11C937AD300645C39 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		905456A31C937AD300645C39 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		905456A31C937AD300645C39 /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		905456A61C937AD300645C39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		905456A81C937AD300645C39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		905456AB1C937AD300645C39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 			children = (
 				905456A51C937AD300645C39 /* Main.storyboard */,
 				905456A11C937AD300645C39 /* MasterViewController.swift */,
-				905456A31C937AD300645C39 /* DetailViewController.swift */,
+				905456A31C937AD300645C39 /* EntryViewController.swift */,
 				9054569C1C937AD300645C39 /* AppDelegate.swift */,
 				905456D21C96F8DE00645C39 /* CoreData */,
 				905456A81C937AD300645C39 /* Assets.xcassets */,
@@ -285,7 +285,7 @@
 				9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */,
 				905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
-				905456A41C937AD300645C39 /* DetailViewController.swift in Sources */,
+				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +512,7 @@
 				905456C81C937AD300645C39 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		905456C91C937AD300645C39 /* Build configuration list for PBXNativeTarget "JournalTests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +521,7 @@
 				905456CB1C937AD300645C39 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		905456CC1C937AD300645C39 /* Build configuration list for PBXNativeTarget "JournalUITests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +530,7 @@
 				905456CE1C937AD300645C39 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

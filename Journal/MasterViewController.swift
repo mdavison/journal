@@ -9,9 +9,12 @@
 import UIKit
 import CoreData
 
+let EntryWasDeletedNotificationKey = "com.morgandavison.entryWasDeletedNotificationKey"
+
 class MasterViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
+    var coreDataStack: CoreDataStack!
+    var entryViewController: EntryViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
     
     struct Storyboard {
@@ -30,7 +33,7 @@ class MasterViewController: UITableViewController {
         
         if let split = self.splitViewController {
             let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+            entryViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? EntryViewController
         }
     }
 
@@ -44,36 +47,21 @@ class MasterViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func insertNewObject(sender: AnyObject) {
-        let context = self.fetchedResultsController.managedObjectContext
-        let entity = self.fetchedResultsController.fetchRequest.entity!
-        let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context)
-             
-        // If appropriate, configure the new managed object.
-        // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-        newManagedObject.setValue(NSDate(), forKey: "timeStamp")
-             
-        // Save the context.
-        do {
-            try context.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            //print("Unresolved error \(error), \(error.userInfo)")
-            abort()
-        }
-    }
+    
 
-    // MARK: - Segues
+    // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Storyboard.AddEntrySegueIdentifier {
-            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             controller.title = "New Entry"
+            controller.coreDataStack = coreDataStack
         } else if segue.identifier == Storyboard.ShowDetailSegueIdentifier {
+            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+            controller.coreDataStack = coreDataStack
+            
             if let indexPath = tableView.indexPathForSelectedRow {
                 if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
-                    let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
                     controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
                     controller.navigationItem.leftItemsSupplementBackButton = true
                     controller.entry = entry
@@ -105,25 +93,20 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         if editingStyle == .Delete {
-            let context = self.fetchedResultsController.managedObjectContext
-            context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-                
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                //print("Unresolved error \(error), \(error.userInfo)")
-                abort()
+            let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry
+            if let entry = entry {
+                coreDataStack.managedObjectContext.deleteObject(entry)
+                coreDataStack.saveContext()
+                // LEFT OFF HERE - Deleting in main if it's selected in detail, doesn't clear it in detail
+                // send notification
+                NSNotificationCenter.defaultCenter().postNotificationName(EntryWasDeletedNotificationKey, object: entry)
             }
         }
     }
 
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
-        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
-    }
+    
 
     // MARK: - Fetched results controller
 
@@ -166,6 +149,21 @@ class MasterViewController: UITableViewController {
     }    
     var _fetchedResultsController: NSFetchedResultsController? = nil
 
+    
+    
+    // MARK: - Helper Methods
+    
+    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        let entry = fetchedResultsController.objectAtIndexPath(indexPath) as! Entry
+        
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = .ShortStyle
+        formatter.timeStyle = .ShortStyle
+        
+        cell.textLabel?.text = entry.text
+        //cell.detailTextLabel?.text = "\(entry.created_at)"
+        cell.detailTextLabel?.text = formatter.stringFromDate(entry.created_at!)
+    }
     
 }
 
@@ -216,4 +214,3 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
 
     
 }
-
