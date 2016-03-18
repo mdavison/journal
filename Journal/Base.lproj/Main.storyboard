@@ -24,7 +24,7 @@
         <!--Detail-->
         <scene sceneID="yUG-lL-AsK">
             <objects>
-                <viewController title="Detail" id="JEX-9P-axG" customClass="EntryViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainEntryView" title="Detail" id="JEX-9P-axG" customClass="EntryViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SYR-Wa-9uf"/>
                         <viewControllerLayoutGuide type="bottom" id="GAO-Cl-Wes"/>
@@ -41,26 +41,115 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
-                                <rect key="frame" x="20" y="97" width="560" height="483"/>
+                                <rect key="frame" x="20" y="97" width="560" height="454"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efJ-d1-0gf">
+                                <rect key="frame" x="0.0" y="551" width="600" height="49"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem tag="1" title="Main Entry" id="mSS-Fh-B4b"/>
+                                    <tabBarItem tag="2" title="Facebook" id="wfg-q8-Qjt"/>
+                                </items>
+                                <connections>
+                                    <outlet property="delegate" destination="JEX-9P-axG" id="0E6-uS-J1u"/>
+                                </connections>
+                            </tabBar>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VpO-go-Vin">
+                                <rect key="frame" x="20" y="97" width="560" height="454"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6xm-F6-JH3">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="454"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FacebookPostCell" rowHeight="100" id="Q5a-Wx-0Om" customClass="FacebookPostTableViewCell" customModule="Journal" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="560" height="100"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q5a-Wx-0Om" id="4MK-lp-QDa">
+                                                    <rect key="frame" x="0.0" y="0.0" width="560" height="99.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YQp-AG-OXO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="100" id="Dp2-fn-qMD"/>
+                                                                <constraint firstAttribute="width" constant="100" id="j3a-UK-kLc"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Yy-y8-zpT">
+                                                            <rect key="frame" x="108" y="8" width="444" height="83.5"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="5Yy-y8-zpT" secondAttribute="trailing" id="aNF-sx-AGD"/>
+                                                        <constraint firstItem="YQp-AG-OXO" firstAttribute="leading" secondItem="4MK-lp-QDa" secondAttribute="leading" id="iXl-2K-5ZO"/>
+                                                        <constraint firstItem="YQp-AG-OXO" firstAttribute="top" secondItem="4MK-lp-QDa" secondAttribute="top" id="jLZ-XB-CKo"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="5Yy-y8-zpT" secondAttribute="bottom" id="kl9-FB-Kz8"/>
+                                                        <constraint firstItem="5Yy-y8-zpT" firstAttribute="leading" secondItem="YQp-AG-OXO" secondAttribute="trailing" constant="8" symbolic="YES" id="nZj-bS-YMe"/>
+                                                        <constraint firstItem="5Yy-y8-zpT" firstAttribute="top" secondItem="4MK-lp-QDa" secondAttribute="topMargin" id="ooy-sZ-btv"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="postImageView" destination="YQp-AG-OXO" id="Gxq-oi-v2G"/>
+                                                    <outlet property="postTextView" destination="5Yy-y8-zpT" id="nVm-2t-riE"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="JEX-9P-axG" id="RHb-a3-Eiu"/>
+                                            <outlet property="delegate" destination="JEX-9P-axG" id="FLM-oj-PtB"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="6xm-F6-JH3" secondAttribute="bottom" id="0IS-Nk-Nla"/>
+                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="topMargin" id="8RE-eF-qzU"/>
+                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="leading" secondItem="VpO-go-Vin" secondAttribute="leading" id="MGh-Np-aLJ"/>
+                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="leading" secondItem="VpO-go-Vin" secondAttribute="leadingMargin" id="Mur-ei-Qbl"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="6xm-F6-JH3" secondAttribute="trailing" id="TdJ-tm-Ki1"/>
+                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="bottom" secondItem="VpO-go-Vin" secondAttribute="bottomMargin" id="u37-rK-6ua"/>
+                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="top" id="x2K-ZK-mQ0"/>
+                                    <constraint firstAttribute="trailing" secondItem="6xm-F6-JH3" secondAttribute="trailing" id="zlh-TJ-Mat"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="8RE-eF-qzU"/>
+                                        <exclude reference="Mur-ei-Qbl"/>
+                                        <exclude reference="TdJ-tm-Ki1"/>
+                                        <exclude reference="u37-rK-6ua"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="efJ-d1-0gf" secondAttribute="trailing" id="3zo-Z9-fbt"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="efJ-d1-0gf" secondAttribute="bottom" id="8Lm-aX-5N9"/>
+                            <constraint firstItem="efJ-d1-0gf" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="bottom" id="AuE-zs-RKX"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="0XM-y9-sOw" secondAttribute="bottom" constant="8" symbolic="YES" id="CqV-oN-0o5"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="20" id="E8I-uv-YVC"/>
+                            <constraint firstItem="VpO-go-Vin" firstAttribute="trailing" secondItem="svH-Pt-448" secondAttribute="trailingMargin" id="FCZ-ee-d27"/>
                             <constraint firstAttribute="trailingMargin" secondItem="niX-it-HWc" secondAttribute="trailing" id="Noe-Ic-DVp"/>
                             <constraint firstAttribute="leadingMargin" secondItem="niX-it-HWc" secondAttribute="leading" id="S3G-DT-5qs"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" constant="20" symbolic="YES" id="Tsc-yG-G1q"/>
+                            <constraint firstItem="VpO-go-Vin" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="hNz-SA-qG6"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="centerY" secondItem="svH-Pt-448" secondAttribute="centerY" id="jWN-iV-94e"/>
+                            <constraint firstItem="efJ-d1-0gf" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" id="jyQ-KS-IaI"/>
+                            <constraint firstItem="VpO-go-Vin" firstAttribute="top" secondItem="0XM-y9-sOw" secondAttribute="bottom" constant="8" symbolic="YES" id="oZd-7Q-9Hw"/>
+                            <constraint firstItem="efJ-d1-0gf" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" id="s2n-yW-mhT"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="sRZ-M4-5BL"/>
                             <constraint firstAttribute="trailing" secondItem="0XM-y9-sOw" secondAttribute="trailing" constant="20" symbolic="YES" id="tHV-ZD-HQj"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="jWN-iV-94e"/>
+                                <exclude reference="E8I-uv-YVC"/>
                             </mask>
                         </variation>
                     </view>
@@ -74,7 +163,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="dateLabel" destination="0XM-y9-sOw" id="RQB-2D-JWr"/>
+                        <outlet property="entryItemsTabBar" destination="efJ-d1-0gf" id="FDa-Iz-ldo"/>
                         <outlet property="entryTextView" destination="niX-it-HWc" id="UWj-Ls-bZG"/>
+                        <outlet property="facebookTableView" destination="6xm-F6-JH3" id="IgI-6U-XNt"/>
+                        <outlet property="facebookView" destination="VpO-go-Vin" id="CuE-Oc-sIV"/>
                         <outlet property="saveButton" destination="lto-Mo-wCV" id="Xge-fw-ApK"/>
                     </connections>
                 </viewController>
