@@ -25,26 +25,38 @@ class MasterViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        
+        self.navigationController?.navigationBarHidden = true
+        tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
+        tabBarController?.title = "Main"
 
-//        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
-//        self.navigationItem.rightBarButtonItem = addButton
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewEntry:")
+        tabBarController?.navigationItem.rightBarButtonItem = addButton
         
         if let split = self.splitViewController {
             let controllers = split.viewControllers
             entryViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? EntryViewController
+            split.view.backgroundColor = UIColor.whiteColor()
         }
     }
 
     override func viewWillAppear(animated: Bool) {
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         super.viewWillAppear(animated)
+        
+        tabBarController?.navigationController?.navigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    // MARK: - Actions
+    
+    @IBAction func insertNewEntry(sender: UIBarButtonItem) {
+        performSegueWithIdentifier(Storyboard.AddEntrySegueIdentifier, sender: sender)
     }
 
     

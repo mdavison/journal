@@ -25,7 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         splitViewController.delegate = self
 
         let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
-        let controller = masterNavigationController.topViewController as! MasterViewController
+        let tabBarController = masterNavigationController.viewControllers[0] as! UITabBarController
+        let tabBarNavController = tabBarController.viewControllers![0] as! UINavigationController
+        let controller = tabBarNavController.viewControllers[0] as! MasterViewController
         controller.managedObjectContext = coreDataStack.managedObjectContext
         controller.coreDataStack = coreDataStack
         

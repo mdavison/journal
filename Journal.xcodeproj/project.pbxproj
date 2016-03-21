@@ -22,6 +22,7 @@
 		905456FC1C9A22BB00645C39 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905456FB1C9A22BB00645C39 /* FBSDKCoreKit.framework */; };
 		905456FE1C9A24E100645C39 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905456FD1C9A24E100645C39 /* FBSDKLoginKit.framework */; };
 		905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */; };
+		90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A0269A1CA05E3E00483776 /* CalendarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		905456FB1C9A22BB00645C39 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		905456FD1C9A24E100645C39 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookPostTableViewCell.swift; sourceTree = "<group>"; };
+		90A0269A1CA05E3E00483776 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			children = (
 				905456A11C937AD300645C39 /* MasterViewController.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
+				90A0269A1CA05E3E00483776 /* CalendarViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
 				9054569C1C937AD300645C39 /* AppDelegate.swift */,
 				905456D21C96F8DE00645C39 /* CoreData */,
@@ -304,6 +307,7 @@
 				905456D11C96F8D800645C39 /* CoreDataStack.swift in Sources */,
 				9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */,
 				905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */,
+				90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
 				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
 			);

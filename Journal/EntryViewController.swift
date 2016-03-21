@@ -161,11 +161,11 @@ class EntryViewController: UIViewController, UITextViewDelegate {
                         if let data = data {
                             for i in 0..<data.count {
                                 
-                                print(data[i]["message"])
-                                print(data[i]["picture"])
-                                print(data[i]["story"])
-                                print(data[i]["likes"])
-                                print("=============================")
+//                                print(data[i]["message"])
+//                                print(data[i]["picture"])
+//                                print(data[i]["story"])
+//                                print(data[i]["likes"])
+//                                print("=============================")
                                 
                                 self.facebookPosts.append(data[i])
                             }
