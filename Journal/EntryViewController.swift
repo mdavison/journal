@@ -19,6 +19,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var entryItemsTabBar: UITabBar!
     @IBOutlet weak var facebookView: UIView!
     @IBOutlet weak var facebookTableView: UITableView!
+    @IBOutlet weak var twitterView: UIView!
+    @IBOutlet weak var twitterTableView: UITableView!
 
     
     var coreDataStack: CoreDataStack!
@@ -224,11 +226,13 @@ extension EntryViewController: UITabBarDelegate {
             entryTextView.hidden = false
             facebookView.hidden = true 
             facebookTableView.hidden = true
+            twitterTableView.hidden = true
         case 2:
             facebookView.hidden = false
             facebookTableView.hidden = false
             title = "Facebook"
             entryTextView.hidden = true
+            twitterTableView.hidden = true
             
             if FBSDKAccessToken.currentAccessToken() != nil {
                 // User already has access token
@@ -236,8 +240,14 @@ extension EntryViewController: UITabBarDelegate {
                 
             } else {
                 showLoginButton()
+                facebookTableView.hidden = true
             }
-            
+        case 3:
+            title = "Twitter"
+            twitterTableView.hidden = false
+            entryTextView.hidden = true
+            facebookTableView.hidden = true
+            twitterTableView.hidden = true
         default: return
         }
     }

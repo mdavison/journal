@@ -22,6 +22,7 @@
 		905456FC1C9A22BB00645C39 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905456FB1C9A22BB00645C39 /* FBSDKCoreKit.framework */; };
 		905456FE1C9A24E100645C39 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905456FD1C9A24E100645C39 /* FBSDKLoginKit.framework */; };
 		905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */; };
+		908BAFCB1CA185BA00F395A9 /* TwitterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */; };
 		90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A0269A1CA05E3E00483776 /* CalendarViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		905456FB1C9A22BB00645C39 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		905456FD1C9A24E100645C39 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookPostTableViewCell.swift; sourceTree = "<group>"; };
+		908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTableViewCell.swift; sourceTree = "<group>"; };
 		90A0269A1CA05E3E00483776 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +124,7 @@
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
 				90A0269A1CA05E3E00483776 /* CalendarViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
+				908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */,
 				9054569C1C937AD300645C39 /* AppDelegate.swift */,
 				905456D21C96F8DE00645C39 /* CoreData */,
 				905456A81C937AD300645C39 /* Assets.xcassets */,
@@ -310,6 +313,7 @@
 				90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
 				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
+				908BAFCB1CA185BA00F395A9 /* TwitterTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
