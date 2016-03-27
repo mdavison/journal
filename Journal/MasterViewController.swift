@@ -30,7 +30,7 @@ class MasterViewController: UITableViewController {
         tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
         tabBarController?.title = "Main"
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewEntry:")
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MasterViewController.insertNewEntry(_:)))
         tabBarController?.navigationItem.rightBarButtonItem = addButton
         
         if let split = self.splitViewController {

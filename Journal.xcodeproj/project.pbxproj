@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		903750791CA41F7B006D9D58 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903750751CA41F7B006D9D58 /* Fabric.framework */; };
+		9037507A1CA41F7B006D9D58 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903750761CA41F7B006D9D58 /* TwitterKit.framework */; };
+		9037507B1CA41F7B006D9D58 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */; };
+		9037507C1CA41F7B006D9D58 /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903750781CA41F7B006D9D58 /* TwitterCore.framework */; };
+		9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9037507D1CA45240006D9D58 /* EntryDateViewController.swift */; };
 		9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054569C1C937AD300645C39 /* AppDelegate.swift */; };
 		905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9054569E1C937AD300645C39 /* Journal.xcdatamodeld */; };
 		905456A21C937AD300645C39 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A11C937AD300645C39 /* MasterViewController.swift */; };
@@ -44,6 +49,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		903750751CA41F7B006D9D58 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		903750761CA41F7B006D9D58 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
+		903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
+		903750781CA41F7B006D9D58 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterCore.framework; sourceTree = "<group>"; };
+		9037507D1CA45240006D9D58 /* EntryDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryDateViewController.swift; sourceTree = "<group>"; };
 		905456991C937AD300645C39 /* Journal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Journal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9054569C1C937AD300645C39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9054569F1C937AD300645C39 /* Journal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Journal.xcdatamodel; sourceTree = "<group>"; };
@@ -74,8 +84,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9037507C1CA41F7B006D9D58 /* TwitterCore.framework in Frameworks */,
 				905456FE1C9A24E100645C39 /* FBSDKLoginKit.framework in Frameworks */,
 				905456FC1C9A22BB00645C39 /* FBSDKCoreKit.framework in Frameworks */,
+				903750791CA41F7B006D9D58 /* Fabric.framework in Frameworks */,
+				9037507A1CA41F7B006D9D58 /* TwitterKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +117,10 @@
 				905456B51C937AD300645C39 /* JournalTests */,
 				905456C01C937AD300645C39 /* JournalUITests */,
 				9054569A1C937AD300645C39 /* Products */,
+				903750751CA41F7B006D9D58 /* Fabric.framework */,
+				903750761CA41F7B006D9D58 /* TwitterKit.framework */,
+				903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */,
+				903750781CA41F7B006D9D58 /* TwitterCore.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +139,7 @@
 			children = (
 				905456A11C937AD300645C39 /* MasterViewController.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
+				9037507D1CA45240006D9D58 /* EntryDateViewController.swift */,
 				90A0269A1CA05E3E00483776 /* CalendarViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
 				908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */,
@@ -183,6 +201,7 @@
 				905456951C937AD300645C39 /* Sources */,
 				905456961C937AD300645C39 /* Frameworks */,
 				905456971C937AD300645C39 /* Resources */,
+				903750741CA41F2E006D9D58 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -277,6 +296,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9037507B1CA41F7B006D9D58 /* TwitterKitResources.bundle in Resources */,
 				905456AC1C937AD300645C39 /* LaunchScreen.storyboard in Resources */,
 				905456A91C937AD300645C39 /* Assets.xcassets in Resources */,
 				905456A71C937AD300645C39 /* Main.storyboard in Resources */,
@@ -299,6 +319,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		903750741CA41F2E006D9D58 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run b09e4af695e66be4a047b6eb1575e252ac334e9e cf9639eb6c410794c858193c0ef7d7feb5e8f5a5a54fb143c27c625ec354d6ad";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		905456951C937AD300645C39 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -312,6 +348,7 @@
 				905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */,
 				90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
+				9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */,
 				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
 				908BAFCB1CA185BA00F395A9 /* TwitterTableViewCell.swift in Sources */,
 			);

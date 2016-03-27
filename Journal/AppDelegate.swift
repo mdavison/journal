@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 import FBSDKCoreKit
+import Fabric
+import TwitterKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -35,6 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let entryController = entryNavigationController.topViewController as! EntryViewController
         entryController.coreDataStack = coreDataStack
         
+        Fabric.with([Twitter.self])
+
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         //return true
     }
