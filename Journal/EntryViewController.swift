@@ -402,15 +402,13 @@ extension EntryViewController: UITabBarDelegate {
         case 1:
             showTab(byTag: 1)
         case 2:
-            showTab(byTag: 2)
-            
             if FBSDKAccessToken.currentAccessToken() != nil {
                 // User already has access token
                 displayFacebookPosts()
-                
             } else {
                 showFBLoginButton()
             }
+            showTab(byTag: 2)
         case 3:
             showTab(byTag: 3)
             showTwitterLoginButton()
@@ -427,6 +425,9 @@ extension EntryViewController: UITabBarDelegate {
         case 2: // Facebook
             title = "Facebook"
             facebookView.hidden = false
+            if !facebookPosts.isEmpty {
+                facebookTableView.hidden = false
+            }
             hideTabsExcept(2)
         case 3: // Twitter
             title = "Twitter"
