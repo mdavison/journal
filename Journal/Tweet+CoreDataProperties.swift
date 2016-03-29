@@ -1,5 +1,5 @@
 //
-//  Entry+CoreDataProperties.swift
+//  Tweet+CoreDataProperties.swift
 //  Journal
 //
 //  Created by Morgan Davison on 3/28/16.
@@ -11,13 +11,14 @@
 
 import Foundation
 import CoreData
+import TwitterKit
 
-extension Entry {
+extension Tweet {
 
-    @NSManaged var created_at: NSDate?
-    @NSManaged var text: String?
-    @NSManaged var updated_at: NSDate?
-    //@NSManaged var tweet: NSSet?
-    @NSManaged var tweet: Set<Tweet>?
-
+//    @NSManaged var twtrtweet: NSObject?
+    @NSManaged var twtrtweet: TWTRTweet?
+    @NSManaged var created_at_timestamp: NSNumber?
+//    @NSManaged var entry: NSSet?
+    @NSManaged var entry: Set<Entry>?
+    
 }

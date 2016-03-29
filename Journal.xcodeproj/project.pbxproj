@@ -27,8 +27,10 @@
 		905456FC1C9A22BB00645C39 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905456FB1C9A22BB00645C39 /* FBSDKCoreKit.framework */; };
 		905456FE1C9A24E100645C39 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905456FD1C9A24E100645C39 /* FBSDKLoginKit.framework */; };
 		905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */; };
-		908BAFCB1CA185BA00F395A9 /* TwitterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */; };
 		90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A0269A1CA05E3E00483776 /* CalendarViewController.swift */; };
+		90A559BF1CA990F50085F72A /* Tweet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559BD1CA990F50085F72A /* Tweet+CoreDataProperties.swift */; };
+		90A559C01CA990F50085F72A /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559BE1CA990F50085F72A /* Tweet.swift */; };
+		90A559C21CA9943D0085F72A /* JournalTwitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559C11CA9943D0085F72A /* JournalTwitter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,8 +77,10 @@
 		905456FB1C9A22BB00645C39 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		905456FD1C9A24E100645C39 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookPostTableViewCell.swift; sourceTree = "<group>"; };
-		908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTableViewCell.swift; sourceTree = "<group>"; };
 		90A0269A1CA05E3E00483776 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		90A559BD1CA990F50085F72A /* Tweet+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tweet+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		90A559BE1CA990F50085F72A /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
+		90A559C11CA9943D0085F72A /* JournalTwitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalTwitter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +146,7 @@
 				9037507D1CA45240006D9D58 /* EntryDateViewController.swift */,
 				90A0269A1CA05E3E00483776 /* CalendarViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
-				908BAFCA1CA185BA00F395A9 /* TwitterTableViewCell.swift */,
+				90A559C11CA9943D0085F72A /* JournalTwitter.swift */,
 				9054569C1C937AD300645C39 /* AppDelegate.swift */,
 				905456D21C96F8DE00645C39 /* CoreData */,
 				905456A81C937AD300645C39 /* Assets.xcassets */,
@@ -175,6 +179,8 @@
 		905456D21C96F8DE00645C39 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				90A559BD1CA990F50085F72A /* Tweet+CoreDataProperties.swift */,
+				90A559BE1CA990F50085F72A /* Tweet.swift */,
 				905456D01C96F8D800645C39 /* CoreDataStack.swift */,
 				905456D31C971D7A00645C39 /* Entry+CoreDataProperties.swift */,
 				905456D41C971D7A00645C39 /* Entry.swift */,
@@ -341,16 +347,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				905456D61C971D7A00645C39 /* Entry.swift in Sources */,
+				90A559BF1CA990F50085F72A /* Tweet+CoreDataProperties.swift in Sources */,
 				905456D51C971D7A00645C39 /* Entry+CoreDataProperties.swift in Sources */,
 				905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */,
 				905456D11C96F8D800645C39 /* CoreDataStack.swift in Sources */,
+				90A559C21CA9943D0085F72A /* JournalTwitter.swift in Sources */,
+				90A559C01CA990F50085F72A /* Tweet.swift in Sources */,
 				9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */,
 				905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */,
 				90A0269B1CA05E3E00483776 /* CalendarViewController.swift in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
 				9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */,
 				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
-				908BAFCB1CA185BA00F395A9 /* TwitterTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

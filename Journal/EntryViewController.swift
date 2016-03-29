@@ -12,6 +12,8 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import TwitterKit
 
+let TwitterHasLoggedInNotificationKey = "com.morgandavison.twitterHasLoggedInNotificationKey"
+
 class EntryViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var dateButton: UIButton!
@@ -33,8 +35,12 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var twitterTweets: [TWTRTweet] = [] {
         didSet {
             twitterTableView.reloadData()
+            print("twitterTweets set")
         }
     }
+    var sinceTimestamp: Int?
+    var untilTimestamp: Int?
+    var journalTwitter = JournalTwitter()
     
     struct Storyboard {
         static var FacebookViewIdentifier = "FacebookView"
@@ -44,17 +50,26 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+       NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        journalTwitter.coreDataStack = coreDataStack
         entryTextView.delegate = self
         setupView()
+        setEntryTimestamps()
         
+        // Notifications
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(EntryViewController.entryWasDeleted(_:)), name: EntryWasDeletedNotificationKey, object: entry)
+        
+        //notificationCenter.addObserver(self, selector: #selector(EntryViewController.twitterHasRefreshed(_:)), name: TwitterDidRefreshNotificationKey, object: twitterTweets) // This didn't work
+        notificationCenter.addObserverForName(TwitterDidRefreshNotificationKey, object: nil, queue: nil) { (notification) in
+            self.twitterHasRefreshed(notification)
+        }
+        
         
         if FBSDKAccessToken.currentAccessToken() != nil {
             // User already has access token
@@ -63,6 +78,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         } else {
             //showLoginButton()
             // TODO: Show exclamation badge on Facebook tab
+        }
+        
+        if let _ = Twitter.sharedInstance().sessionStore.session()?.userID {
+            getTweets()
         }
     }
 
@@ -107,6 +126,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         title = "Journal Entry"
     }
     
+    @IBAction func refreshTwitter(sender: UIButton) {
+        print("REfreshing Tweets")
+        journalTwitter.requestTweets()
+    }
     
     // MARK: - Notification Handling
     
@@ -118,6 +141,15 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             }
         }
     }
+    
+    func twitterHasRefreshed(notification: NSNotification) {
+        print("============================== observer method twitterHasRefreshed called")
+        twitterTableView.hidden = true
+        twitterTweets.removeAll()
+        getTweets()
+        twitterTableView.hidden = false
+    }
+
     
     
     // MARK: - Navigation
@@ -191,6 +223,47 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         return formatter
     }
     
+    private func getEntryTimestamps() -> [String: Int] {
+        let calendar = NSCalendar.currentCalendar()
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        var since = NSDate()
+        var until = NSDate()
+        
+        if let entry = entry {
+            if let createdAt = entry.created_at {
+                // get date portion only of createdAt
+                let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: createdAt)
+                
+                // set the time to midnight and the last second
+                let entryDateBegin = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
+                let entryDateEnd = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
+                
+                since = formatter.dateFromString(entryDateBegin)!
+                until = formatter.dateFromString(entryDateEnd)!
+            }
+        } else {
+            let currentDateComponents = calendar.components([.Day, .Month, .Year], fromDate: NSDate())
+            let currentDateBegin = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 00:00:00"
+            let currentDateEnd = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 23:59:59"
+            
+            since = formatter.dateFromString(currentDateBegin)!
+            until = formatter.dateFromString(currentDateEnd)!
+        }
+        
+        let sinceTimestamp = Int(since.timeIntervalSince1970)
+        let untilTimestamp = Int(until.timeIntervalSince1970)
+        
+        return ["since": sinceTimestamp, "until": untilTimestamp]
+    }
+    
+    private func setEntryTimestamps() {
+        let timestamps = getEntryTimestamps()
+        
+        sinceTimestamp = timestamps["since"]
+        untilTimestamp = timestamps["until"]
+    }
+    
     
     // MARK: - Facebook
     
@@ -203,9 +276,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     private func getFacebookPosts() {
-        let timestamps = getEntryTimestamps()
-        
-        let parameters = ["fields": "id, name, email, posts.since(\(timestamps["since"]!)).until(\(timestamps["until"]!)){story,created_time,id,message,picture,likes}"]
+        let parameters = ["fields": "id, name, email, posts.since(\(sinceTimestamp!)).until(\(untilTimestamp!)){story,created_time,id,message,picture,likes}"]
         let request = FBSDKGraphRequest(graphPath: "me", parameters: parameters)
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -270,53 +341,25 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         facebookTableView.reloadData()
     }
     
-    private func getEntryTimestamps() -> [String: Int] {
-        let calendar = NSCalendar.currentCalendar()
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        var since = NSDate()
-        var until = NSDate()
-        
-        if let entry = entry {
-            if let createdAt = entry.created_at {
-                // get date portion only of createdAt
-                let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: createdAt)
-                
-                // set the time to midnight and the last second
-                let entryDateBegin = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
-                let entryDateEnd = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
-                
-                since = formatter.dateFromString(entryDateBegin)!
-                until = formatter.dateFromString(entryDateEnd)!
-            }
-        } else {
-            let currentDateComponents = calendar.components([.Day, .Month, .Year], fromDate: NSDate())
-            let currentDateBegin = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 00:00:00"
-            let currentDateEnd = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 23:59:59"
-            
-            since = formatter.dateFromString(currentDateBegin)!
-            until = formatter.dateFromString(currentDateEnd)!
-        }
-        
-        let sinceTimestamp = Int(since.timeIntervalSince1970)
-        let untilTimestamp = Int(until.timeIntervalSince1970)
-
-        return ["since": sinceTimestamp, "until": untilTimestamp]
-    }
-    
     
     // MARK: - Twitter
     
     private func showTwitterLoginButton() {
         Twitter.sharedInstance().logInWithCompletion {(session, error) in
             if let _ = session {
+                NSNotificationCenter.defaultCenter().postNotificationName(TwitterHasLoggedInNotificationKey, object: self)
                 self.getTweets()
+                self.twitterTableView.reloadData()
             } else {
                 let logInButton = TWTRLogInButton { (session, error) in
                     if let _ = session {
                         print("logged into Twitter")
                         // TODO: Remove login button - Or could put login button on its own view
+                        //twitterLoginButtonView.hidden = true
+                        
+                        NSNotificationCenter.defaultCenter().postNotificationName(TwitterHasLoggedInNotificationKey, object: self)
                         self.getTweets()
+                        self.twitterTableView.reloadData()
                     } else {
                         NSLog("Login error: %@", error!.localizedDescription);
                     }
@@ -324,71 +367,34 @@ class EntryViewController: UIViewController, UITextViewDelegate {
                 
                 logInButton.center = self.twitterView.center
                 self.twitterView.addSubview(logInButton)
+                //self.twitterLoginButtonView.addSubview(logInButton)
             }
         }
     }
     
     private func getTweets() {
-        if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
-            let client = TWTRAPIClient(userID: userID)
+        print("getTweets")
+        let tweetFetch = NSFetchRequest(entityName: "Tweet")
+        
+        let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: false)
+        tweetFetch.sortDescriptors = [sortDescriptor]
+        
+        if let since = sinceTimestamp, let until = untilTimestamp {
+            tweetFetch.predicate = NSPredicate(format: "(created_at_timestamp >= %d) AND (created_at_timestamp <= %d)", since, until)
             
-            let url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
-            let params = ["screen_name": "_morgandavison"]
-            var clientError : NSError?
-            
-            let request = client.URLRequestWithMethod("GET", URL: url, parameters: params, error: &clientError)
-            
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-            
-            client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-                if (connectionError == nil) {
-                    do {
-                        if let data = data {
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
-                            self.twitterTweets = TWTRTweet.tweetsWithJSONArray(json as? [AnyObject]) as! [TWTRTweet]
-                        }
-                    } catch let error as NSError? {
-                        print(error?.localizedDescription)
+            var results = [Tweet]()
+            do {
+                results = try coreDataStack.managedObjectContext.executeFetchRequest(tweetFetch) as! [Tweet]
+                
+                for tweet in results {
+                    if let twtrtweet = tweet.twtrtweet {
+                        twitterTweets.append(twtrtweet)
+                        print("adding tweet to twitterTweets")
                     }
                 }
-                else {
-                    print("Error: \(connectionError)")
-                }
-                
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                
-                // Get just tweets for date of this journal entry
-                self.onlyTweetsForThisEntry()
-                
-                self.displayTweets()
+            } catch let error as NSError {
+                print("Error: \(error) " + "description \(error.localizedDescription)")
             }
-        }
-        
-    }
-    
-    private func onlyTweetsForThisEntry() {
-        var tweetsForThisEntry = [TWTRTweet]()
-        let timestamps = self.getEntryTimestamps()
-        let secondsFromGMT = NSTimeZone.localTimeZone().secondsFromGMT // -25200
-        
-        for tweet in twitterTweets {
-            // Convert tweet created_at to timestamp in local time
-            let tweetTimestamp = Int(tweet.createdAt.timeIntervalSince1970) + (secondsFromGMT)
-            
-            if (timestamps["since"] <= tweetTimestamp) && (tweetTimestamp <= timestamps["until"]) {
-                tweetsForThisEntry.append(tweet)
-            }
-        }
-        
-        twitterTweets = tweetsForThisEntry
-    }
-    
-    private func displayTweets() {
-        if twitterTweets.isEmpty {
-            noDataTwitterLabel.hidden = false
-            twitterActivityIndicator.stopAnimating()
-        } else {
-            twitterTableView.hidden = false
         }
     }
 
@@ -411,7 +417,8 @@ extension EntryViewController: UITabBarDelegate {
             showTab(byTag: 2)
         case 3:
             showTab(byTag: 3)
-            showTwitterLoginButton()
+            //showTwitterLoginButton()
+            
         default: return
         }
     }
@@ -432,6 +439,17 @@ extension EntryViewController: UITabBarDelegate {
         case 3: // Twitter
             title = "Twitter"
             twitterView.hidden = false
+            if !twitterTweets.isEmpty {
+                twitterTableView.hidden = false
+            } else {
+                twitterActivityIndicator.stopAnimating()
+                noDataTwitterLabel.hidden = false
+            }
+            
+            if Twitter.sharedInstance().sessionStore.session()?.userID == nil {
+                showTwitterLoginButton()
+            } 
+            
             hideTabsExcept(3)
         default: return
         }

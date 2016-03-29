@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack()
+    var twitter = JournalTwitter()
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -37,8 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
         let entryController = entryNavigationController.topViewController as! EntryViewController
         entryController.coreDataStack = coreDataStack
+        twitter.coreDataStack = coreDataStack
         
         Fabric.with([Twitter.self])
+        
+        twitter.requestTweets()
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         //return true

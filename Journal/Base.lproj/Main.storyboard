@@ -147,6 +147,13 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLa-uu-bsi">
                                 <rect key="frame" x="20" y="110" width="560" height="392"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zzz-o4-l0q">
+                                        <rect key="frame" x="499" y="-7" width="53" height="30"/>
+                                        <state key="normal" title="Refresh"/>
+                                        <connections>
+                                            <action selector="refreshTwitter:" destination="JEX-9P-axG" eventType="touchUpInside" id="EMm-Xi-Whp"/>
+                                        </connections>
+                                    </button>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UBB-Mc-SO3">
                                         <rect key="frame" x="270" y="186" width="20" height="20"/>
                                     </activityIndicatorView>
@@ -188,6 +195,7 @@
                                     <constraint firstAttribute="bottomMargin" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="P3N-Hi-VHK"/>
                                     <constraint firstAttribute="bottom" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="P72-By-Uce"/>
                                     <constraint firstAttribute="trailing" secondItem="jWp-9l-8HJ" secondAttribute="trailing" id="Y3e-2v-Pqr"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Zzz-o4-l0q" secondAttribute="trailing" id="Ymf-no-zkL"/>
                                     <constraint firstItem="jWp-9l-8HJ" firstAttribute="leading" secondItem="HLa-uu-bsi" secondAttribute="leading" id="ZfV-zf-ua0"/>
                                     <constraint firstItem="jWp-9l-8HJ" firstAttribute="leading" secondItem="HLa-uu-bsi" secondAttribute="leading" id="cQb-le-VxX"/>
                                     <constraint firstItem="DPv-7a-VNT" firstAttribute="centerX" secondItem="HLa-uu-bsi" secondAttribute="centerX" id="cwF-my-6KW"/>
@@ -197,6 +205,7 @@
                                     <constraint firstItem="DPv-7a-VNT" firstAttribute="centerY" secondItem="HLa-uu-bsi" secondAttribute="centerY" id="nos-Cq-Umh"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="q4J-Et-OfY"/>
                                     <constraint firstAttribute="trailing" secondItem="jWp-9l-8HJ" secondAttribute="trailing" id="qfl-9n-MkW"/>
+                                    <constraint firstItem="Zzz-o4-l0q" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="topMargin" constant="-15" id="wc4-Lz-obl"/>
                                     <constraint firstAttribute="bottom" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="xR4-Wd-w6D"/>
                                 </constraints>
                                 <variation key="default">
