@@ -31,7 +31,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
-    var facebookPosts = [AnyObject]()
+    var facebookPosts = [FBPost]()
     var twitterTweets: [TWTRTweet] = [] {
         didSet {
             twitterTableView.reloadData()
@@ -74,7 +74,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if FBSDKAccessToken.currentAccessToken() != nil {
             // User already has access token
             getFacebookPosts()
-            
+            print("user has access token")
         } else {
             //showLoginButton()
             // TODO: Show exclamation badge on Facebook tab
@@ -275,66 +275,85 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         loginButton.delegate = self
     }
     
-    private func getFacebookPosts() {
-        let parameters = ["fields": "id, name, email, posts.since(\(sinceTimestamp!)).until(\(untilTimestamp!)){story,created_time,id,message,picture,likes}"]
-        let request = FBSDKGraphRequest(graphPath: "me", parameters: parameters)
-        
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        
-        // TODO: I think this needs to be put on a background thread
-        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            
-            request.startWithCompletionHandler({ (connection, result, error) -> Void in
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                if error != nil {
-                    print(error)
-                } else {
-                    guard let posts = result["posts"],
-                        let unwrappedPosts = posts,
-                        let data = unwrappedPosts["data"] as? NSMutableArray else { return }
-                    
-                    for i in 0..<data.count {
-                        //                    print(data[i])
-                        //                    print("================= separator ===================")
-                        self.facebookPosts.append(data[i])
-                    }
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    // Back on main thread
-                    print("back on main thread")
-                    
-                    self.facebookActivityIndicator.stopAnimating()
-                    
-                    if self.facebookPosts.isEmpty {
-                        self.noDataFacebookLabel.hidden = false
-                    } else {
-                        self.facebookTableView.hidden = false
-                        self.facebookTableView.reloadData()
-                    }
-                })
-            })
-            
-        
-        //}
-        
-//        request.startWithCompletionHandler({ (connection, result, error) -> Void in
-//            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-//            if error != nil {
-//                print(error)
-//            } else {
-//                guard let posts = result["posts"],
-//                    let unwrappedPosts = posts,
-//                    let data = unwrappedPosts["data"] as? NSMutableArray else { return }
-//
-//                for i in 0..<data.count {
-////                    print(data[i])
-////                    print("================= separator ===================")
-//                    self.facebookPosts.append(data[i])
+//    private func getFacebookPosts() {
+//        let parameters = ["fields": "id, name, email, posts.since(\(sinceTimestamp!)).until(\(untilTimestamp!)){story,created_time,id,message,picture,likes}"]
+//        let request = FBSDKGraphRequest(graphPath: "me", parameters: parameters)
+//        
+//        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+//        
+//        // TODO: I think this needs to be put on a background thread
+//        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+//            
+//            request.startWithCompletionHandler({ (connection, result, error) -> Void in
+//                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+//                if error != nil {
+//                    print(error)
+//                } else {
+//                    guard let posts = result["posts"],
+//                        let unwrappedPosts = posts,
+//                        let data = unwrappedPosts["data"] as? NSMutableArray else { return }
+//                    
+//                    for i in 0..<data.count {
+//                        //print(data[i])
+//                        //print("================= separator ===================")
+//                        self.facebookPosts.append(data[i])
+//                    }
 //                }
-//            }
-//        })
-
+//                
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    // Back on main thread
+//                    print("back on main thread")
+//                    
+//                    self.facebookActivityIndicator.stopAnimating()
+//                    
+//                    if self.facebookPosts.isEmpty {
+//                        self.noDataFacebookLabel.hidden = false
+//                    } else {
+//                        self.facebookTableView.hidden = false
+//                        self.facebookTableView.reloadData()
+//                    }
+//                })
+//            })
+//            
+//        
+//        //}
+//        
+////        request.startWithCompletionHandler({ (connection, result, error) -> Void in
+////            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+////            if error != nil {
+////                print(error)
+////            } else {
+////                guard let posts = result["posts"],
+////                    let unwrappedPosts = posts,
+////                    let data = unwrappedPosts["data"] as? NSMutableArray else { return }
+////
+////                for i in 0..<data.count {
+//////                    print(data[i])
+//////                    print("================= separator ===================")
+////                    self.facebookPosts.append(data[i])
+////                }
+////            }
+////        })
+//
+//    }
+    
+    private func getFacebookPosts() {
+        let fbFetch = NSFetchRequest(entityName: "FBPost")
+        
+        let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: true)
+        fbFetch.sortDescriptors = [sortDescriptor]
+        
+        if let since = sinceTimestamp, let until = untilTimestamp {
+            fbFetch.predicate = NSPredicate(format: "(created_at_timestamp >= %d) AND (created_at_timestamp <= %d)", since, until)
+            
+            do {
+                if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fbFetch) as? [FBPost] {
+                    facebookPosts = results
+                }
+            } catch let error as NSError {
+                print("Error: \(error) " + "description \(error.localizedDescription)")
+            }
+        }
     }
     
     private func displayFacebookPosts() {
@@ -408,12 +427,12 @@ extension EntryViewController: UITabBarDelegate {
         case 1:
             showTab(byTag: 1)
         case 2:
-            if FBSDKAccessToken.currentAccessToken() != nil {
-                // User already has access token
-                displayFacebookPosts()
-            } else {
-                showFBLoginButton()
-            }
+//            if FBSDKAccessToken.currentAccessToken() != nil {
+//                // User already has access token
+//                displayFacebookPosts()
+//            } else {
+//                showFBLoginButton()
+//            }
             showTab(byTag: 2)
         case 3:
             showTab(byTag: 3)
@@ -432,13 +451,23 @@ extension EntryViewController: UITabBarDelegate {
         case 2: // Facebook
             title = "Facebook"
             facebookView.hidden = false
+            
             if !facebookPosts.isEmpty {
                 facebookTableView.hidden = false
+            } else {
+                facebookActivityIndicator.stopAnimating()
+                noDataFacebookLabel.hidden = false
             }
+            
+            if FBSDKAccessToken.currentAccessToken() == nil {
+                showFBLoginButton()
+            }
+            
             hideTabsExcept(2)
         case 3: // Twitter
             title = "Twitter"
             twitterView.hidden = false
+            
             if !twitterTweets.isEmpty {
                 twitterTableView.hidden = false
             } else {
@@ -546,21 +575,18 @@ extension EntryViewController: UITableViewDelegate, UITableViewDataSource, TWTRT
     }
     
     
-    private func configureCell(cell: FacebookPostTableViewCell, facebookPost post: AnyObject) {
-        if let picture = post["picture"] as? String {
-            if let urlString = NSURL(string: picture) {
-                if let imageData = NSData(contentsOfURL: urlString) {
-                    cell.postImageView.image = UIImage(data: imageData)
-                }
-            }
+    private func configureCell(cell: FacebookPostTableViewCell, facebookPost post: FBPost) {
+        if let picture = post.picture {
+            cell.postImageView.image = UIImage(data: picture)
         } else {
             cell.postImageView.image = nil
         }
-        if let message = post["message"] as? String {
+        
+        if let message = post.message {
             cell.postTextView.text = message
         } else {
             cell.postTextView.text = ""
-        }
+        }        
     }
 
     

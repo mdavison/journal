@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack()
     var twitter = JournalTwitter()
+    var facebook = JournalFacebook()
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -39,13 +40,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let entryController = entryNavigationController.topViewController as! EntryViewController
         entryController.coreDataStack = coreDataStack
         twitter.coreDataStack = coreDataStack
+        facebook.coreDataStack = coreDataStack
         
         Fabric.with([Twitter.self])
         
         twitter.requestTweets()
+        
+        let facebookApplication = FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        facebook.requestPosts()
 
-        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        //return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         //return true
+        return facebookApplication
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {

@@ -1,5 +1,5 @@
 //
-//  Entry+CoreDataProperties.swift
+//  FBPost+CoreDataProperties.swift
 //  Journal
 //
 //  Created by Morgan Davison on 3/30/16.
@@ -12,14 +12,12 @@
 import Foundation
 import CoreData
 
-extension Entry {
+extension FBPost {
 
-    @NSManaged var created_at: NSDate?
-    @NSManaged var text: String?
-    @NSManaged var updated_at: NSDate?
-    //@NSManaged var tweets: NSSet?
-    @NSManaged var tweets: Set<Tweet>?
-//    @NSManaged var fbposts: NSSet?
-    @NSManaged var fbposts: Set<FBPost>?
+    @NSManaged var created_at_timestamp: NSNumber?
+    @NSManaged var picture: NSData?
+    @NSManaged var message: String?
+//    @NSManaged var entries: NSSet?
+    @NSManaged var entries: Set<Entry>?
     
 }

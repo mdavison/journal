@@ -27,7 +27,7 @@ class JournalTwitter {
     func requestTweets() {
         if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
             print("request tweets from JOurnalTwitter class")
-            Twitter.sharedInstance().sessionStore.logOutUserID(userID)
+            //Twitter.sharedInstance().sessionStore.logOutUserID(userID)
             
             let client = TWTRAPIClient(userID: userID)
             client.loadUserWithID(userID, completion: { (user, error) in

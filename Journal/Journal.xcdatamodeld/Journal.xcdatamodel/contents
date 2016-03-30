@@ -4,15 +4,23 @@
         <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updated_at" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="tweet" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="entry" inverseEntity="Tweet" syncable="YES"/>
+        <relationship name="fbposts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FBPost" inverseName="entries" inverseEntity="FBPost" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="entries" inverseEntity="Tweet" syncable="YES"/>
+    </entity>
+    <entity name="FBPost" representedClassName=".FBPost" syncable="YES">
+        <attribute name="created_at_timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="picture" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <relationship name="entries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Entry" inverseName="fbposts" inverseEntity="Entry" syncable="YES"/>
     </entity>
     <entity name="Tweet" representedClassName=".Tweet" syncable="YES">
         <attribute name="created_at_timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="twtrtweet" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="entry" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Entry" inverseName="tweet" inverseEntity="Entry" syncable="YES"/>
+        <relationship name="entries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Entry" inverseName="tweets" inverseEntity="Entry" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Entry" positionX="261" positionY="198" width="128" height="105"/>
+        <element name="Entry" positionX="261" positionY="198" width="128" height="120"/>
         <element name="Tweet" positionX="261" positionY="225" width="128" height="90"/>
+        <element name="FBPost" positionX="288" positionY="261" width="128" height="105"/>
     </elements>
 </model>
