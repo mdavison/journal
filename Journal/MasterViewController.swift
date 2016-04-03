@@ -29,6 +29,7 @@ class MasterViewController: UITableViewController {
         self.navigationController?.navigationBarHidden = true
         tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
         tabBarController?.title = "Main"
+        //tabBarController?.tabBar.alpha = 0.9 // Can make tab bar translucent
 
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MasterViewController.insertNewEntry(_:)))
         tabBarController?.navigationItem.rightBarButtonItem = addButton

@@ -26,7 +26,6 @@ class JournalTwitter {
     
     func requestTweets() {
         if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
-            print("request tweets from JOurnalTwitter class")
             //Twitter.sharedInstance().sessionStore.logOutUserID(userID)
             
             let client = TWTRAPIClient(userID: userID)
@@ -79,7 +78,6 @@ class JournalTwitter {
     // MARK: - Notification Handling
     
     @objc func hasLoggedIn(notification: NSNotification) {
-        print("User has logged into Twitter")
         requestTweets()
     }
     
@@ -115,7 +113,6 @@ class JournalTwitter {
             coreDataStack.saveContext()
         }
         NSNotificationCenter.defaultCenter().postNotificationName(TwitterDidRefreshNotificationKey, object: nil)
-        print("TwitterDidRefresh notification sent")
     }
     
 }

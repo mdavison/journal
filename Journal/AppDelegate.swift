@@ -31,10 +31,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
         let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
         let tabBarController = masterNavigationController.viewControllers[0] as! UITabBarController
-        let tabBarNavController = tabBarController.viewControllers![0] as! UINavigationController
-        let controller = tabBarNavController.viewControllers[0] as! MasterViewController
-        controller.managedObjectContext = coreDataStack.managedObjectContext
-        controller.coreDataStack = coreDataStack
+        let tabBarMasterNavController = tabBarController.viewControllers![0] as! UINavigationController
+        let masterViewController = tabBarMasterNavController.viewControllers[0] as! MasterViewController
+        masterViewController.managedObjectContext = coreDataStack.managedObjectContext
+        masterViewController.coreDataStack = coreDataStack
+        
+        let tabBarCalendarNavController = tabBarController.viewControllers![1] as! UINavigationController
+        let calendarViewController = tabBarCalendarNavController.viewControllers[0] as! CalendarCollectionViewController
+        calendarViewController.coreDataStack = coreDataStack
         
         let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
         let entryController = entryNavigationController.topViewController as! EntryViewController

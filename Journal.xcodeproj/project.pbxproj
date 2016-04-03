@@ -34,6 +34,9 @@
 		90A559C51CAC09B30085F72A /* FBPost+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559C31CAC09B30085F72A /* FBPost+CoreDataProperties.swift */; };
 		90A559C61CAC09B30085F72A /* FBPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559C41CAC09B30085F72A /* FBPost.swift */; };
 		90A559C81CAC0B220085F72A /* JournalFacebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559C71CAC0B220085F72A /* JournalFacebook.swift */; };
+		90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */; };
+		90A559F01CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */; };
+		90A559F21CADDFA90085F72A /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559F11CADDFA90085F72A /* CalendarCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +90,9 @@
 		90A559C31CAC09B30085F72A /* FBPost+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FBPost+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		90A559C41CAC09B30085F72A /* FBPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBPost.swift; sourceTree = "<group>"; };
 		90A559C71CAC0B220085F72A /* JournalFacebook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalFacebook.swift; sourceTree = "<group>"; };
+		90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionReusableHeaderView.swift; sourceTree = "<group>"; };
+		90A559F11CADDFA90085F72A /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,9 +154,12 @@
 			isa = PBXGroup;
 			children = (
 				905456A11C937AD300645C39 /* MasterViewController.swift */,
+				90A0269A1CA05E3E00483776 /* CalendarViewController.swift */,
+				90A559F11CADDFA90085F72A /* CalendarCollectionViewController.swift */,
+				90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */,
+				90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
 				9037507D1CA45240006D9D58 /* EntryDateViewController.swift */,
-				90A0269A1CA05E3E00483776 /* CalendarViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
 				90A559C11CA9943D0085F72A /* JournalTwitter.swift */,
 				90A559C71CAC0B220085F72A /* JournalFacebook.swift */,
@@ -357,10 +366,13 @@
 			files = (
 				905456D61C971D7A00645C39 /* Entry.swift in Sources */,
 				90A559BF1CA990F50085F72A /* Tweet+CoreDataProperties.swift in Sources */,
+				90A559F01CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift in Sources */,
 				90A559C61CAC09B30085F72A /* FBPost.swift in Sources */,
 				905456D51C971D7A00645C39 /* Entry+CoreDataProperties.swift in Sources */,
 				905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */,
+				90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */,
 				90A559C81CAC0B220085F72A /* JournalFacebook.swift in Sources */,
+				90A559F21CADDFA90085F72A /* CalendarCollectionViewController.swift in Sources */,
 				905456D11C96F8D800645C39 /* CoreDataStack.swift in Sources */,
 				90A559C21CA9943D0085F72A /* JournalTwitter.swift in Sources */,
 				90A559C01CA990F50085F72A /* Tweet.swift in Sources */,

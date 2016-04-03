@@ -31,11 +31,11 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
+    var entryDate: NSDate?
     var facebookPosts = [FBPost]()
     var twitterTweets: [TWTRTweet] = [] {
         didSet {
             twitterTableView.reloadData()
-            print("twitterTweets set")
         }
     }
     var sinceTimestamp: Int?
@@ -56,6 +56,12 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let hidden = navigationController?.navigationBarHidden {
+            if hidden == true {
+                navigationController?.navigationBarHidden = false
+            }
+        }
+        
         journalTwitter.coreDataStack = coreDataStack
         entryTextView.delegate = self
         setupView()
@@ -74,7 +80,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if FBSDKAccessToken.currentAccessToken() != nil {
             // User already has access token
             getFacebookPosts()
-            print("user has access token")
         } else {
             //showLoginButton()
             // TODO: Show exclamation badge on Facebook tab
@@ -103,6 +108,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     // MARK: - Actions
     
     @IBAction func save(sender: UIBarButtonItem) {
+        // TODO: Restrict so 1 entry per date - this is to make calendar view feasible - can't really show multiple entries on a day and there's no good reason to have multiple entries per day - Probably make DB one to many relationship for Twitter and FB
         if let entry = entry {
             // Save existing
             entry.created_at = getButtonDate()
@@ -111,6 +117,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             
             coreDataStack.saveContext()
         } else {
+            // TODO: Should send a notification so calendar (and maybe list too?) can be highlighted when new entry created when in split view
             // Create new
             let entryEntity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: coreDataStack.managedObjectContext)
             entry = Entry(entity: entryEntity!, insertIntoManagedObjectContext: coreDataStack.managedObjectContext)
@@ -127,7 +134,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func refreshTwitter(sender: UIButton) {
-        print("REfreshing Tweets")
         journalTwitter.requestTweets()
     }
     
@@ -143,7 +149,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     func twitterHasRefreshed(notification: NSNotification) {
-        print("============================== observer method twitterHasRefreshed called")
         twitterTableView.hidden = true
         twitterTweets.removeAll()
         getTweets()
@@ -179,8 +184,12 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             setDateButton(withEntry: entry)
             entryTextView.text = entry.text
         } else {
+            if let entryDate = entryDate {
+                setDateButton(withDate: entryDate)
+            } else {
+                setDateButton(withEntry: nil)
+            }
             saveButton.enabled = false
-            setDateButton(withEntry: nil)
             entryTextView.text = ""
             title = "New Entry"
         }
@@ -372,7 +381,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             } else {
                 let logInButton = TWTRLogInButton { (session, error) in
                     if let _ = session {
-                        print("logged into Twitter")
                         // TODO: Remove login button - Or could put login button on its own view
                         //twitterLoginButtonView.hidden = true
                         
@@ -392,7 +400,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     private func getTweets() {
-        print("getTweets")
         let tweetFetch = NSFetchRequest(entityName: "Tweet")
         
         let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: false)
@@ -408,7 +415,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
                 for tweet in results {
                     if let twtrtweet = tweet.twtrtweet {
                         twitterTweets.append(twtrtweet)
-                        print("adding tweet to twitterTweets")
                     }
                 }
             } catch let error as NSError {
@@ -526,13 +532,11 @@ extension EntryViewController: FBSDKLoginButtonDelegate {
     // MARK: - FBSDKLoginButtonDelegate methods
     
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-        print("logged in")
         getFacebookPosts()
         displayFacebookPosts()
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        print("logged out")
         showFBLoginButton()
     }
 
