@@ -62,6 +62,11 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             }
         }
         
+        // Check if an entry already exists for this date
+        if entryExists() {
+            // TODO: segue to entryDateViewController
+        }
+        
         journalTwitter.coreDataStack = coreDataStack
         entryTextView.delegate = self
         setupView()
@@ -271,6 +276,44 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         sinceTimestamp = timestamps["since"]
         untilTimestamp = timestamps["until"]
+    }
+    
+    private func entryExists() -> Bool {
+        if entry == nil { // Adding a new entry
+            var predicateDate = NSDate() // today
+            if let entryDate = entryDate {
+                predicateDate = entryDate
+            }
+            
+            let calendar = NSCalendar.currentCalendar()
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            
+            let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: predicateDate)
+            let predicateDateBeginString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
+            let predicateDateEndString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
+            let predicateDateBegin = formatter.dateFromString(predicateDateBeginString)
+            let predicateDateEnd = formatter.dateFromString(predicateDateEndString)
+            
+            guard let begin = predicateDateBegin, let end = predicateDateEnd else { return false }
+            
+            let fetchRequest = NSFetchRequest(entityName: "Entry")
+            let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin, end)
+            fetchRequest.predicate = predicate
+            
+            do {
+                if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
+                    print(results.first)
+                    if let _ = results.first {
+                        return true
+                    }
+                }
+            } catch let error as NSError {
+                print("Error: \(error) " + "description \(error.localizedDescription)")
+            }
+        }
+        
+        return false
     }
     
     

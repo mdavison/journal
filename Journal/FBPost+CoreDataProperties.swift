@@ -18,6 +18,6 @@ extension FBPost {
     @NSManaged var picture: NSData?
     @NSManaged var message: String?
 //    @NSManaged var entries: NSSet?
-    @NSManaged var entries: Set<Entry>?
+    @NSManaged var entry: Entry?
     
 }

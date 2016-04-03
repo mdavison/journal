@@ -19,6 +19,6 @@ extension Tweet {
     //@NSManaged var twtrtweet: NSObject?
     @NSManaged var twtrtweet: TWTRTweet?
 //    @NSManaged var entries: NSSet?
-    @NSManaged var entries: Set<Entry>?
+    @NSManaged var entry: Entry?
 
 }
