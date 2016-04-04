@@ -38,6 +38,9 @@
 		90A559F21CADDFA90085F72A /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559F11CADDFA90085F72A /* CalendarCollectionViewController.swift */; };
 		90A559F41CB2D1490085F72A /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559F31CB2D1490085F72A /* SignInViewController.swift */; };
 		90E9DB731CB2D7A70092C7AB /* JournalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB721CB2D7A70092C7AB /* JournalVariables.swift */; };
+		90E9DB751CB30A780092C7AB /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB741CB30A780092C7AB /* SettingsTableViewController.swift */; };
+		90E9DB771CB3169C0092C7AB /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB761CB3169C0092C7AB /* SetPasswordViewController.swift */; };
+		90E9DB791CB31C8A0092C7AB /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +98,9 @@
 		90A559F11CADDFA90085F72A /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
 		90A559F31CB2D1490085F72A /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		90E9DB721CB2D7A70092C7AB /* JournalVariables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JournalVariables.swift; sourceTree = "<group>"; };
+		90E9DB741CB30A780092C7AB /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		90E9DB761CB3169C0092C7AB /* SetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
+		90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +166,9 @@
 				90A559F11CADDFA90085F72A /* CalendarCollectionViewController.swift */,
 				90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */,
 				90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */,
+				90E9DB741CB30A780092C7AB /* SettingsTableViewController.swift */,
+				90E9DB761CB3169C0092C7AB /* SetPasswordViewController.swift */,
+				90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
 				9037507D1CA45240006D9D58 /* EntryDateViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
@@ -385,8 +394,11 @@
 				905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */,
 				90A559C51CAC09B30085F72A /* FBPost+CoreDataProperties.swift in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
+				90E9DB771CB3169C0092C7AB /* SetPasswordViewController.swift in Sources */,
 				9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */,
 				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
+				90E9DB751CB30A780092C7AB /* SettingsTableViewController.swift in Sources */,
+				90E9DB791CB31C8A0092C7AB /* ChangePasswordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

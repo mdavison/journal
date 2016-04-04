@@ -9,5 +9,5 @@
 import Foundation
 
 struct JournalVariables {
-    static var userIsAuthenticated = false 
+    static var userIsAuthenticated = true
 }
