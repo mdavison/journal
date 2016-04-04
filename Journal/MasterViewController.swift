@@ -20,12 +20,13 @@ class MasterViewController: UITableViewController {
     struct Storyboard {
         static var AddEntrySegueIdentifier = "AddEntry"
         static var ShowDetailSegueIdentifier = "ShowDetail"
+        static var SignInSegueIdentifier = "SignIn"
     }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                                
         self.navigationController?.navigationBarHidden = true
         tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
         tabBarController?.title = "Main"
@@ -46,6 +47,18 @@ class MasterViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.navigationController?.navigationBarHidden = false
+        
+        if JournalVariables.userIsAuthenticated {
+            tableView.hidden = false
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !JournalVariables.userIsAuthenticated {
+            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
