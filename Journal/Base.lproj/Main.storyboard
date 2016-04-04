@@ -40,13 +40,13 @@
                                     <segue destination="QQb-W7-YPp" kind="presentation" identifier="EntryDate" id="l4D-PB-NoZ"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
                                 <rect key="frame" x="20" y="110" width="560" height="392"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efJ-d1-0gf">
+                            <tabBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="efJ-d1-0gf">
                                 <rect key="frame" x="0.0" y="502" width="600" height="49"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <items>
@@ -58,19 +58,19 @@
                                     <outlet property="delegate" destination="JEX-9P-axG" id="0E6-uS-J1u"/>
                                 </connections>
                             </tabBar>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VpO-go-Vin">
+                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VpO-go-Vin">
                                 <rect key="frame" x="20" y="110" width="560" height="392"/>
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Q2i-jR-XtD">
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Q2i-jR-XtD">
                                         <rect key="frame" x="270" y="186" width="20" height="20"/>
                                     </activityIndicatorView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Facebook posts for this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqH-Ex-GZh">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No Facebook posts for this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqH-Ex-GZh">
                                         <rect key="frame" x="8" y="186" width="544" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6xm-F6-JH3">
+                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6xm-F6-JH3">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="392"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
@@ -144,7 +144,7 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLa-uu-bsi">
+                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HLa-uu-bsi">
                                 <rect key="frame" x="20" y="110" width="560" height="392"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zzz-o4-l0q">
@@ -154,16 +154,16 @@
                                             <action selector="refreshTwitter:" destination="JEX-9P-axG" eventType="touchUpInside" id="EMm-Xi-Whp"/>
                                         </connections>
                                     </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UBB-Mc-SO3">
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UBB-Mc-SO3">
                                         <rect key="frame" x="270" y="186" width="20" height="20"/>
                                     </activityIndicatorView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Tweets for this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPv-7a-VNT">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No Tweets for this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPv-7a-VNT">
                                         <rect key="frame" x="8" y="186" width="544" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jWp-9l-8HJ">
+                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jWp-9l-8HJ">
                                         <rect key="frame" x="0.0" y="20" width="560" height="364"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
@@ -556,7 +556,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="atF-bf-pbc">
-                                <rect key="frame" x="20" y="72" width="560" height="216"/>
+                                <rect key="frame" x="20" y="99" width="560" height="216"/>
                                 <date key="date" timeIntervalSinceReferenceDate="480531043.43224698">
                                     <!--2016-03-24 16:50:43 +0000-->
                                 </date>
@@ -564,13 +564,28 @@
                                     <action selector="dateChanged:" destination="BkS-fo-9ip" eventType="valueChanged" id="8aK-k3-anb"/>
                                 </connections>
                             </datePicker>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An entry already exists for that date. Please choose a different date." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b11-hZ-dSe">
+                                <rect key="frame" x="20" y="72" width="560" height="19.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" red="0.89358428030303028" green="0.36942020130885089" blue="0.095067495940852592" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="b11-hZ-dSe" firstAttribute="top" secondItem="Dgy-oS-mVr" secondAttribute="bottom" constant="8" symbolic="YES" id="1KJ-fA-GBW"/>
+                            <constraint firstItem="atF-bf-pbc" firstAttribute="top" secondItem="b11-hZ-dSe" secondAttribute="bottom" constant="8" symbolic="YES" id="8fy-wo-DkK"/>
+                            <constraint firstItem="b11-hZ-dSe" firstAttribute="leading" secondItem="1u7-1u-CC8" secondAttribute="leadingMargin" id="9E7-55-BfS"/>
                             <constraint firstItem="atF-bf-pbc" firstAttribute="leading" secondItem="1u7-1u-CC8" secondAttribute="leadingMargin" id="Q5l-uT-KF1"/>
-                            <constraint firstItem="atF-bf-pbc" firstAttribute="top" secondItem="Dgy-oS-mVr" secondAttribute="bottom" constant="8" symbolic="YES" id="pIn-wj-gg7"/>
+                            <constraint firstItem="b11-hZ-dSe" firstAttribute="trailing" secondItem="1u7-1u-CC8" secondAttribute="trailingMargin" id="hd9-GW-UW1"/>
+                            <constraint firstItem="atF-bf-pbc" firstAttribute="top" secondItem="Dgy-oS-mVr" secondAttribute="bottom" constant="37" id="pIn-wj-gg7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="atF-bf-pbc" secondAttribute="trailing" id="sc7-il-fjq"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="pIn-wj-gg7"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Select Date" id="30U-Vz-iyu">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="6uV-j2-prf">
@@ -586,6 +601,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="entryDatePicker" destination="atF-bf-pbc" id="Wq2-iU-NOc"/>
+                        <outlet property="messageLabel" destination="b11-hZ-dSe" id="fc6-7o-aVw"/>
+                        <outlet property="saveButton" destination="98D-Mr-1aV" id="5Pm-e0-2jn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MRc-AD-NGo" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,11 +15,23 @@ protocol EntryDateViewControllerDelegate: class {
 class EntryDateViewController: UIViewController {
 
     @IBOutlet weak var entryDatePicker: UIDatePicker!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
+    var coreDataStack: CoreDataStack!
     var delegate: EntryDateViewControllerDelegate?
+    var showMessageLabel = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Prevent future dates
+        entryDatePicker.maximumDate = NSDate()
+        
+        if showMessageLabel {
+            messageLabel.hidden = false
+            saveButton.enabled = false
+        }
 
     }
 
@@ -32,7 +44,7 @@ class EntryDateViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func dateChanged(sender: UIDatePicker) {
-        // TODO: prevent future date
+        validateSelectedDate(sender.date)
     }
     
     @IBAction func cancel(sender: UIBarButtonItem) {
@@ -54,5 +66,15 @@ class EntryDateViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    // MARK: - Helper Methods
+    
+    private func validateSelectedDate(date: NSDate) {
+        let entryExists = Entry.entryExists(forDate: date, coreDataStack: coreDataStack)
+        
+        saveButton.enabled = !entryExists
+        messageLabel.hidden = !entryExists
+    }
 
 }

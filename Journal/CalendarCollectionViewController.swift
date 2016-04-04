@@ -89,6 +89,9 @@ class CalendarCollectionViewController: UICollectionViewController {
             controller.title = "New Entry"
             controller.coreDataStack = coreDataStack
         } else if segue.identifier == Storyboard.ShowEntrySegueIdentifier {
+            // TODO: if blank cell selected don't perform the segue - just do return false?
+            // http://stackoverflow.com/questions/8066525/prevent-segue-in-prepareforsegue-method
+            
             let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             controller.coreDataStack = coreDataStack
             

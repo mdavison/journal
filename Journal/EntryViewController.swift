@@ -41,6 +41,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var sinceTimestamp: Int?
     var untilTimestamp: Int?
     var journalTwitter = JournalTwitter()
+    var invalidDate = false
     
     struct Storyboard {
         static var FacebookViewIdentifier = "FacebookView"
@@ -64,7 +65,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         // Check if an entry already exists for this date
         if entryExists() {
-            // TODO: segue to entryDateViewController
+            invalidDate = true
+            performSegueWithIdentifier(Storyboard.EntryDateSegueIdentifier, sender: nil)
         }
         
         journalTwitter.coreDataStack = coreDataStack
@@ -94,6 +96,15 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             getTweets()
         }
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Check if an entry already exists for this date
+        if entryExists() {
+            saveButton.enabled = false
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -104,8 +115,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     // MARK: - UITextViewDelegate Methods
     
     func textViewDidChange(textView: UITextView) {
-        saveButton.enabled = true
         saveButton.title = "Save"
+        if invalidDate == false {
+            saveButton.enabled = true
+        }
     }
 
 
@@ -172,7 +185,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
                     let controller = navController.topViewController as? EntryDateViewController else { return }
                 
                 controller.delegate = self
-                
+                controller.coreDataStack = coreDataStack
+                if invalidDate {
+                    controller.showMessageLabel = true 
+                }
             default:
                 return 
             }
@@ -280,37 +296,14 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     private func entryExists() -> Bool {
         if entry == nil { // Adding a new entry
-            var predicateDate = NSDate() // today
+            
+            // If a date is set, use that, otherwise use today's date
+            var date = NSDate()
             if let entryDate = entryDate {
-                predicateDate = entryDate
+                date = entryDate
             }
-            
-            let calendar = NSCalendar.currentCalendar()
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            
-            let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: predicateDate)
-            let predicateDateBeginString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
-            let predicateDateEndString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
-            let predicateDateBegin = formatter.dateFromString(predicateDateBeginString)
-            let predicateDateEnd = formatter.dateFromString(predicateDateEndString)
-            
-            guard let begin = predicateDateBegin, let end = predicateDateEnd else { return false }
-            
-            let fetchRequest = NSFetchRequest(entityName: "Entry")
-            let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin, end)
-            fetchRequest.predicate = predicate
-            
-            do {
-                if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
-                    print(results.first)
-                    if let _ = results.first {
-                        return true
-                    }
-                }
-            } catch let error as NSError {
-                print("Error: \(error) " + "description \(error.localizedDescription)")
-            }
+
+            return Entry.entryExists(forDate: date, coreDataStack: coreDataStack)
         }
         
         return false
@@ -326,68 +319,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         view.addSubview(loginButton)
         loginButton.delegate = self
     }
-    
-//    private func getFacebookPosts() {
-//        let parameters = ["fields": "id, name, email, posts.since(\(sinceTimestamp!)).until(\(untilTimestamp!)){story,created_time,id,message,picture,likes}"]
-//        let request = FBSDKGraphRequest(graphPath: "me", parameters: parameters)
-//        
-//        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-//        
-//        // TODO: I think this needs to be put on a background thread
-//        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-//            
-//            request.startWithCompletionHandler({ (connection, result, error) -> Void in
-//                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-//                if error != nil {
-//                    print(error)
-//                } else {
-//                    guard let posts = result["posts"],
-//                        let unwrappedPosts = posts,
-//                        let data = unwrappedPosts["data"] as? NSMutableArray else { return }
-//                    
-//                    for i in 0..<data.count {
-//                        //print(data[i])
-//                        //print("================= separator ===================")
-//                        self.facebookPosts.append(data[i])
-//                    }
-//                }
-//                
-//                dispatch_async(dispatch_get_main_queue(), {
-//                    // Back on main thread
-//                    print("back on main thread")
-//                    
-//                    self.facebookActivityIndicator.stopAnimating()
-//                    
-//                    if self.facebookPosts.isEmpty {
-//                        self.noDataFacebookLabel.hidden = false
-//                    } else {
-//                        self.facebookTableView.hidden = false
-//                        self.facebookTableView.reloadData()
-//                    }
-//                })
-//            })
-//            
-//        
-//        //}
-//        
-////        request.startWithCompletionHandler({ (connection, result, error) -> Void in
-////            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-////            if error != nil {
-////                print(error)
-////            } else {
-////                guard let posts = result["posts"],
-////                    let unwrappedPosts = posts,
-////                    let data = unwrappedPosts["data"] as? NSMutableArray else { return }
-////
-////                for i in 0..<data.count {
-//////                    print(data[i])
-//////                    print("================= separator ===================")
-////                    self.facebookPosts.append(data[i])
-////                }
-////            }
-////        })
-//
-//    }
     
     private func getFacebookPosts() {
         let fbFetch = NSFetchRequest(entityName: "FBPost")
