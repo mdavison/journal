@@ -50,7 +50,7 @@ class CalendarCollectionViewController: UICollectionViewController {
         
         // Remove duplicate nav controller
         tabBarController?.navigationController?.navigationBarHidden = true
-        
+
         setEntries()
         setMonthsAndYears()
         collectionView?.reloadData()
