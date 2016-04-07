@@ -41,6 +41,9 @@
 		90E9DB751CB30A780092C7AB /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB741CB30A780092C7AB /* SettingsTableViewController.swift */; };
 		90E9DB771CB3169C0092C7AB /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB761CB3169C0092C7AB /* SetPasswordViewController.swift */; };
 		90E9DB791CB31C8A0092C7AB /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */; };
+		90E9DB7C1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB7A1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift */; };
+		90E9DB7D1CB3F0BA0092C7AB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB7B1CB3F0BA0092C7AB /* Settings.swift */; };
+		90E9DB7F1CB5BB680092C7AB /* SetPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB7E1CB5BB680092C7AB /* SetPasswordTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +104,9 @@
 		90E9DB741CB30A780092C7AB /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		90E9DB761CB3169C0092C7AB /* SetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
 		90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		90E9DB7A1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		90E9DB7B1CB3F0BA0092C7AB /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		90E9DB7E1CB5BB680092C7AB /* SetPasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +173,7 @@
 				90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */,
 				90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */,
 				90E9DB741CB30A780092C7AB /* SettingsTableViewController.swift */,
+				90E9DB7E1CB5BB680092C7AB /* SetPasswordTableViewController.swift */,
 				90E9DB761CB3169C0092C7AB /* SetPasswordViewController.swift */,
 				90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
@@ -210,9 +217,11 @@
 				90A559C31CAC09B30085F72A /* FBPost+CoreDataProperties.swift */,
 				90A559BD1CA990F50085F72A /* Tweet+CoreDataProperties.swift */,
 				905456D31C971D7A00645C39 /* Entry+CoreDataProperties.swift */,
+				90E9DB7A1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift */,
 				90A559C41CAC09B30085F72A /* FBPost.swift */,
 				90A559BE1CA990F50085F72A /* Tweet.swift */,
 				905456D41C971D7A00645C39 /* Entry.swift */,
+				90E9DB7B1CB3F0BA0092C7AB /* Settings.swift */,
 				905456D01C96F8D800645C39 /* CoreDataStack.swift */,
 			);
 			name = CoreData;
@@ -384,6 +393,9 @@
 				905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */,
 				90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */,
 				90A559C81CAC0B220085F72A /* JournalFacebook.swift in Sources */,
+				90E9DB7C1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift in Sources */,
+				90E9DB7F1CB5BB680092C7AB /* SetPasswordTableViewController.swift in Sources */,
+				90E9DB7D1CB3F0BA0092C7AB /* Settings.swift in Sources */,
 				90A559F21CADDFA90085F72A /* CalendarCollectionViewController.swift in Sources */,
 				90A559F41CB2D1490085F72A /* SignInViewController.swift in Sources */,
 				905456D11C96F8D800645C39 /* CoreDataStack.swift in Sources */,

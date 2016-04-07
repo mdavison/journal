@@ -20,10 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     lazy var coreDataStack = CoreDataStack()
     var twitter = JournalTwitter()
     var facebook = JournalFacebook()
+    var settings: Settings?
+    //var signInViewController: SignInViewController?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
         // Override point for customization after application launch.
+        setSettings()
+        
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
@@ -40,9 +45,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let calendarViewController = tabBarCalendarNavController.viewControllers[0] as! CalendarCollectionViewController
         calendarViewController.coreDataStack = coreDataStack
         
+        let tabBarSettingsNavController = tabBarController.viewControllers![2] as! UINavigationController
+        let settingsViewController = tabBarSettingsNavController.viewControllers[0] as! SettingsTableViewController
+        settingsViewController.coreDataStack = coreDataStack
+        
         let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
         let entryController = entryNavigationController.topViewController as! EntryViewController
         entryController.coreDataStack = coreDataStack
+        
         twitter.coreDataStack = coreDataStack
         facebook.coreDataStack = coreDataStack
         
@@ -81,6 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
+        // Determine if user needs to enter password
+        authenticate()
+        
         FBSDKAppEvents.activateApp()
     }
 
@@ -105,6 +118,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             return true
         }
         return false
+    }
+    
+    
+    // MARK: - Helper Methods
+    
+    private func authenticate() {
+        if let settings = settings {
+            if let passwordRequired = settings.password_required {
+                if passwordRequired == false {
+                    JournalVariables.userIsAuthenticated = true
+                }
+            } else {
+                // passwordRequired is nil
+                JournalVariables.userIsAuthenticated = true
+            }
+        } else {
+            // There are no settings yet
+            JournalVariables.userIsAuthenticated = true
+        }
+    }
+    
+    private func setSettings() {
+        let fetchRequest = NSFetchRequest(entityName: "Settings")
+        
+        do {
+            if let settingsArray = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Settings] {
+                if let setting = settingsArray.last {
+                    settings = setting
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error) " + "description \(error.localizedDescription)")
+        }
     }
     
 }
