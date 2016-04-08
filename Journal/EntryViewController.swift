@@ -19,35 +19,17 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var entryTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var entryItemsTabBar: UITabBar!
-    @IBOutlet weak var facebookView: UIView!
-    @IBOutlet weak var facebookTableView: UITableView!
-    @IBOutlet weak var twitterView: UIView!
-    @IBOutlet weak var twitterTableView: UITableView!
-    @IBOutlet weak var noDataFacebookLabel: UILabel!
-    @IBOutlet weak var noDataTwitterLabel: UILabel!
-    @IBOutlet weak var twitterActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var facebookActivityIndicator: UIActivityIndicatorView!
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
     var entryDate: NSDate?
-    var facebookPosts = [FBPost]()
-    var twitterTweets: [TWTRTweet] = [] {
-        didSet {
-            twitterTableView.reloadData()
-        }
-    }
     var sinceTimestamp: Int?
     var untilTimestamp: Int?
     var journalTwitter = JournalTwitter()
     var invalidDate = false
     
     struct Storyboard {
-        static var FacebookViewIdentifier = "FacebookView"
         static var EntryDateSegueIdentifier = "EntryDate"
-        static var FacebookPostCellReuseIdentifier = "FacebookPostCell"
-        static var TwitterTweetCellReuseIdentifier = "TwitterTweetCell"
         static var SignInSegueIdentifier = "SignIn"
     }
     
@@ -81,17 +63,17 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
         
         
-        if FBSDKAccessToken.currentAccessToken() != nil {
-            // User already has access token
-            getFacebookPosts()
-        } else {
-            //showLoginButton()
-            // TODO: Show exclamation badge on Facebook tab
-        }
-        
-        if let _ = Twitter.sharedInstance().sessionStore.session()?.userID {
-            getTweets()
-        }
+//        if FBSDKAccessToken.currentAccessToken() != nil {
+//            // User already has access token
+//            getFacebookPosts()
+//        } else {
+//            //showLoginButton()
+//            // TODO: Show exclamation badge on Facebook tab
+//        }
+//        
+//        if let _ = Twitter.sharedInstance().sessionStore.session()?.userID {
+//            getTweets()
+//        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -153,7 +135,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     // MARK: - Actions
     
     @IBAction func save(sender: UIBarButtonItem) {
-        // TODO: Restrict so 1 entry per date - this is to make calendar view feasible - can't really show multiple entries on a day and there's no good reason to have multiple entries per day - Probably make DB one to many relationship for Twitter and FB
         if let entry = entry {
             // Save existing
             entry.created_at = getButtonDate()
@@ -194,10 +175,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     func twitterHasRefreshed(notification: NSNotification) {
-        twitterTableView.hidden = true
-        twitterTweets.removeAll()
-        getTweets()
-        twitterTableView.hidden = false
+//        twitterTableView.hidden = true
+//        twitterTweets.removeAll()
+//        getTweets()
+//        twitterTableView.hidden = false
     }
 
     
@@ -226,8 +207,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     // MARK: - Helper Methods
     
     private func setupView() {
-        entryItemsTabBar.selectedItem = entryItemsTabBar.items![0]
-        
         tabBarController?.navigationItem.rightBarButtonItem = saveButton
         
         if let entry = entry {
@@ -243,9 +222,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             entryTextView.text = ""
             title = "New Entry"
         }
-        
-        twitterTableView.estimatedRowHeight = 150
-        twitterTableView.rowHeight = UITableViewAutomaticDimension
     }
     
     private func fixNavigation() {
@@ -349,265 +325,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     
-    // MARK: - Facebook
-    
-    private func showFBLoginButton() {
-        let loginButton = FBSDKLoginButton()
-        loginButton.center = view.center
-        loginButton.readPermissions = ["email", "user_posts"]
-        view.addSubview(loginButton)
-        loginButton.delegate = self
-    }
-    
-    private func getFacebookPosts() {
-        let fbFetch = NSFetchRequest(entityName: "FBPost")
-        
-        let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: true)
-        fbFetch.sortDescriptors = [sortDescriptor]
-        
-        if let since = sinceTimestamp, let until = untilTimestamp {
-            fbFetch.predicate = NSPredicate(format: "(created_at_timestamp >= %d) AND (created_at_timestamp <= %d)", since, until)
-            
-            do {
-                if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fbFetch) as? [FBPost] {
-                    facebookPosts = results
-                }
-            } catch let error as NSError {
-                print("Error: \(error) " + "description \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    private func displayFacebookPosts() {
-        facebookTableView.reloadData()
-    }
-    
-    
-    // MARK: - Twitter
-    
-    private func showTwitterLoginButton() {
-        Twitter.sharedInstance().logInWithCompletion {(session, error) in
-            if let _ = session {
-                NSNotificationCenter.defaultCenter().postNotificationName(TwitterHasLoggedInNotificationKey, object: self)
-                self.getTweets()
-                self.twitterTableView.reloadData()
-            } else {
-                let logInButton = TWTRLogInButton { (session, error) in
-                    if let _ = session {
-                        // TODO: Remove login button - Or could put login button on its own view
-                        //twitterLoginButtonView.hidden = true
-                        
-                        NSNotificationCenter.defaultCenter().postNotificationName(TwitterHasLoggedInNotificationKey, object: self)
-                        self.getTweets()
-                        self.twitterTableView.reloadData()
-                    } else {
-                        NSLog("Login error: %@", error!.localizedDescription);
-                    }
-                }
-                
-                logInButton.center = self.twitterView.center
-                self.twitterView.addSubview(logInButton)
-                //self.twitterLoginButtonView.addSubview(logInButton)
-            }
-        }
-    }
-    
-    private func getTweets() {
-        let tweetFetch = NSFetchRequest(entityName: "Tweet")
-        
-        let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: false)
-        tweetFetch.sortDescriptors = [sortDescriptor]
-        
-        if let since = sinceTimestamp, let until = untilTimestamp {
-            tweetFetch.predicate = NSPredicate(format: "(created_at_timestamp >= %d) AND (created_at_timestamp <= %d)", since, until)
-            
-            var results = [Tweet]()
-            do {
-                results = try coreDataStack.managedObjectContext.executeFetchRequest(tweetFetch) as! [Tweet]
-                
-                for tweet in results {
-                    if let twtrtweet = tweet.twtrtweet {
-                        twitterTweets.append(twtrtweet)
-                    }
-                }
-            } catch let error as NSError {
-                print("Error: \(error) " + "description \(error.localizedDescription)")
-            }
-        }
-    }
-
 }
 
 
-extension EntryViewController: UITabBarDelegate {
-    
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        switch item.tag {
-        case 1:
-            showTab(byTag: 1)
-        case 2:
-//            if FBSDKAccessToken.currentAccessToken() != nil {
-//                // User already has access token
-//                displayFacebookPosts()
-//            } else {
-//                showFBLoginButton()
-//            }
-            showTab(byTag: 2)
-        case 3:
-            showTab(byTag: 3)
-            //showTwitterLoginButton()
-            
-        default: return
-        }
-    }
-    
-    private func showTab(byTag tag: Int) {
-        switch tag {
-        case 1: // Entry
-            title = "Journal Entry"
-            entryTextView.hidden = false
-            hideTabsExcept(1)
-        case 2: // Facebook
-            title = "Facebook"
-            facebookView.hidden = false
-            
-            if !facebookPosts.isEmpty {
-                facebookTableView.hidden = false
-            } else {
-                facebookActivityIndicator.stopAnimating()
-                noDataFacebookLabel.hidden = false
-            }
-            
-            if FBSDKAccessToken.currentAccessToken() == nil {
-                showFBLoginButton()
-            }
-            
-            hideTabsExcept(2)
-        case 3: // Twitter
-            title = "Twitter"
-            twitterView.hidden = false
-            
-            if !twitterTweets.isEmpty {
-                twitterTableView.hidden = false
-            } else {
-                twitterActivityIndicator.stopAnimating()
-                noDataTwitterLabel.hidden = false
-            }
-            
-            if Twitter.sharedInstance().sessionStore.session()?.userID == nil {
-                showTwitterLoginButton()
-            } 
-            
-            hideTabsExcept(3)
-        default: return
-        }
-    }
-    
-    private func hideTabsExcept(tag: Int) {
-        func hideEntry() {
-            entryTextView.hidden = true
-        }
-        
-        func hideFacebook() {
-            facebookView.hidden = true
-            facebookTableView.hidden = true
-        }
-        
-        func hideTwitter() {
-            twitterView.hidden = true
-            twitterTableView.hidden = true
-        }
-        
-        switch tag {
-        case 1: // Entry
-            // hide 2 & 3
-            hideFacebook()
-            hideTwitter()
-        case 2: // Facebook
-            // hide 1 & 3
-            hideEntry()
-            hideTwitter()
-        case 3: // Twitter
-            // hide 1 & 2
-            hideEntry()
-            hideFacebook()
-        default: return
-        }
-        
-        
-        
-    }
-}
 
-
-extension EntryViewController: FBSDKLoginButtonDelegate {
-    
-    // MARK: - FBSDKLoginButtonDelegate methods
-    
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-        getFacebookPosts()
-        displayFacebookPosts()
-    }
-    
-    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        showFBLoginButton()
-    }
-
-}
-
-
-extension EntryViewController: UITableViewDelegate, UITableViewDataSource, TWTRTweetViewDelegate {
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == facebookTableView {
-            return facebookPosts.count
-        } else {
-            return twitterTweets.count
-        }
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if tableView == facebookTableView {
-            let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.FacebookPostCellReuseIdentifier, forIndexPath: indexPath) as! FacebookPostTableViewCell
-            
-            let post = facebookPosts[indexPath.row]
-            
-            configureCell(cell, facebookPost: post)
-            
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TwitterTweetCellReuseIdentifier, forIndexPath: indexPath) as! TWTRTweetTableViewCell
-            
-            let tweet = twitterTweets[indexPath.row]
-            
-            cell.configureWithTweet(tweet)
-            cell.tweetView.delegate = self
-            
-            return cell
-        }
-    }
-    
-    
-    private func configureCell(cell: FacebookPostTableViewCell, facebookPost post: FBPost) {
-        if let picture = post.picture {
-            cell.postImageView.image = UIImage(data: picture)
-        } else {
-            cell.postImageView.image = nil
-        }
-        
-        if let message = post.message {
-            cell.postTextView.text = message
-        } else {
-            cell.postTextView.text = ""
-        }        
-    }
-
-    
-}
 
 
 extension EntryViewController: EntryDateViewControllerDelegate {

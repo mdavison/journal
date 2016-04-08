@@ -41,231 +41,28 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
-                                <rect key="frame" x="20" y="110" width="560" height="392"/>
+                                <rect key="frame" x="20" y="110" width="560" height="490"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efJ-d1-0gf">
-                                <rect key="frame" x="0.0" y="502" width="600" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <tabBarItem tag="1" title="Main Entry" id="mSS-Fh-B4b"/>
-                                    <tabBarItem tag="2" title="Facebook" id="wfg-q8-Qjt"/>
-                                    <tabBarItem tag="3" title="Twitter" id="dQz-7v-VLy"/>
-                                </items>
-                                <connections>
-                                    <outlet property="delegate" destination="JEX-9P-axG" id="0E6-uS-J1u"/>
-                                </connections>
-                            </tabBar>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VpO-go-Vin">
-                                <rect key="frame" x="20" y="110" width="560" height="392"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Q2i-jR-XtD">
-                                        <rect key="frame" x="270" y="186" width="20" height="20"/>
-                                    </activityIndicatorView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Facebook posts for this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqH-Ex-GZh">
-                                        <rect key="frame" x="8" y="185" width="544" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6xm-F6-JH3">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="392"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FacebookPostCell" rowHeight="100" id="Q5a-Wx-0Om" customClass="FacebookPostTableViewCell" customModule="Journal" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="560" height="100"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q5a-Wx-0Om" id="4MK-lp-QDa">
-                                                    <rect key="frame" x="0.0" y="0.0" width="560" height="99.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YQp-AG-OXO">
-                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="100" id="Dp2-fn-qMD"/>
-                                                                <constraint firstAttribute="width" constant="100" id="j3a-UK-kLc"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Yy-y8-zpT">
-                                                            <rect key="frame" x="108" y="8" width="444" height="83.5"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                        </textView>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="trailingMargin" secondItem="5Yy-y8-zpT" secondAttribute="trailing" id="aNF-sx-AGD"/>
-                                                        <constraint firstItem="YQp-AG-OXO" firstAttribute="leading" secondItem="4MK-lp-QDa" secondAttribute="leading" id="iXl-2K-5ZO"/>
-                                                        <constraint firstItem="YQp-AG-OXO" firstAttribute="top" secondItem="4MK-lp-QDa" secondAttribute="top" id="jLZ-XB-CKo"/>
-                                                        <constraint firstAttribute="bottomMargin" secondItem="5Yy-y8-zpT" secondAttribute="bottom" id="kl9-FB-Kz8"/>
-                                                        <constraint firstItem="5Yy-y8-zpT" firstAttribute="leading" secondItem="YQp-AG-OXO" secondAttribute="trailing" constant="8" symbolic="YES" id="nZj-bS-YMe"/>
-                                                        <constraint firstItem="5Yy-y8-zpT" firstAttribute="top" secondItem="4MK-lp-QDa" secondAttribute="topMargin" id="ooy-sZ-btv"/>
-                                                    </constraints>
-                                                </tableViewCellContentView>
-                                                <connections>
-                                                    <outlet property="postImageView" destination="YQp-AG-OXO" id="Gxq-oi-v2G"/>
-                                                    <outlet property="postTextView" destination="5Yy-y8-zpT" id="nVm-2t-riE"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
-                                        <connections>
-                                            <outlet property="dataSource" destination="JEX-9P-axG" id="RHb-a3-Eiu"/>
-                                            <outlet property="delegate" destination="JEX-9P-axG" id="FLM-oj-PtB"/>
-                                        </connections>
-                                    </tableView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="DqH-Ex-GZh" firstAttribute="centerX" secondItem="VpO-go-Vin" secondAttribute="centerX" id="0Bg-fV-i5x"/>
-                                    <constraint firstAttribute="bottom" secondItem="6xm-F6-JH3" secondAttribute="bottom" id="0IS-Nk-Nla"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="DqH-Ex-GZh" secondAttribute="trailing" id="2ZD-va-kCV"/>
-                                    <constraint firstItem="Q2i-jR-XtD" firstAttribute="centerX" secondItem="VpO-go-Vin" secondAttribute="centerX" id="3ll-31-uXG"/>
-                                    <constraint firstItem="DqH-Ex-GZh" firstAttribute="centerY" secondItem="VpO-go-Vin" secondAttribute="centerY" id="5Io-9z-Lgm"/>
-                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="topMargin" id="8RE-eF-qzU"/>
-                                    <constraint firstItem="DqH-Ex-GZh" firstAttribute="leading" secondItem="VpO-go-Vin" secondAttribute="leadingMargin" id="AHt-H2-hAe"/>
-                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="leading" secondItem="VpO-go-Vin" secondAttribute="leading" id="MGh-Np-aLJ"/>
-                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="leading" secondItem="VpO-go-Vin" secondAttribute="leadingMargin" id="Mur-ei-Qbl"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="6xm-F6-JH3" secondAttribute="trailing" id="TdJ-tm-Ki1"/>
-                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="top" id="fw6-FA-Jd7"/>
-                                    <constraint firstItem="Q2i-jR-XtD" firstAttribute="centerY" secondItem="VpO-go-Vin" secondAttribute="centerY" id="tQl-Sv-vsd"/>
-                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="bottom" secondItem="VpO-go-Vin" secondAttribute="bottomMargin" id="u37-rK-6ua"/>
-                                    <constraint firstItem="6xm-F6-JH3" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="top" id="x2K-ZK-mQ0"/>
-                                    <constraint firstAttribute="trailing" secondItem="6xm-F6-JH3" secondAttribute="trailing" id="zlh-TJ-Mat"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="8RE-eF-qzU"/>
-                                        <exclude reference="Mur-ei-Qbl"/>
-                                        <exclude reference="TdJ-tm-Ki1"/>
-                                        <exclude reference="u37-rK-6ua"/>
-                                        <exclude reference="x2K-ZK-mQ0"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLa-uu-bsi">
-                                <rect key="frame" x="20" y="110" width="560" height="392"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zzz-o4-l0q">
-                                        <rect key="frame" x="499" y="-7" width="53" height="30"/>
-                                        <state key="normal" title="Refresh"/>
-                                        <connections>
-                                            <action selector="refreshTwitter:" destination="JEX-9P-axG" eventType="touchUpInside" id="EMm-Xi-Whp"/>
-                                        </connections>
-                                    </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UBB-Mc-SO3">
-                                        <rect key="frame" x="270" y="186" width="20" height="20"/>
-                                    </activityIndicatorView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Tweets for this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DPv-7a-VNT">
-                                        <rect key="frame" x="8" y="185" width="544" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jWp-9l-8HJ">
-                                        <rect key="frame" x="0.0" y="20" width="560" height="364"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TwitterTweetCell" id="Ahk-OL-QfP" customClass="TWTRTweetTableViewCell">
-                                                <rect key="frame" x="0.0" y="28" width="560" height="44"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ahk-OL-QfP" id="K3n-hJ-ZAd">
-                                                    <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </tableViewCellContentView>
-                                            </tableViewCell>
-                                        </prototypes>
-                                        <connections>
-                                            <outlet property="dataSource" destination="JEX-9P-axG" id="CvI-1S-gaF"/>
-                                            <outlet property="delegate" destination="JEX-9P-axG" id="9zb-Ca-7cE"/>
-                                        </connections>
-                                    </tableView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="UBB-Mc-SO3" firstAttribute="centerY" secondItem="HLa-uu-bsi" secondAttribute="centerY" id="87E-1y-wUf"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="DPv-7a-VNT" secondAttribute="trailing" id="97N-73-Gnh"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="top" id="Ag8-17-3rS"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="top" id="E8E-1B-T8i"/>
-                                    <constraint firstItem="UBB-Mc-SO3" firstAttribute="centerX" secondItem="HLa-uu-bsi" secondAttribute="centerX" id="EDt-PR-jLY"/>
-                                    <constraint firstAttribute="trailing" secondItem="jWp-9l-8HJ" secondAttribute="trailing" id="KIk-8B-Szc"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="top" constant="20" symbolic="YES" id="NgL-R1-pR1"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="leading" secondItem="HLa-uu-bsi" secondAttribute="leading" id="OmK-kE-xDp"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="P3N-Hi-VHK"/>
-                                    <constraint firstAttribute="bottom" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="P72-By-Uce"/>
-                                    <constraint firstAttribute="trailing" secondItem="jWp-9l-8HJ" secondAttribute="trailing" id="Y3e-2v-Pqr"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="Zzz-o4-l0q" secondAttribute="trailing" id="Ymf-no-zkL"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="leading" secondItem="HLa-uu-bsi" secondAttribute="leading" id="ZfV-zf-ua0"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="leading" secondItem="HLa-uu-bsi" secondAttribute="leading" id="cQb-le-VxX"/>
-                                    <constraint firstItem="DPv-7a-VNT" firstAttribute="centerX" secondItem="HLa-uu-bsi" secondAttribute="centerX" id="cwF-my-6KW"/>
-                                    <constraint firstItem="jWp-9l-8HJ" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="top" id="dbU-ah-an9"/>
-                                    <constraint firstAttribute="bottom" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="eIX-Ie-2Oe"/>
-                                    <constraint firstItem="DPv-7a-VNT" firstAttribute="leading" secondItem="HLa-uu-bsi" secondAttribute="leadingMargin" id="hIJ-Ge-zQo"/>
-                                    <constraint firstItem="DPv-7a-VNT" firstAttribute="centerY" secondItem="HLa-uu-bsi" secondAttribute="centerY" id="nos-Cq-Umh"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="q4J-Et-OfY"/>
-                                    <constraint firstAttribute="trailing" secondItem="jWp-9l-8HJ" secondAttribute="trailing" id="qfl-9n-MkW"/>
-                                    <constraint firstItem="Zzz-o4-l0q" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="topMargin" constant="-15" id="wc4-Lz-obl"/>
-                                    <constraint firstAttribute="bottom" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="xR4-Wd-w6D"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="Ag8-17-3rS"/>
-                                        <exclude reference="E8E-1B-T8i"/>
-                                        <exclude reference="KIk-8B-Szc"/>
-                                        <exclude reference="OmK-kE-xDp"/>
-                                        <exclude reference="P72-By-Uce"/>
-                                        <exclude reference="Y3e-2v-Pqr"/>
-                                        <exclude reference="cQb-le-VxX"/>
-                                        <exclude reference="dbU-ah-an9"/>
-                                        <exclude reference="eIX-Ie-2Oe"/>
-                                        <exclude reference="q4J-Et-OfY"/>
-                                        <exclude reference="xR4-Wd-w6D"/>
-                                    </mask>
-                                </variation>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="efJ-d1-0gf" secondAttribute="trailing" id="3zo-Z9-fbt"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="efJ-d1-0gf" secondAttribute="bottom" id="8Lm-aX-5N9"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="9NC-Dx-BtM"/>
-                            <constraint firstItem="efJ-d1-0gf" firstAttribute="top" secondItem="VpO-go-Vin" secondAttribute="bottom" id="AuE-zs-RKX"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="20" id="E8I-uv-YVC"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="HLa-uu-bsi" secondAttribute="trailing" id="EkJ-jb-Q3K"/>
-                            <constraint firstItem="VpO-go-Vin" firstAttribute="trailing" secondItem="svH-Pt-448" secondAttribute="trailingMargin" id="FCZ-ee-d27"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="GrP-2x-hlj"/>
-                            <constraint firstItem="jWp-9l-8HJ" firstAttribute="bottom" secondItem="efJ-d1-0gf" secondAttribute="bottom" id="MFw-m3-KI4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="niX-it-HWc" secondAttribute="trailing" id="Noe-Ic-DVp"/>
                             <constraint firstAttribute="leadingMargin" secondItem="niX-it-HWc" secondAttribute="leading" id="S3G-DT-5qs"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="SBa-9w-Fau"/>
                             <constraint firstAttribute="trailingMargin" secondItem="44C-kb-TuA" secondAttribute="trailing" id="V0Q-yE-9x1"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="XLk-bI-QLJ"/>
-                            <constraint firstItem="HLa-uu-bsi" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="ZC0-u1-zGc"/>
-                            <constraint firstItem="HLa-uu-bsi" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="Zp8-y2-3OS"/>
-                            <constraint firstItem="HLa-uu-bsi" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="g2H-2c-ZLb"/>
-                            <constraint firstItem="VpO-go-Vin" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="hNz-SA-qG6"/>
-                            <constraint firstItem="VpO-go-Vin" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="iHa-fs-sj7"/>
-                            <constraint firstItem="efJ-d1-0gf" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" id="jyQ-KS-IaI"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="bottom" id="nbG-K8-671"/>
-                            <constraint firstItem="HLa-uu-bsi" firstAttribute="leading" secondItem="44C-kb-TuA" secondAttribute="trailing" constant="-560" id="qlI-T6-S97"/>
-                            <constraint firstItem="VpO-go-Vin" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="rrb-Dd-E5H"/>
-                            <constraint firstItem="efJ-d1-0gf" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" id="s2n-yW-mhT"/>
-                            <constraint firstItem="efJ-d1-0gf" firstAttribute="top" secondItem="jWp-9l-8HJ" secondAttribute="bottom" id="to7-C6-KeQ"/>
-                            <constraint firstItem="HLa-uu-bsi" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="-30" id="txe-pU-EYs"/>
-                            <constraint firstItem="efJ-d1-0gf" firstAttribute="top" secondItem="HLa-uu-bsi" secondAttribute="bottom" id="ywX-LK-o1U"/>
+                            <constraint firstItem="niX-it-HWc" firstAttribute="bottom" secondItem="svH-Pt-448" secondAttribute="bottomMargin" id="oei-VQ-BWj"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="g2H-2c-ZLb"/>
-                                <exclude reference="qlI-T6-S97"/>
-                                <exclude reference="txe-pU-EYs"/>
-                                <exclude reference="iHa-fs-sj7"/>
                                 <exclude reference="GrP-2x-hlj"/>
-                                <exclude reference="MFw-m3-KI4"/>
-                                <exclude reference="to7-C6-KeQ"/>
                                 <exclude reference="E8I-uv-YVC"/>
-                                <exclude reference="nbG-K8-671"/>
                             </mask>
                         </variation>
                     </view>
@@ -280,17 +77,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="dateButton" destination="44C-kb-TuA" id="RRo-Jb-a7d"/>
-                        <outlet property="entryItemsTabBar" destination="efJ-d1-0gf" id="FDa-Iz-ldo"/>
                         <outlet property="entryTextView" destination="niX-it-HWc" id="UWj-Ls-bZG"/>
-                        <outlet property="facebookActivityIndicator" destination="Q2i-jR-XtD" id="PDd-lI-92J"/>
-                        <outlet property="facebookTableView" destination="6xm-F6-JH3" id="IgI-6U-XNt"/>
-                        <outlet property="facebookView" destination="VpO-go-Vin" id="CuE-Oc-sIV"/>
-                        <outlet property="noDataFacebookLabel" destination="DqH-Ex-GZh" id="1q5-eN-6Z2"/>
-                        <outlet property="noDataTwitterLabel" destination="DPv-7a-VNT" id="KiU-Ix-ug3"/>
                         <outlet property="saveButton" destination="lto-Mo-wCV" id="Xge-fw-ApK"/>
-                        <outlet property="twitterActivityIndicator" destination="UBB-Mc-SO3" id="fjY-iG-vM5"/>
-                        <outlet property="twitterTableView" destination="jWp-9l-8HJ" id="c9v-Rx-qIX"/>
-                        <outlet property="twitterView" destination="HLa-uu-bsi" id="5Rd-db-y3O"/>
                         <segue destination="lhG-pz-l0a" kind="presentation" identifier="SignIn" id="og5-5z-JAc"/>
                     </connections>
                 </viewController>
