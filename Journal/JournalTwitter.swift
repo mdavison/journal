@@ -64,14 +64,45 @@ class JournalTwitter {
                             }
                         }
                         else {
-                            print("Error: \(connectionError)")
+                            NSLog("Error: \(connectionError)")
                         }
                     }
                 }
             })
         } else {
-            print("No Twitter userID")
+            NSLog("No Twitter userID")
         }
+    }
+    
+    func fetchTweets(forEntry entry: Entry) -> [TWTRTweet]? {
+        let tweetFetch = NSFetchRequest(entityName: "Tweet")
+        
+        let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: false)
+        tweetFetch.sortDescriptors = [sortDescriptor]
+        
+        if let timestamps = JournalVariables.entryTimestamps {
+            if let since = timestamps["since"], let until = timestamps["until"] {
+                tweetFetch.predicate = NSPredicate(format: "(created_at_timestamp >= %d) AND (created_at_timestamp <= %d)", since, until)
+                
+                do {
+                    if let results = try coreDataStack.managedObjectContext.executeFetchRequest(tweetFetch) as? [Tweet] {
+                        var twtrtweets = [TWTRTweet]()
+                        
+                        for tweet in results {
+                            if let twtrtweet = tweet.twtrtweet {
+                                twtrtweets.append(twtrtweet)
+                            }
+                        }
+                        
+                        return twtrtweets
+                    }
+                } catch let error as NSError {
+                    NSLog("Error: \(error) " + "description \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        return nil
     }
     
     

@@ -84,15 +84,19 @@ class CalendarCollectionViewController: UICollectionViewController {
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let tabBarController = (segue.destinationViewController as! UINavigationController).topViewController as! UITabBarController
+        let tabBarNavController = tabBarController.viewControllers![0] as! UINavigationController
+        let controller = tabBarNavController.topViewController as! EntryViewController
+        
         if segue.identifier == Storyboard.AddEntrySegueIdentifier {
-            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+            //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             controller.title = "New Entry"
             controller.coreDataStack = coreDataStack
         } else if segue.identifier == Storyboard.ShowEntrySegueIdentifier {
             // TODO: if blank cell selected don't perform the segue - just do return false?
             // http://stackoverflow.com/questions/8066525/prevent-segue-in-prepareforsegue-method
             
-            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+            //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             controller.coreDataStack = coreDataStack
             
             // If there is an entry for selected cell

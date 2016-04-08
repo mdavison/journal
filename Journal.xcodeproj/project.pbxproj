@@ -44,6 +44,8 @@
 		90E9DB7C1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB7A1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift */; };
 		90E9DB7D1CB3F0BA0092C7AB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB7B1CB3F0BA0092C7AB /* Settings.swift */; };
 		90E9DB7F1CB5BB680092C7AB /* SetPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DB7E1CB5BB680092C7AB /* SetPasswordTableViewController.swift */; };
+		90E9DBA41CB70FB60092C7AB /* FacebookTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DBA31CB70FB60092C7AB /* FacebookTableViewController.swift */; };
+		90E9DBA61CB7ED0A0092C7AB /* TwitterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E9DBA51CB7ED0A0092C7AB /* TwitterTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,8 @@
 		90E9DB7A1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		90E9DB7B1CB3F0BA0092C7AB /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		90E9DB7E1CB5BB680092C7AB /* SetPasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordTableViewController.swift; sourceTree = "<group>"; };
+		90E9DBA31CB70FB60092C7AB /* FacebookTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookTableViewController.swift; sourceTree = "<group>"; };
+		90E9DBA51CB7ED0A0092C7AB /* TwitterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,7 +182,9 @@
 				90E9DB781CB31C8A0092C7AB /* ChangePasswordViewController.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
 				9037507D1CA45240006D9D58 /* EntryDateViewController.swift */,
+				90E9DBA31CB70FB60092C7AB /* FacebookTableViewController.swift */,
 				905457001C9B8BB200645C39 /* FacebookPostTableViewCell.swift */,
+				90E9DBA51CB7ED0A0092C7AB /* TwitterTableViewController.swift */,
 				90A559C11CA9943D0085F72A /* JournalTwitter.swift */,
 				90A559C71CAC0B220085F72A /* JournalFacebook.swift */,
 				9054569C1C937AD300645C39 /* AppDelegate.swift */,
@@ -393,6 +399,7 @@
 				905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */,
 				90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */,
 				90A559C81CAC0B220085F72A /* JournalFacebook.swift in Sources */,
+				90E9DBA41CB70FB60092C7AB /* FacebookTableViewController.swift in Sources */,
 				90E9DB7C1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift in Sources */,
 				90E9DB7F1CB5BB680092C7AB /* SetPasswordTableViewController.swift in Sources */,
 				90E9DB7D1CB3F0BA0092C7AB /* Settings.swift in Sources */,
@@ -410,6 +417,7 @@
 				9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */,
 				905456A41C937AD300645C39 /* EntryViewController.swift in Sources */,
 				90E9DB751CB30A780092C7AB /* SettingsTableViewController.swift in Sources */,
+				90E9DBA61CB7ED0A0092C7AB /* TwitterTableViewController.swift in Sources */,
 				90E9DB791CB31C8A0092C7AB /* ChangePasswordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

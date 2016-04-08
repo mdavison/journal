@@ -50,7 +50,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         settingsViewController.coreDataStack = coreDataStack
         
         let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
-        let entryController = entryNavigationController.topViewController as! EntryViewController
+        //let entryController = entryNavigationController.topViewController as! EntryViewController
+        
+        let entryTabBarController = entryNavigationController.topViewController as! UITabBarController
+        let entryController = entryTabBarController.viewControllers![0] as! EntryViewController
+        //let entryController = (entryTabBarController.viewControllers![0] as! UINavigationController).topViewController as! EntryViewController
+        
         entryController.coreDataStack = coreDataStack
         
         twitter.coreDataStack = coreDataStack

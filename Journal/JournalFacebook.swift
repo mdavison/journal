@@ -16,6 +16,7 @@ class JournalFacebook {
     var coreDataStack: CoreDataStack!
     let formatter = NSDateFormatter()
     
+    // Get all posts from network and save to DB
     func requestPosts() {
         if FBSDKAccessToken.currentAccessToken() != nil {
     //        let parameters = ["fields": "id, name, email, posts.since(\(sinceTimestamp!)).until(\(untilTimestamp!)){story,created_time,id,message,picture,likes}"]
@@ -54,6 +55,30 @@ class JournalFacebook {
             // Need to login to facebook
             print("Need to login to Facebook")
         }
+    }
+    
+    // Get posts from DB - not network
+    func fetchPosts(forEntry entry: Entry) -> [FBPost]? {
+        let fbFetch = NSFetchRequest(entityName: "FBPost")
+        
+        let sortDescriptor = NSSortDescriptor(key: "created_at_timestamp", ascending: true)
+        fbFetch.sortDescriptors = [sortDescriptor]
+        
+        let timestamps = getEntryTimestamps(forEntryDate: entry.created_at!)
+        
+        if let since = timestamps["since"], let until = timestamps["until"] {
+            fbFetch.predicate = NSPredicate(format: "(created_at_timestamp >= %d) AND (created_at_timestamp <= %d)", since, until)
+            
+            do {
+                if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fbFetch) as? [FBPost] {
+                    return results
+                }
+            } catch let error as NSError {
+                print("Error: \(error) " + "description \(error.localizedDescription)")
+            }
+        }
+        
+        return nil
     }
     
     
@@ -116,5 +141,29 @@ class JournalFacebook {
         
         return nil
     }
+    
+    private func getEntryTimestamps(forEntryDate date: NSDate) -> [String: Int] {
+        let calendar = NSCalendar.currentCalendar()
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        var since = NSDate()
+        var until = NSDate()
+        
+        // get date portion only of createdAt
+        let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: date)
+        
+        // set the time to midnight and the last second
+        let entryDateBegin = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
+        let entryDateEnd = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
+        
+        since = formatter.dateFromString(entryDateBegin)!
+        until = formatter.dateFromString(entryDateEnd)!
+        
+        let sinceTimestamp = Int(since.timeIntervalSince1970)
+        let untilTimestamp = Int(until.timeIntervalSince1970)
+        
+        return ["since": sinceTimestamp, "until": untilTimestamp]
+    }
+
     
 }

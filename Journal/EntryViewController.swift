@@ -48,6 +48,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         static var EntryDateSegueIdentifier = "EntryDate"
         static var FacebookPostCellReuseIdentifier = "FacebookPostCell"
         static var TwitterTweetCellReuseIdentifier = "TwitterTweetCell"
+        static var SignInSegueIdentifier = "SignIn"
     }
     
     deinit {
@@ -57,11 +58,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let hidden = navigationController?.navigationBarHidden {
-            if hidden == true {
-                navigationController?.navigationBarHidden = false
-            }
-        }
+        JournalVariables.entry = entry
         
         // Check if an entry already exists for this date
         if entryExists() {
@@ -97,13 +94,43 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tabBarController?.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+        tabBarController?.navigationItem.leftItemsSupplementBackButton = true
+        
+        fixNavigation() // Duplicate tabBarController navigation needs to be shown and hidden depending on orientation
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if !JournalVariables.userIsAuthenticated {
+            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
+        }
+        
+        tabBarController?.navigationItem.title = "Journal Entry"
+        tabBarController?.navigationItem.rightBarButtonItem = saveButton
         
         // Check if an entry already exists for this date
         if entryExists() {
             saveButton.enabled = false
         }
+    }
+    
+
+    
+    // Redraw view when switches orientation
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animateAlongsideTransition({ (context: UIViewControllerTransitionCoordinatorContext) -> Void in
+            self.fixNavigation()
+        }) { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
+            // complete
+        }
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
 
     override func didReceiveMemoryWarning() {
@@ -201,6 +228,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     private func setupView() {
         entryItemsTabBar.selectedItem = entryItemsTabBar.items![0]
         
+        tabBarController?.navigationItem.rightBarButtonItem = saveButton
+        
         if let entry = entry {
             setDateButton(withEntry: entry)
             entryTextView.text = entry.text
@@ -217,6 +246,14 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         twitterTableView.estimatedRowHeight = 150
         twitterTableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    private func fixNavigation() {
+        if let hidden = tabBarController?.navigationController?.navigationBarHidden {
+            if hidden == true {
+                tabBarController?.navigationController?.navigationBarHidden = false
+            }
+        }
     }
     
     private func setDateButton(withEntry entry: Entry?) {
@@ -289,6 +326,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     private func setEntryTimestamps() {
         let timestamps = getEntryTimestamps()
+        
+        JournalVariables.entryTimestamps = timestamps
         
         sinceTimestamp = timestamps["since"]
         untilTimestamp = timestamps["until"]
