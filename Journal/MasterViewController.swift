@@ -44,6 +44,11 @@ class MasterViewController: UITableViewController {
             
             split.view.backgroundColor = UIColor.whiteColor()
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(MasterViewController.preferredContentSizeChanged(_:)),
+                                                         name: UIContentSizeCategoryDidChangeNotification,
+                                                         object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -140,6 +145,31 @@ class MasterViewController: UITableViewController {
             }
         }
     }
+    
+//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+////        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+////        let textLabel = cell.textLabel
+////        let detailTextLabel = cell.detailTextLabel
+////        
+////        textLabel?.sizeToFit()
+////        detailTextLabel?.sizeToFit()
+////        
+////        return (textLabel!.frame.height + detailTextLabel!.frame.height) * 1.7
+//        
+//        return tableView.estimatedRowHeight
+//    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let textLabel = cell.textLabel
+        let detailTextLabel = cell.detailTextLabel
+        
+        textLabel?.sizeToFit()
+        detailTextLabel?.sizeToFit()
+        
+        return (textLabel!.frame.height + detailTextLabel!.frame.height) * 1.7
+    }
+    
 
     
 
@@ -165,7 +195,8 @@ class MasterViewController: UITableViewController {
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
-        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
+        //let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
+        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
         aFetchedResultsController.delegate = self
         _fetchedResultsController = aFetchedResultsController
         
@@ -186,6 +217,15 @@ class MasterViewController: UITableViewController {
 
     
     
+    // MARK: - Notification Handling 
+    
+    // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512 
+    @objc private func preferredContentSizeChanged(notification: NSNotification) {
+        print("preferredContentSizeChanged")
+        tableView.reloadData()
+    }
+    
+    
     // MARK: - Helper Methods
     
     private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
@@ -195,7 +235,9 @@ class MasterViewController: UITableViewController {
         formatter.dateStyle = .ShortStyle
         formatter.timeStyle = .ShortStyle
         
-        cell.textLabel?.text = entry.text
+        if let entryText = entry.attributed_text {
+            cell.textLabel?.text = entryText.string
+        }
         //cell.detailTextLabel?.text = "\(entry.created_at)"
         cell.detailTextLabel?.text = formatter.stringFromDate(entry.created_at!)
     }

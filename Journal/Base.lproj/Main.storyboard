@@ -40,28 +40,84 @@
                                     <segue destination="QQb-W7-YPp" kind="presentation" identifier="EntryDate" id="l4D-PB-NoZ"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
-                                <rect key="frame" x="20" y="110" width="560" height="490"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
+                                <rect key="frame" x="20" y="110" width="560" height="397"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <attributedString key="attributedText"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8W7-Ie-gYm">
+                                <rect key="frame" x="0.0" y="507" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem image="BoldIcon" id="oxW-hz-EkM">
+                                        <connections>
+                                            <action selector="applyBoldStyle:" destination="JEX-9P-axG" id="jqd-Wa-zHv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="ItalicsIcon" id="8jt-fJ-Jon">
+                                        <connections>
+                                            <action selector="applyItalicsStyle:" destination="JEX-9P-axG" id="IFt-oK-Vfv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="UnderlineIcon" id="6LM-Y2-a2C">
+                                        <connections>
+                                            <action selector="applyUnderlineStyle:" destination="JEX-9P-axG" id="SyB-E8-LAj"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="AlignLeftIcon" id="lZF-y9-Z6f">
+                                        <connections>
+                                            <action selector="alignTextLeft:" destination="JEX-9P-axG" id="ufw-Hm-LXa"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="AlignCenterIcon" id="egJ-m9-EM9">
+                                        <connections>
+                                            <action selector="alignTextCenter:" destination="JEX-9P-axG" id="C3z-KR-wwl"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="AlignRightIcon" id="Ewc-ou-U6c">
+                                        <connections>
+                                            <action selector="alignTextRight:" destination="JEX-9P-axG" id="tVK-Qq-zdy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="TextColorIcon" id="oWM-ff-dtP">
+                                        <connections>
+                                            <action selector="changeTextColor:" destination="JEX-9P-axG" id="YW3-L6-een"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="ParagraphIcon" id="bvv-JI-98t">
+                                        <connections>
+                                            <action selector="applySize:" destination="JEX-9P-axG" id="gg2-yl-tCa"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="8W7-Ie-gYm" secondAttribute="trailing" constant="-20" id="3eh-ta-xlF"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="9NC-Dx-BtM"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="20" id="E8I-uv-YVC"/>
+                            <constraint firstItem="8W7-Ie-gYm" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" id="G9D-xE-KUO"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="GrP-2x-hlj"/>
+                            <constraint firstItem="8W7-Ie-gYm" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" id="HPJ-uG-fMx"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="8W7-Ie-gYm" secondAttribute="bottom" id="IWD-3d-sq4"/>
+                            <constraint firstAttribute="trailing" secondItem="8W7-Ie-gYm" secondAttribute="trailing" id="M46-4q-zFL"/>
                             <constraint firstAttribute="trailingMargin" secondItem="niX-it-HWc" secondAttribute="trailing" id="Noe-Ic-DVp"/>
                             <constraint firstAttribute="leadingMargin" secondItem="niX-it-HWc" secondAttribute="leading" id="S3G-DT-5qs"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="SBa-9w-Fau"/>
+                            <constraint firstItem="8W7-Ie-gYm" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="top" id="SEE-p3-Pk7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="44C-kb-TuA" secondAttribute="trailing" id="V0Q-yE-9x1"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="XLk-bI-QLJ"/>
-                            <constraint firstItem="niX-it-HWc" firstAttribute="bottom" secondItem="svH-Pt-448" secondAttribute="bottomMargin" id="oei-VQ-BWj"/>
+                            <constraint firstItem="niX-it-HWc" firstAttribute="bottom" secondItem="svH-Pt-448" secondAttribute="bottomMargin" constant="-93" id="oei-VQ-BWj"/>
+                            <constraint firstItem="8W7-Ie-gYm" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" constant="-20" id="rLw-l8-4r9"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="GrP-2x-hlj"/>
+                                <exclude reference="oei-VQ-BWj"/>
+                                <exclude reference="3eh-ta-xlF"/>
+                                <exclude reference="SEE-p3-Pk7"/>
+                                <exclude reference="rLw-l8-4r9"/>
                                 <exclude reference="E8I-uv-YVC"/>
                             </mask>
                         </variation>
@@ -243,16 +299,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Arm-wq-HPj">
-                                            <rect key="frame" x="15" y="6" width="31.5" height="19.5"/>
+                                            <rect key="frame" x="15" y="4" width="37" height="23"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="w7k-5e-yR6">
-                                            <rect key="frame" x="15" y="25.5" width="40.5" height="13.5"/>
+                                            <rect key="frame" x="15" y="27" width="40.5" height="13.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1089,6 +1145,16 @@
             <point key="canvasLocation" x="2279" y="-2366"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="AlignCenterIcon" width="25" height="25"/>
+        <image name="AlignLeftIcon" width="25" height="25"/>
+        <image name="AlignRightIcon" width="25" height="25"/>
+        <image name="BoldIcon" width="25" height="25"/>
+        <image name="ItalicsIcon" width="25" height="25"/>
+        <image name="ParagraphIcon" width="25" height="25"/>
+        <image name="TextColorIcon" width="25" height="25"/>
+        <image name="UnderlineIcon" width="25" height="25"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="12W-Di-MNP"/>
         <segue reference="og5-5z-JAc"/>

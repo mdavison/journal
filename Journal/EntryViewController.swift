@@ -27,6 +27,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var untilTimestamp: Int?
     var journalTwitter = JournalTwitter()
     var invalidDate = false
+    var styleApplied = ""
     
     struct Storyboard {
         static var EntryDateSegueIdentifier = "EntryDate"
@@ -55,13 +56,24 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         // Notifications
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(EntryViewController.entryWasDeleted(_:)), name: EntryWasDeletedNotificationKey, object: entry)
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(EntryViewController.entryWasDeleted(_:)),
+            name: EntryWasDeletedNotificationKey,
+            object: entry)
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
+            name: UIContentSizeCategoryDidChangeNotification,
+            object: nil)
         
         //notificationCenter.addObserver(self, selector: #selector(EntryViewController.twitterHasRefreshed(_:)), name: TwitterDidRefreshNotificationKey, object: twitterTweets) // This didn't work
         notificationCenter.addObserverForName(TwitterDidRefreshNotificationKey, object: nil, queue: nil) { (notification) in
             self.twitterHasRefreshed(notification)
         }
-        
+
         
 //        if FBSDKAccessToken.currentAccessToken() != nil {
 //            // User already has access token
@@ -139,7 +151,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             // Save existing
             entry.created_at = getButtonDate()
             entry.updated_at = NSDate()
-            entry.text = entryTextView.text
+            //entry.text = entryTextView.text
+            entry.attributed_text = entryTextView.attributedText
             
             coreDataStack.saveContext()
         } else {
@@ -148,7 +161,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             let entryEntity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: coreDataStack.managedObjectContext)
             entry = Entry(entity: entryEntity!, insertIntoManagedObjectContext: coreDataStack.managedObjectContext)
             entry?.created_at = getButtonDate()
-            entry?.text = entryTextView.text
+            //entry?.text = entryTextView.text
+            entry?.attributed_text = entryTextView.attributedText
             
             coreDataStack.saveContext()
         }
@@ -162,6 +176,136 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBAction func refreshTwitter(sender: UIButton) {
         journalTwitter.requestTweets()
     }
+    
+    @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
+        addOrRemoveFontTrait(withName: "bold", andTrait: UIFontDescriptorSymbolicTraits.TraitBold)
+    }
+    
+    @IBAction func applyItalicsStyle(sender: UIBarButtonItem) {
+        addOrRemoveFontTrait(withName: "oblique", andTrait: UIFontDescriptorSymbolicTraits.TraitItalic)
+    }
+    
+    @IBAction func applyUnderlineStyle(sender: UIBarButtonItem) {
+        let selectedRange = entryTextView.selectedRange
+        
+        if selectedRange.length > 0 {
+            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            
+            if (currentAttributes[NSUnderlineStyleAttributeName] == nil) ||
+                (currentAttributes[NSUnderlineStyleAttributeName]?.integerValue == 0) {
+                currentAttributes.updateValue(1, forKey: NSUnderlineStyleAttributeName)
+            } else {
+                currentAttributes.updateValue(0, forKey: NSUnderlineStyleAttributeName)
+            }
+            
+            entryTextView.textStorage.beginEditing()
+            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+            entryTextView.textStorage.endEditing()
+        } else {
+            showTextNotSelectedAlert()
+        }
+    }
+    
+    @IBAction func applySize(sender: UIBarButtonItem) {
+        let alertTitle = NSLocalizedString("Select Text Style", comment: "")
+        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .ActionSheet)
+        
+        let titleActionTitle = NSLocalizedString("Title", comment: "")
+        let titleAction = UIAlertAction(title: titleActionTitle, style: .Default) { (action) in
+            self.applyStyleToSelection(UIFontTextStyleTitle1)
+        }
+        let subHeadlineActionTitle = NSLocalizedString("SubHeading", comment: "")
+        let subHeadlineAction = UIAlertAction(title: subHeadlineActionTitle, style: .Default) { (action) in
+            self.applyStyleToSelection(UIFontTextStyleSubheadline)
+        }
+        let bodyActionTitle = NSLocalizedString("Body", comment: "")
+        let bodyAction = UIAlertAction(title: bodyActionTitle, style: .Default) { (action) in
+            self.applyStyleToSelection(UIFontTextStyleBody)
+        }
+        let footnoteActionTitle = NSLocalizedString("Footnote", comment: "")
+        let footnoteAction = UIAlertAction(title: footnoteActionTitle, style: .Default) { (action) in
+            self.applyStyleToSelection(UIFontTextStyleFootnote)
+        }
+        let captionActionTitle = NSLocalizedString("Caption", comment: "")
+        let captionAction = UIAlertAction(title: captionActionTitle, style: .Default) { (action) in
+            self.applyStyleToSelection(UIFontTextStyleCaption1)
+        }
+        
+        let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .Cancel, handler: nil)
+        
+        alert.addAction(titleAction)
+        alert.addAction(subHeadlineAction)
+        alert.addAction(bodyAction)
+        alert.addAction(footnoteAction)
+        alert.addAction(captionAction)
+        
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func alignTextLeft(sender: UIBarButtonItem) { 
+        setParagraphAlignment(NSTextAlignment.Left)
+    }
+    
+    @IBAction func alignTextCenter(sender: UIBarButtonItem) {
+        setParagraphAlignment(NSTextAlignment.Center)
+    }
+    
+    @IBAction func alignTextRight(sender: UIBarButtonItem) {
+        setParagraphAlignment(NSTextAlignment.Right)
+    }
+    
+    @IBAction func changeTextColor(sender: UIBarButtonItem) {        
+        let alertTitle = NSLocalizedString("Select Text Color", comment: "")
+        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .ActionSheet)
+        
+        let blackActionTitle = NSLocalizedString("Black", comment: "The color black")
+        let blackAction = UIAlertAction(title: blackActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.blackColor())
+        }
+        let redActionTitle = NSLocalizedString("Red", comment: "The color red")
+        let redAction = UIAlertAction(title: redActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.redColor())
+        }
+        let orangeActionTitle = NSLocalizedString("Orange", comment: "The color orange")
+        let orangeAction = UIAlertAction(title: orangeActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.orangeColor())
+        }
+        let yellowActionTitle = NSLocalizedString("Yellow", comment: "The color yellow")
+        let yellowAction = UIAlertAction(title: yellowActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.yellowColor())
+        }
+        let greenActionTitle = NSLocalizedString("Green", comment: "The color green")
+        let greenAction = UIAlertAction(title: greenActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.greenColor())
+        }
+        let blueActionTitle = NSLocalizedString("Blue", comment: "The color blue")
+        let blueAction = UIAlertAction(title: blueActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.blueColor())
+        }
+        let purpleActionTitle = NSLocalizedString("Purple", comment: "The color purple")
+        let purpleAction = UIAlertAction(title: purpleActionTitle, style: .Default) { (action) in
+            self.changeTextColor(UIColor.purpleColor())
+        }
+        
+        let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .Cancel, handler: nil)
+        
+        alert.addAction(blackAction)
+        alert.addAction(redAction)
+        alert.addAction(orangeAction)
+        alert.addAction(yellowAction)
+        alert.addAction(greenAction)
+        alert.addAction(blueAction)
+        alert.addAction(purpleAction)
+        
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
     
     // MARK: - Notification Handling
     
@@ -180,6 +324,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
 //        getTweets()
 //        twitterTableView.hidden = false
     }
+    
+    // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512
+    @objc private func preferredContentSizeChanged(notification: NSNotification) {
+        print("preferredContentSizeChanged in entry")
+        entryTextView.font = UIFont.preferredFontForTextStyle(styleApplied)
+    }
+
 
     
     
@@ -211,7 +362,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         if let entry = entry {
             setDateButton(withEntry: entry)
-            entryTextView.text = entry.text
+            entryTextView.attributedText = entry.attributed_text
         } else {
             if let entryDate = entryDate {
                 setDateButton(withDate: entryDate)
@@ -219,9 +370,12 @@ class EntryViewController: UIViewController, UITextViewDelegate {
                 setDateButton(withEntry: nil)
             }
             saveButton.enabled = false
-            entryTextView.text = ""
+            entryTextView.attributedText = NSAttributedString()
+            entryTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            
             title = "New Entry"
         }
+        
     }
     
     private func fixNavigation() {
@@ -324,6 +478,114 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         return false
     }
     
+    // Heading, Subheading, etc.
+    private func applyStyleToSelection(style: String) {
+        let selectedRange = entryTextView.selectedRange
+        
+        if selectedRange.length > 0 {
+            let styledFont = UIFont.preferredFontForTextStyle(style)
+            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            
+            //let fontDict = [NSFontAttributeName: styledFont]
+            currentAttributes.updateValue(styledFont, forKey: NSFontAttributeName)
+            
+            entryTextView.textStorage.beginEditing()
+            //entryTextView.textStorage.setAttributes(fontDict, range: selectedRange)
+            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+            entryTextView.textStorage.endEditing()
+        } else {
+            showTextNotSelectedAlert()
+        }
+    }
+    
+    private func addOrRemoveFontTrait(withName name: String, andTrait trait: UIFontDescriptorSymbolicTraits) {
+        let selectedRange = entryTextView.selectedRange
+        
+        if selectedRange.length > 0 {
+            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            let currentFontAttributes = currentAttributes[NSFontAttributeName]
+            let fontDescriptor = currentFontAttributes!.fontDescriptor
+            let currentFontSize = CGFloat(fontDescriptor().fontAttributes()["NSFontSizeAttribute"]! as! NSNumber)
+            
+            var changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(trait)
+            
+            if let fontNameAttribute = fontDescriptor().fontAttributes()["NSFontNameAttribute"] as? String {
+                if fontNameAttribute.lowercaseString.rangeOfString(name) == nil {
+                    let existingTraitsRaw = fontDescriptor().symbolicTraits.rawValue | trait.rawValue
+                    let existingTraits = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsRaw)
+                    changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(existingTraits)
+                } else {
+                    let existingTraitsWithoutTraitRaw = fontDescriptor().symbolicTraits.rawValue & ~trait.rawValue
+                    let existingTraitsWithoutTrait = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsWithoutTraitRaw)
+                    changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(existingTraitsWithoutTrait)
+                }
+            }
+            
+            let updatedFont = UIFont(descriptor: changedFontDescriptor, size: currentFontSize)
+
+            currentAttributes.updateValue(updatedFont, forKey: NSFontAttributeName)
+            
+            
+            entryTextView.textStorage.beginEditing()
+            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+            entryTextView.textStorage.endEditing()
+        } else {
+            showTextNotSelectedAlert()
+        }
+    }
+    
+    private func setParagraphAlignment(alignment: NSTextAlignment) {
+        let selectedRange = entryTextView.selectedRange
+        
+        if selectedRange.length > 0 {
+            let newParagraphStyle = NSMutableParagraphStyle()
+            newParagraphStyle.alignment = alignment
+            
+            var attributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            attributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
+            
+            //let attributes = [NSParagraphStyleAttributeName: newParagraphStyle]
+            
+            entryTextView.textStorage.beginEditing()
+            entryTextView.textStorage.setAttributes(attributes, range: selectedRange)
+            entryTextView.textStorage.endEditing()
+        } else {
+            showTextNotSelectedAlert()
+        }
+    }
+    
+    private func changeTextColor(color: UIColor) {
+        let selectedRange = entryTextView.selectedRange
+        
+        if selectedRange.length > 0 {
+            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            
+            if (currentAttributes[NSForegroundColorAttributeName] == nil) ||
+                (currentAttributes[NSForegroundColorAttributeName] as! UIColor != color) {
+                
+                currentAttributes.updateValue(color, forKey: NSForegroundColorAttributeName)
+            }
+            
+            entryTextView.textStorage.beginEditing()
+            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+            entryTextView.textStorage.endEditing()
+        } else {
+            showTextNotSelectedAlert()
+        }
+    }
+    
+    private func showTextNotSelectedAlert() {
+        let alertMessage = NSLocalizedString("Please select some text in order to apply styles.", comment: "")
+        let alertTitle = NSLocalizedString("Nothing Selected", comment: "")
+        let actionTitle = NSLocalizedString("OK", comment: "")
+        
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
+        let action = UIAlertAction(title: actionTitle, style: .Default, handler: nil)
+        
+        alert.addAction(action)
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
     
 }
 

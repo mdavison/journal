@@ -15,7 +15,8 @@ import CoreData
 extension Entry {
 
     @NSManaged var created_at: NSDate?
-    @NSManaged var text: String?
+    //@NSManaged var text: String?
+    @NSManaged var attributed_text: NSAttributedString?
     @NSManaged var updated_at: NSDate?
     //@NSManaged var tweets: NSSet?
     @NSManaged var tweets: Set<Tweet>?
