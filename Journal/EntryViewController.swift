@@ -69,11 +69,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             name: UIContentSizeCategoryDidChangeNotification,
             object: nil)
         
-        //notificationCenter.addObserver(self, selector: #selector(EntryViewController.twitterHasRefreshed(_:)), name: TwitterDidRefreshNotificationKey, object: twitterTweets) // This didn't work
-        notificationCenter.addObserverForName(TwitterDidRefreshNotificationKey, object: nil, queue: nil) { (notification) in
-            self.twitterHasRefreshed(notification)
-        }
-
+        
         
 //        if FBSDKAccessToken.currentAccessToken() != nil {
 //            // User already has access token
@@ -167,14 +163,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             coreDataStack.saveContext()
         }
         
+        JournalVariables.entry = entry
+        setEntryTimestamps()
+        
         saveButton.enabled = false
         saveButton.title = "Saved"
         setDateButton(withEntry: entry)
         title = "Journal Entry"
-    }
-    
-    @IBAction func refreshTwitter(sender: UIButton) {
-        journalTwitter.requestTweets()
     }
     
     @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
@@ -313,6 +308,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if let notificationEntry = notification.object as? Entry {
             if notificationEntry == entry {
                 entry = nil
+                JournalVariables.entry = nil
+                JournalVariables.entryTimestamps = nil
                 setupView()
             }
         }
@@ -592,10 +589,18 @@ class EntryViewController: UIViewController, UITextViewDelegate {
 
 
 
-
 extension EntryViewController: EntryDateViewControllerDelegate {
     func entryDateViewController(controller: EntryDateViewController, didSaveDate date: NSDate) {
         setDateButton(withDate: date)
+        
+        // Save the new date if have entry
+        if let entry = entry {
+            entry.created_at = date
+            coreDataStack.saveContext()
+            
+            // Update the timestamps
+            setEntryTimestamps()
+        }
     }
 }
 

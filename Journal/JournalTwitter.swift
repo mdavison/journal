@@ -24,9 +24,11 @@ class JournalTwitter {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    // Tweets from Network
     func requestTweets() {
         if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
             //Twitter.sharedInstance().sessionStore.logOutUserID(userID)
+            JournalVariables.loggedInTwitter = true
             
             let client = TWTRAPIClient(userID: userID)
             client.loadUserWithID(userID, completion: { (user, error) in
@@ -71,9 +73,11 @@ class JournalTwitter {
             })
         } else {
             NSLog("No Twitter userID")
+            JournalVariables.loggedInTwitter = false
         }
     }
     
+    // Tweets from DB
     func fetchTweets(forEntry entry: Entry) -> [TWTRTweet]? {
         let tweetFetch = NSFetchRequest(entityName: "Tweet")
         
@@ -103,6 +107,13 @@ class JournalTwitter {
         }
         
         return nil
+    }
+    
+    // For Development
+    func logout() {
+        if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
+            Twitter.sharedInstance().sessionStore.logOutUserID(userID)
+        }
     }
     
     
@@ -145,5 +156,6 @@ class JournalTwitter {
         }
         NSNotificationCenter.defaultCenter().postNotificationName(TwitterDidRefreshNotificationKey, object: nil)
     }
+
     
 }

@@ -64,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         Fabric.with([Twitter.self])
         
         twitter.requestTweets()
+        //twitter.logout()
         
         let facebookApplication = FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         facebook.requestPosts()

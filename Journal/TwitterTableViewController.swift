@@ -19,6 +19,7 @@ class TwitterTableViewController: UITableViewController, TWTRTweetViewDelegate {
             tableView.reloadData()
         }
     }
+    var loginButton: TWTRLogInButton?
     
     struct Storyboard {
         static var TwitterTweetCellReuseIdentifier = "TwitterTweetCell"
@@ -28,6 +29,14 @@ class TwitterTableViewController: UITableViewController, TWTRTweetViewDelegate {
         super.viewDidLoad()
         
         setupView()
+        
+        NSNotificationCenter.defaultCenter().addObserverForName(TwitterDidRefreshNotificationKey, object: nil, queue: nil) { (notification) in
+            self.twitterHasRefreshed(notification)
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         if let _ = Twitter.sharedInstance().sessionStore.session()?.userID {
             setTweets()
@@ -82,6 +91,13 @@ class TwitterTableViewController: UITableViewController, TWTRTweetViewDelegate {
     */
     
     
+    // MARK: - Notification Handling
+    
+    func twitterHasRefreshed(notification: NSNotification) {
+        setTweets()
+    }
+    
+    
     // MARK: - Helper Methods
     
     private func setupView() {
@@ -92,27 +108,68 @@ class TwitterTableViewController: UITableViewController, TWTRTweetViewDelegate {
     }
     
     private func setTweets() {
-        guard let entry = JournalVariables.entry, let journalTwitter = journalTwitter else { return }
+        guard let journalTwitter = journalTwitter else { return }
         
-        if let tweets = journalTwitter.fetchTweets(forEntry: entry) {
-            twitterTweets = tweets
+        if let entry = JournalVariables.entry {
+            if let tweets = journalTwitter.fetchTweets(forEntry: entry) {
+                twitterTweets = tweets
+            }
+        } else { // If no entry but we still have tweets (e.g. entry was deleted), clear the tweets
+            if !twitterTweets.isEmpty {
+                twitterTweets = []
+            }
         }
     }
     
     private func setNoDataLabel() {
-        if twitterTweets.isEmpty {
-            noDataLabel.hidden = false 
+        if JournalVariables.entry == nil {
+            noDataLabel.text = "Jounal Entry has not been saved"
+            noDataLabel.hidden = false
+        } else {
+            if twitterTweets.isEmpty {
+                noDataLabel.text = "No tweets on this day :("
+                noDataLabel.hidden = false
+            } else {
+                noDataLabel.hidden = true
+            }
         }
     }
     
     private func setRefreshButton() {
-        let refreshButton = UIBarButtonItem(title: "Refresh!", style: .Plain, target: self, action: #selector(TwitterTableViewController.refresh))
+        let refreshButton = UIBarButtonItem(title: "Refresh", style: .Plain, target: self, action: #selector(TwitterTableViewController.refresh))
         tabBarController?.navigationItem.rightBarButtonItem = refreshButton
         
+        refreshButton.enabled = JournalVariables.entry != nil
     }
     
     @objc private func refresh() {
-        // TODO: if not logged in, showLogin(), else fetch from network
+        if JournalVariables.loggedInTwitter {
+            // Fetch from network
+            journalTwitter?.requestTweets()
+        } else {
+            loginButton = TWTRLogInButton(logInCompletion: { session, error in
+                if let _ = session {
+                    //print("signed in as \(session.userName)")
+                    JournalVariables.loggedInTwitter = true
+                    self.journalTwitter?.requestTweets()
+                    self.removeLoginButton()
+                }
+                if let error = error {
+                    NSLog("Error logging into Twitter: \(error.localizedDescription)")
+                }
+            })
+            
+            if let loginButton = self.loginButton {
+                loginButton.center = self.view.center
+                
+                view.addSubview(loginButton)
+            }
+        }
+    }
+    
+    private func removeLoginButton() {
+        loginButton?.removeFromSuperview()
+        tableView.reloadData()
     }
 
 }
