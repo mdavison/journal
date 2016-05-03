@@ -711,12 +711,30 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="feC-Uf-cUE">
-                                        <rect key="frame" x="0.0" y="187" width="600" height="44"/>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="Export all entries to a text file" id="mgw-e9-G4v">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="lfu-j8-7Qg">
+                                        <rect key="frame" x="0.0" y="223" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="feC-Uf-cUE" id="KfV-xI-vnH">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lfu-j8-7Qg" id="vyg-zV-JFC">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4I-FB-y0V">
+                                                    <rect key="frame" x="16" y="7" width="576" height="30"/>
+                                                    <state key="normal" title="Export Entries"/>
+                                                    <connections>
+                                                        <action selector="exportEntries:" destination="Ny3-Fx-Dv4" eventType="touchUpInside" id="dir-1E-1z0"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="M4I-FB-y0V" firstAttribute="centerY" secondItem="vyg-zV-JFC" secondAttribute="centerY" id="Vxp-ns-Od4"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="M4I-FB-y0V" secondAttribute="trailing" id="fTh-5b-tlK"/>
+                                                <constraint firstItem="M4I-FB-y0V" firstAttribute="leading" secondItem="vyg-zV-JFC" secondAttribute="leadingMargin" constant="8" id="oFB-Ko-cSJ"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>

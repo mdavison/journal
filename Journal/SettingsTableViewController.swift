@@ -83,6 +83,9 @@ class SettingsTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func exportEntries(sender: UIButton) {
+        print("export entries")
+    }
     
     // MARK: - Helper Methods
     

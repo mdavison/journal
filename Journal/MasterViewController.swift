@@ -60,6 +60,9 @@ class MasterViewController: UITableViewController {
         if JournalVariables.userIsAuthenticated {
             tableView.hidden = false
         }
+        
+        // Check for changes in iCloud
+        coreDataStack.updateContextWithUbiquitousContentUpdates = true
     }
     
     override func viewDidAppear(animated: Bool) {

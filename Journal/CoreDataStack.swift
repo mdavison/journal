@@ -33,7 +33,8 @@ class CoreDataStack {
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
             let options =
-                [NSMigratePersistentStoresAutomaticallyOption: true,
+                [NSPersistentStoreUbiquitousContentNameKey: "Journal",
+                NSMigratePersistentStoresAutomaticallyOption: true,
                 NSInferMappingModelAutomaticallyOption: true]
             
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
@@ -78,5 +79,51 @@ class CoreDataStack {
         }
     }
 
+    
+    // MARK: - iCloud Sync
+    
+    var updateContextWithUbiquitousContentUpdates: Bool = false {
+        willSet {
+            ubiquitousChangesObserver = newValue ? NSNotificationCenter.defaultCenter() : nil
+        }
+    }
+    
+    private var ubiquitousChangesObserver: NSNotificationCenter? {
+        didSet {
+            oldValue?.removeObserver(self, name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
+            
+            ubiquitousChangesObserver?.addObserver(
+                self,
+                selector: #selector(CoreDataStack.persistentStoreDidImportUbiquitousContentChanges(_:)),
+                name: NSPersistentStoreDidImportUbiquitousContentChangesNotification,
+                object: persistentStoreCoordinator)
+            
+            oldValue?.removeObserver(self, name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: persistentStoreCoordinator)
+            
+            ubiquitousChangesObserver?.addObserver(
+                self,
+                selector: #selector(CoreDataStack.persistentStoreCoordinatorWillChangeStores(_:)),
+                name: NSPersistentStoreCoordinatorStoresWillChangeNotification,
+                object: persistentStoreCoordinator)
+        }
+    }
+    
+    @objc func persistentStoreDidImportUbiquitousContentChanges(notification: NSNotification) {
+        NSLog("Merging ubiquitous content changes")
+        managedObjectContext.performBlock {
+            self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+        }
+    }
+    
+    @objc func persistentStoreCoordinatorWillChangeStores(notification: NSNotification) {
+        if managedObjectContext.hasChanges {
+            do {
+                try managedObjectContext.save()
+            } catch let error as NSError {
+                print("Error saving \(error)", terminator: "")
+            }
+        }
+        managedObjectContext.reset()
+    }
 
 }
