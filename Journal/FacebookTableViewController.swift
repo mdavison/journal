@@ -9,13 +9,20 @@
 import UIKit
 import CoreData
 import FBSDKCoreKit
+import FBSDKLoginKit
 
 class FacebookTableViewController: UITableViewController {
 
     @IBOutlet weak var noDataLabel: UILabel!
     
-    var facebookPosts = [FBPost]()
+    //var facebookPosts = [FBPost]()
+    var facebookPosts: [FBPost] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     let journalFacebook = (UIApplication.sharedApplication().delegate as? AppDelegate)?.facebook
+    var loginButton: FBSDKLoginButton?
     
     struct Storyboard {
         static var FacebookPostCellReuseIdentifier = "FacebookPostCell"
@@ -26,9 +33,13 @@ class FacebookTableViewController: UITableViewController {
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        setFacebookPosts()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
+        loginButton?.removeFromSuperview()
+        setFacebookPosts()
         setNoDataLabel()
     }
     
@@ -68,10 +79,17 @@ class FacebookTableViewController: UITableViewController {
     // MARK: - Helper Methods
     
     private func setFacebookPosts() {
-        guard let entry = JournalVariables.entry, let journalFacebook = journalFacebook else { return }
+        guard let journalFacebook = journalFacebook else { return }
         
-        if let posts = journalFacebook.fetchPosts(forEntry: entry) {
-            facebookPosts = posts
+        if let entry = JournalVariables.entry {
+            if let posts = journalFacebook.fetchPosts(forEntry: entry) {
+                facebookPosts = posts
+            }
+        } else {
+            // No entry but still have posts (e.g., entry was deleted while it was still being viewed in detail view)
+            if !facebookPosts.isEmpty {
+                facebookPosts = []
+            }
         }
     }
     
@@ -90,8 +108,16 @@ class FacebookTableViewController: UITableViewController {
     }
     
     private func setNoDataLabel() {
-        if facebookPosts.isEmpty {
-            noDataLabel.hidden = false 
+        if JournalVariables.entry == nil {
+            noDataLabel.text = "Jounal Entry has not been saved"
+            noDataLabel.hidden = false
+        } else {
+            if facebookPosts.isEmpty {
+                noDataLabel.text = "No posts on this day :("
+                noDataLabel.hidden = false
+            } else {
+                noDataLabel.hidden = true 
+            }
         }
     }
     
@@ -102,7 +128,21 @@ class FacebookTableViewController: UITableViewController {
     }
     
     @objc private func refresh() {
-        // TODO: if not logged in, showLogin(), else fetch from network
+        toggleLoginButton()
+        
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            journalFacebook?.requestPosts()
+        }
+    }
+    
+    private func toggleLoginButton() {
+        if FBSDKAccessToken.currentAccessToken() == nil {
+            loginButton = FBSDKLoginButton()
+            loginButton!.center = view.center
+            view.addSubview(loginButton!)
+        } else {
+            loginButton?.removeFromSuperview()
+        }
     }
 
 }

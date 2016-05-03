@@ -153,6 +153,7 @@ class TwitterTableViewController: UITableViewController, TWTRTweetViewDelegate {
                     JournalVariables.loggedInTwitter = true
                     self.journalTwitter?.requestTweets()
                     self.removeLoginButton()
+                    self.noDataLabel.hidden = true
                 }
                 if let error = error {
                     NSLog("Error logging into Twitter: \(error.localizedDescription)")

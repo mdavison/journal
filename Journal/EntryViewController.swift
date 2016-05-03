@@ -8,9 +8,9 @@
 
 import UIKit
 import CoreData
-import FBSDKCoreKit
-import FBSDKLoginKit
-import TwitterKit
+//import FBSDKCoreKit
+//import FBSDKLoginKit
+//import TwitterKit
 
 let TwitterHasLoggedInNotificationKey = "com.morgandavison.twitterHasLoggedInNotificationKey"
 

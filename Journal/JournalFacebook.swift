@@ -81,6 +81,12 @@ class JournalFacebook {
         return nil
     }
     
+    func logout() {
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            FBSDKLoginManager().logOut()
+        }
+    }
+    
     
     // MARK: - Helper Methods
     

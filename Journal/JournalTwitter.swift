@@ -109,7 +109,6 @@ class JournalTwitter {
         return nil
     }
     
-    // For Development
     func logout() {
         if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
             Twitter.sharedInstance().sessionStore.logOutUserID(userID)
