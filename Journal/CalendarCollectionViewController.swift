@@ -238,7 +238,10 @@ class CalendarCollectionViewController: UICollectionViewController {
         if day > 0 { // Not a blank cell
             cell.dayNumberLabel.text = "\(day)"
             
-            showEntryIfExists(forCell: cell, andIndexPath: indexPath, andDay: day)
+            //showEntryIfExists(forCell: cell, andIndexPath: indexPath, andDay: day)
+            
+            // Show entry or mark if today
+            setIndication(forCell: cell, andIndexPath: indexPath, andDay: day)
         } else { // Cell is a blank padding cell
             cell.dayNumberLabel.text = ""
         }
@@ -338,10 +341,26 @@ class CalendarCollectionViewController: UICollectionViewController {
         return components.weekday - 1
     }
     
-    private func showEntryIfExists(forCell cell: UICollectionViewCell, andIndexPath indexPath: NSIndexPath, andDay day: Int) {
+//    private func showEntryIfExists(forCell cell: UICollectionViewCell, andIndexPath indexPath: NSIndexPath, andDay day: Int) {
+//        if let _ = getEntry(forIndexPath: indexPath, andDay: day) {
+//            cell.backgroundColor = UIColor.lightGrayColor()
+//        }
+//    }
+    
+    private func setIndication(forCell cell: UICollectionViewCell, andIndexPath indexPath: NSIndexPath, andDay day: Int) {
+        // Indicate entry for this date
         if let _ = getEntry(forIndexPath: indexPath, andDay: day) {
             cell.backgroundColor = UIColor.lightGrayColor()
         }
+
+        // Indicate today
+        // TODO: draw a red circle around the number instead of making the background red
+        let date = getDate(forIndexPath: indexPath, andDay: day)
+        let comparison = calendar.compareDate(date, toDate: NSDate(), toUnitGranularity: .Day)
+        if comparison == .OrderedSame {
+            cell.backgroundColor = UIColor.redColor()
+        }
+        
     }
     
     private func getEntry(forIndexPath indexPath: NSIndexPath, andDay day: Int) -> Entry? {
