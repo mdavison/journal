@@ -82,6 +82,29 @@ class CalendarCollectionViewController: UICollectionViewController {
     
 
     // MARK: - Navigation
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == Storyboard.ShowEntrySegueIdentifier {
+            if let indexPaths = collectionView?.indexPathsForSelectedItems() {
+                if let cell = collectionView?.cellForItemAtIndexPath(indexPaths[0]) as? CalendarCollectionViewCell {
+                    if let dayString = cell.dayNumberLabel.text {
+                        if let day = Int(dayString) {
+                            let date = getDate(forIndexPath: indexPaths[0], andDay: day)
+                            let calendar = NSCalendar.currentCalendar()
+                            let comparison = calendar.compareDate(date, toDate: NSDate(), toUnitGranularity: .Day)
+                            
+                            // If selected date is in the future, don't perform segue
+                            if comparison == .OrderedDescending {
+                                return false
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return true
+    }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let tabBarController = (segue.destinationViewController as! UINavigationController).topViewController as! UITabBarController
@@ -94,22 +117,12 @@ class CalendarCollectionViewController: UICollectionViewController {
             controller.title = "New Entry"
             controller.coreDataStack = coreDataStack
         } else if segue.identifier == Storyboard.ShowEntrySegueIdentifier {
-            // TODO: if blank cell selected don't perform the segue - just do return false?
-            // http://stackoverflow.com/questions/8066525/prevent-segue-in-prepareforsegue-method
-            
-            //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             controller.coreDataStack = coreDataStack
             
             // If there is an entry for selected cell
             if let indexPaths = collectionView?.indexPathsForSelectedItems() {
-                //print(indexPaths[0])
                 let indexPath = indexPaths[0]
                 
-//                if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
-//                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-//                    controller.navigationItem.leftItemsSupplementBackButton = true
-//                    controller.entry = entry
-//                }
                 if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarCollectionViewCell {
                     // get date from cell
                     if let dayString = cell.dayNumberLabel.text {
@@ -137,7 +150,6 @@ class CalendarCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return 30
         return numberOfDaysInMonth(forMonthAndYear: monthsAndYears[section])
     }
 
@@ -233,16 +245,8 @@ class CalendarCollectionViewController: UICollectionViewController {
     }
     
     private func setEntries() {
-        let fetchRequest = NSFetchRequest(entityName: "Entry")
-        let nameSortDescriptor = NSSortDescriptor(key: "created_at", ascending: false)
-        fetchRequest.sortDescriptors = [nameSortDescriptor]
-        
-        do {
-            if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
-                entries = results
-            }
-        } catch let error as NSError {
-            print("Error: \(error) " + "description \(error.localizedDescription)")
+        if let entries = Entry.getAllEntries(coreDataStack) {
+            self.entries = entries
         }
     }
     

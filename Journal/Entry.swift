@@ -78,7 +78,6 @@ class Entry: NSManagedObject {
         return nil 
     }
     
-    // TODO: use this for CalendarCollectionViewController
     static func getAllEntries(coreDataStack: CoreDataStack) -> [Entry]? {
         let fetchRequest = NSFetchRequest(entityName: "Entry")
         let nameSortDescriptor = NSSortDescriptor(key: "created_at", ascending: false)
