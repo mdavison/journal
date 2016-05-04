@@ -84,7 +84,26 @@ class SettingsTableViewController: UITableViewController {
     }
     
     @IBAction func exportEntries(sender: UIButton) {
-        print("export entries")
+        if let entries = Entry.getAllEntries(coreDataStack) {
+            if let data = Entry.getExportData(forEntries: entries) {
+                let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+                let documentsDirectory = paths[0] as NSString
+                let filename = documentsDirectory.stringByAppendingPathComponent("journal_entries.txt")
+                
+                data.writeToFile(filename, atomically: true)
+                let url = NSURL(fileURLWithPath: filename)
+                
+                let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                
+                if let popoverController = activityViewController.popoverPresentationController {
+                    popoverController.sourceView = sender
+                }
+                
+                presentViewController(activityViewController, animated: true, completion: nil)
+            } else {
+                NSLog("Unable to prepare data")
+            }
+        }
     }
     
     // MARK: - Helper Methods
