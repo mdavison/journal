@@ -47,6 +47,37 @@ class Entry: NSManagedObject {
         return false
     }
     
+    static func getEntry(forDate date: NSDate, coreDataStack: CoreDataStack) -> Entry? {
+        let calendar = NSCalendar.currentCalendar()
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: date)
+        let predicateDateBeginString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
+        let predicateDateEndString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
+        let predicateDateBegin = formatter.dateFromString(predicateDateBeginString)
+        let predicateDateEnd = formatter.dateFromString(predicateDateEndString)
+        
+        guard let begin = predicateDateBegin, let end = predicateDateEnd else {
+            NSLog("Could not determine predicateDateBegin or predicateDateEnd")
+            return nil
+        }
+        
+        let fetchRequest = NSFetchRequest(entityName: "Entry")
+        let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin, end)
+        fetchRequest.predicate = predicate
+        
+        do {
+            if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
+                return results.first
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error) " + "description \(error.localizedDescription)")
+        }
+        
+        return nil 
+    }
+    
     // TODO: use this for CalendarCollectionViewController
     static func getAllEntries(coreDataStack: CoreDataStack) -> [Entry]? {
         let fetchRequest = NSFetchRequest(entityName: "Entry")

@@ -28,6 +28,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var journalTwitter = JournalTwitter()
     var invalidDate = false
     var styleApplied = ""
+    var addEntry = false
     
     struct Storyboard {
         static var EntryDateSegueIdentifier = "EntryDate"
@@ -41,13 +42,16 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        JournalVariables.entry = entry
-        
-        // Check if an entry already exists for this date
-        if entryExists() {
-            invalidDate = true
-            performSegueWithIdentifier(Storyboard.EntryDateSegueIdentifier, sender: nil)
+        if addEntry { // User tapped Add button
+            if entryExists() {
+                invalidDate = true
+                performSegueWithIdentifier(Storyboard.EntryDateSegueIdentifier, sender: nil)
+            }
+        } else { // App loaded and entry already exists for today
+            loadEntryForDateIfExists()
         }
+                
+        JournalVariables.entry = entry
         
         journalTwitter.coreDataStack = coreDataStack
         entryTextView.delegate = self
@@ -475,6 +479,19 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         return false
     }
     
+    private func loadEntryForDateIfExists() {
+        if entry == nil {
+            // If a date is set, use that, otherwise use today's date
+            var date = NSDate()
+            if let entryDate = entryDate {
+                date = entryDate
+            }
+            
+            entry = Entry.getEntry(forDate: date, coreDataStack: coreDataStack)
+            invalidDate = false
+        }
+    }
+    
     // Heading, Subheading, etc.
     private func applyStyleToSelection(style: String) {
         let selectedRange = entryTextView.selectedRange
@@ -592,6 +609,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
 extension EntryViewController: EntryDateViewControllerDelegate {
     func entryDateViewController(controller: EntryDateViewController, didSaveDate date: NSDate) {
         setDateButton(withDate: date)
+        
+        invalidDate = false
         
         // Save the new date if have entry
         if let entry = entry {

@@ -98,6 +98,7 @@ class MasterViewController: UITableViewController {
         if segue.identifier == Storyboard.AddEntrySegueIdentifier {
             //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             controller.title = "New Entry"
+            controller.addEntry = true
             controller.coreDataStack = coreDataStack
         } else if segue.identifier == Storyboard.ShowDetailSegueIdentifier {
 //            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
