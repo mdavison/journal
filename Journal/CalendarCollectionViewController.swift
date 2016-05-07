@@ -90,7 +90,7 @@ class CalendarCollectionViewController: UICollectionViewController {
                     if let dayString = cell.dayNumberLabel.text {
                         if let day = Int(dayString) {
                             let date = getDate(forIndexPath: indexPaths[0], andDay: day)
-                            let calendar = NSCalendar.currentCalendar()
+                            //let calendar = NSCalendar.currentCalendar()
                             let comparison = calendar.compareDate(date, toDate: NSDate(), toUnitGranularity: .Day)
                             
                             // If selected date is in the future, don't perform segue
@@ -340,12 +340,6 @@ class CalendarCollectionViewController: UICollectionViewController {
         
         return components.weekday - 1
     }
-    
-//    private func showEntryIfExists(forCell cell: UICollectionViewCell, andIndexPath indexPath: NSIndexPath, andDay day: Int) {
-//        if let _ = getEntry(forIndexPath: indexPath, andDay: day) {
-//            cell.backgroundColor = UIColor.lightGrayColor()
-//        }
-//    }
     
     private func setIndication(forCell cell: UICollectionViewCell, andIndexPath indexPath: NSIndexPath, andDay day: Int) {
         // Indicate entry for this date

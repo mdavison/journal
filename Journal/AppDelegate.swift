@@ -29,6 +29,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Override point for customization after application launch.
         setSettings()
         
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self,
+//            selector: #selector(setSettingsNotificationHandler(_:)),
+//            name: PasswordRequiredHasChangedNotificationKey,
+//            object: nil)
+        
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
@@ -50,11 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         settingsViewController.coreDataStack = coreDataStack
         
         let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
-        //let entryController = entryNavigationController.topViewController as! EntryViewController
         
         let entryTabBarController = entryNavigationController.topViewController as! UITabBarController
         let entryController = entryTabBarController.viewControllers![0] as! EntryViewController
-        //let entryController = (entryTabBarController.viewControllers![0] as! UINavigationController).topViewController as! EntryViewController
         
         entryController.coreDataStack = coreDataStack
         
@@ -63,11 +67,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         Fabric.with([Twitter.self])
         
-        twitter.requestTweets()
+        // TODO: one of these network requests is causing crash every other time on device - 
+        // maybe move these calls somewhere else later in the lifecycle
+        //twitter.requestTweets()
         //twitter.logout()
         
         let facebookApplication = FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        facebook.requestPosts()
+        //facebook.requestPosts()
         //facebook.logout()
 
         //return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -83,21 +89,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        //print("applicationWillResignActive")
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        //print("applicationDidEnterBackground")
         coreDataStack.saveContext()
+        JournalVariables.userIsAuthenticated = false
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        //print("applicationWillEnterForeground")
+        setSettings()
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
+        //print("applicationDidBecomeActive")
         // Determine if user needs to enter password
         authenticate()
         
@@ -107,6 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        //print("applicationWillTerminate")
         coreDataStack.saveContext()
     }
 
@@ -131,18 +144,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // MARK: - Helper Methods
     
     private func authenticate() {
-        if let settings = settings {
-            if let passwordRequired = settings.password_required {
-                if passwordRequired == false {
+        // applicationDidBecomeActive gets called twice, so second time around,
+        // if user has already authenticated we can bypass this
+        if !JournalVariables.userIsAuthenticated {
+            if let settings = settings {
+                if let passwordRequired = settings.password_required {
+                    if passwordRequired == false {
+                        // Password is not required
+                        JournalVariables.userIsAuthenticated = true
+                    } 
+                } else {
+                    // passwordRequired is nil
                     JournalVariables.userIsAuthenticated = true
                 }
             } else {
-                // passwordRequired is nil
                 JournalVariables.userIsAuthenticated = true
             }
-        } else {
-            // There are no settings yet
-            JournalVariables.userIsAuthenticated = true
+            
+            // Segue to sign in controller if user has not been authenticated by now
+            if !JournalVariables.userIsAuthenticated {
+                let splitViewController = self.window!.rootViewController as! UISplitViewController
+                splitViewController.performSegueWithIdentifier("SignIn", sender: nil)
+            }
         }
     }
     
@@ -159,6 +182,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             NSLog("Error: \(error) " + "description \(error.localizedDescription)")
         }
     }
+    
+//    @objc private func setSettingsNotificationHandler(notification: NSNotification) {
+//        print("setSettingsNotificationHandler called")
+//        setSettings()
+//    }
     
 }
 

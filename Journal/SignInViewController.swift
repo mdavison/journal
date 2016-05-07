@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import LocalAuthentication
 
 class SignInViewController: UIViewController {
 
@@ -25,6 +26,21 @@ class SignInViewController: UIViewController {
             coreDataStack = appDelegate.coreDataStack
             settings = appDelegate.settings
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // If already authenticated, dismiss
+        if JournalVariables.userIsAuthenticated {
+            dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            // Touch ID
+            if let _ = settings?.use_touch_id {
+                authenticateWithTouchID()
+            }
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,5 +61,70 @@ class SignInViewController: UIViewController {
             }
         }
     }
+    
+    
+    // MARK: - Helper Methods
+    
+    private func authenticateWithTouchID() {
+        let laContext = LAContext()
+        var error: NSError? = nil
+        
+        if laContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+            // Authenticate user
+            laContext.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics,
+                                     localizedReason: "Sign in with Touch ID",
+                                     reply: { (success, evaluationError) in
+
+                if success {
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        JournalVariables.userIsAuthenticated = true
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                    //JournalVariables.userIsAuthenticated = true
+                    //self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    //print("not the owner")
+                    if let error = evaluationError {
+                        switch error.code {
+                        case LAError.SystemCancel.rawValue:
+                            // Cancelled by user
+                            NSLog("SystemCancel")
+                        case LAError.UserCancel.rawValue:
+                            NSLog("UserCancel")
+                        case LAError.UserFallback.rawValue:
+                            // user selected "Enter password"
+                            NSLog("UserFallback")
+                            NSOperationQueue.mainQueue().addOperationWithBlock({
+                                // dismiss the touch ID
+                                return
+                            })
+                        default:
+                            return
+                        }
+                    }
+                    
+                    print("Authentication Failed")
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        // dismiss the touch ID
+                        return
+                    })
+                }
+            })
+        } else {
+            NSLog("Device doesn't have touch id")
+            if let error = error {
+                switch error.code {
+                case LAError.TouchIDNotEnrolled.rawValue:
+                    NSLog("TouchID not enrolled")
+                case LAError.PasscodeNotSet.rawValue:
+                    NSLog("Passcode not set")
+                default:
+                    NSLog("Touch ID not available")
+                }
+            }
+        }
+        
+    }
+
 
 }

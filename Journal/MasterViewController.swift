@@ -68,9 +68,9 @@ class MasterViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if !JournalVariables.userIsAuthenticated {
-            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
-        }
+//        if !JournalVariables.userIsAuthenticated {
+//            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -90,25 +90,27 @@ class MasterViewController: UITableViewController {
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let tabBarController = (segue.destinationViewController as! UINavigationController).topViewController as! UITabBarController
-        //let tabBarNavController = tabBarController.viewControllers![0] as! UINavigationController
-        //let controller = tabBarNavController.topViewController as! EntryViewController
-        let controller = tabBarController.viewControllers![0] as! EntryViewController
-        
-        if segue.identifier == Storyboard.AddEntrySegueIdentifier {
-            //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
-            controller.title = "New Entry"
-            controller.addEntry = true
-            controller.coreDataStack = coreDataStack
-        } else if segue.identifier == Storyboard.ShowDetailSegueIdentifier {
-//            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
-            controller.coreDataStack = coreDataStack
+        if segue.identifier != Storyboard.SignInSegueIdentifier {
+            let tabBarController = (segue.destinationViewController as! UINavigationController).topViewController as! UITabBarController
+            //let tabBarNavController = tabBarController.viewControllers![0] as! UINavigationController
+            //let controller = tabBarNavController.topViewController as! EntryViewController
+            let controller = tabBarController.viewControllers![0] as! EntryViewController
             
-            if let indexPath = tableView.indexPathForSelectedRow {
-                if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
-                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                    controller.navigationItem.leftItemsSupplementBackButton = true
-                    controller.entry = entry
+            if segue.identifier == Storyboard.AddEntrySegueIdentifier {
+                //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+                controller.title = "New Entry"
+                controller.addEntry = true
+                controller.coreDataStack = coreDataStack
+            } else if segue.identifier == Storyboard.ShowDetailSegueIdentifier {
+    //            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+                controller.coreDataStack = coreDataStack
+                
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
+                        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+                        controller.navigationItem.leftItemsSupplementBackButton = true
+                        controller.entry = entry
+                    }
                 }
             }
         }

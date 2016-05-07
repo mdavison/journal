@@ -16,6 +16,7 @@
     <entity name="Settings" representedClassName=".Settings" syncable="YES">
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="password_required" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="use_touch_id" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
     </entity>
     <entity name="Tweet" representedClassName=".Tweet" syncable="YES">
         <attribute name="created_at_timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -25,7 +26,7 @@
     <elements>
         <element name="Entry" positionX="261" positionY="198" width="128" height="120"/>
         <element name="FBPost" positionX="288" positionY="261" width="128" height="105"/>
-        <element name="Settings" positionX="279" positionY="270" width="128" height="75"/>
+        <element name="Settings" positionX="279" positionY="270" width="128" height="90"/>
         <element name="Tweet" positionX="261" positionY="225" width="128" height="90"/>
     </elements>
 </model>

@@ -68,18 +68,19 @@ class SettingsTableViewController: UITableViewController {
     // MARK: - Actions
     
     @IBAction func requirePasswordSwitchChanged(sender: UISwitch) {
-        if sender.on {
+        if sender.on { // Switched On
             if let settings = settings {
                 if settings.password == nil { // No password set
                     performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
                 } else {
-                    saveSettings(sender.on, password: nil)
+                    saveSettings(true, password: nil, touchID: nil) // Password required, password already set
+                    JournalVariables.userIsAuthenticated = false
                 }
-            } else {
+            } else { // No password settings yet
                 performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
             }
-        } else {
-            saveSettings(sender.on, password: nil)
+        } else { // Switched Off
+            saveSettings(false, password: nil, touchID: false)
         }
     }
     
@@ -130,16 +131,19 @@ class SettingsTableViewController: UITableViewController {
         }
     }
     
-    private func saveSettings(passwordRequired: Bool?, password: String?) {
-        if let setting = settings {
+    private func saveSettings(passwordRequired: Bool?, password: String?, touchID: Bool?) {
+        if let settings = settings {
             // Update existing
             if let required = passwordRequired {
-                setting.password_required = required
+                settings.password_required = required
             }
             if let password = password {
-                setting.password = password
+                // TODO: encrypt password
+                settings.password = password
             }
-            coreDataStack.saveContext()
+            if let touchID = touchID {
+                settings.use_touch_id = touchID
+            }
         } else {
             // Create new
             if let entity = NSEntityDescription.entityForName("Settings", inManagedObjectContext: coreDataStack.managedObjectContext) {
@@ -151,12 +155,19 @@ class SettingsTableViewController: UITableViewController {
                 if let password = password {
                     settings.password = password
                 }
-                coreDataStack.saveContext()
+                if let touchID = touchID {
+                    settings.use_touch_id = touchID
+                }
+                
             }
         }
+        
+        coreDataStack.saveContext()
     }
     
-    // For development only
+
+    
+    // For development 
     private func clearAllSettings() {
         print("clearAllSettings")
         let fetchRequest = NSFetchRequest(entityName: "Settings")
@@ -178,12 +189,12 @@ class SettingsTableViewController: UITableViewController {
 
 
 extension SettingsTableViewController: SetPasswordTableViewControllerDelegate {
-    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String) {
-        print("password: \(password)")
-        saveSettings(passwordRequiredSwitch.on, password: password)
+    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, touchID: Bool) {
+        saveSettings(passwordRequiredSwitch.on, password: password, touchID: touchID)
     }
     
     func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController) {
         passwordRequiredSwitch.on = false
     }
+    
 }

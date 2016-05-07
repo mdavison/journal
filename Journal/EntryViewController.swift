@@ -100,9 +100,9 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if !JournalVariables.userIsAuthenticated {
-            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
-        }
+//        if !JournalVariables.userIsAuthenticated {
+//            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
+//        }
         
         tabBarController?.navigationItem.title = "Journal Entry"
         tabBarController?.navigationItem.rightBarButtonItem = saveButton

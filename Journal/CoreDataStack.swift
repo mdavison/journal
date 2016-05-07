@@ -78,7 +78,7 @@ class CoreDataStack {
             }
         }
     }
-
+    
     
     // MARK: - iCloud Sync
     

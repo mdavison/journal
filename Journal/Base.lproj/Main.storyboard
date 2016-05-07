@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -135,7 +135,6 @@
                         <outlet property="dateButton" destination="44C-kb-TuA" id="RRo-Jb-a7d"/>
                         <outlet property="entryTextView" destination="niX-it-HWc" id="UWj-Ls-bZG"/>
                         <outlet property="saveButton" destination="lto-Mo-wCV" id="Xge-fw-ApK"/>
-                        <segue destination="lhG-pz-l0a" kind="presentation" identifier="SignIn" id="og5-5z-JAc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
@@ -150,6 +149,7 @@
                     <connections>
                         <segue destination="RMx-3f-FxP" kind="relationship" relationship="masterViewController" id="BlO-5A-QYV"/>
                         <segue destination="vC3-pB-5Vb" kind="relationship" relationship="detailViewController" id="Tll-UG-LXB"/>
+                        <segue destination="lhG-pz-l0a" kind="presentation" identifier="SignIn" id="e4a-iI-qIS"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZU-Oi-B1e" sceneMemberID="firstResponder"/>
@@ -329,7 +329,6 @@
                     <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8"/>
                     <connections>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="AddEntry" id="12W-Di-MNP"/>
-                        <segue destination="lhG-pz-l0a" kind="presentation" identifier="SignIn" id="7o4-BZ-ISs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
@@ -382,7 +381,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MGB-H0-4dW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3292" y="343"/>
+            <point key="canvasLocation" x="-1768" y="-1081"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="r7l-gg-dq7">
@@ -1004,6 +1003,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Czb-O8-RkY">
                                                     <rect key="frame" x="543" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="useTouchIdSwitchChanged:" destination="W6M-5W-IdN" eventType="valueChanged" id="LK5-gp-yZA"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -1045,69 +1047,6 @@
             </objects>
             <point key="canvasLocation" x="2965" y="-2366"/>
         </scene>
-        <!--Set Password-->
-        <scene sceneID="EDP-Ea-Bfs">
-            <objects>
-                <viewController id="fyU-Cg-sAG" customClass="SetPasswordViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="70t-W0-NV3"/>
-                        <viewControllerLayoutGuide type="bottom" id="Tf0-zi-YfO"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lw0-mA-c6e">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UJS-22-ViP">
-                                <rect key="frame" x="20" y="72" width="560" height="68"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pDr-bj-9yF">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="fyU-Cg-sAG" id="35A-Nt-tJh"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tdy-Vd-892">
-                                        <rect key="frame" x="0.0" y="38" width="560" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="fyU-Cg-sAG" id="3At-Pd-EmX"/>
-                                        </connections>
-                                    </textField>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="UJS-22-ViP" firstAttribute="leading" secondItem="lw0-mA-c6e" secondAttribute="leadingMargin" id="25W-5f-wva"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="UJS-22-ViP" secondAttribute="trailing" id="5tz-KT-jcV"/>
-                            <constraint firstItem="UJS-22-ViP" firstAttribute="top" secondItem="70t-W0-NV3" secondAttribute="bottom" constant="8" symbolic="YES" id="eDp-XJ-bnt"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Set Password" id="U6z-ym-b8l">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cpb-7u-40T">
-                            <connections>
-                                <action selector="cancel:" destination="fyU-Cg-sAG" id="oYN-ka-HrH"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="2xu-Pb-bZi">
-                            <connections>
-                                <action selector="save:" destination="fyU-Cg-sAG" id="3Ry-De-HzU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="confirmPasswordTextField" destination="Tdy-Vd-892" id="gxt-Ci-z5m"/>
-                        <outlet property="passwordTextField" destination="pDr-bj-9yF" id="Md6-nj-nGS"/>
-                        <outlet property="saveButton" destination="2xu-Pb-bZi" id="0FO-2r-jRG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HEz-Mp-iv9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4275" y="-3835"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ba4-q6-MSX">
             <objects>
@@ -1125,24 +1064,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2wF-HE-ZxU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2279" y="-1645"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="SOd-GR-f0b">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Bzu-j0-Yhg" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="i6t-9g-OjE">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="fyU-Cg-sAG" kind="relationship" relationship="rootViewController" id="UOv-BV-Xbq"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sMN-fe-AL1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3607" y="-3835"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="si7-jP-WYD">
@@ -1174,7 +1095,6 @@
         <image name="UnderlineIcon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7Ir-Oj-5e5"/>
-        <segue reference="og5-5z-JAc"/>
+        <segue reference="Tll-UG-LXB"/>
     </inferredMetricsTieBreakers>
 </document>

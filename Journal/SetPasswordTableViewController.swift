@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 protocol SetPasswordTableViewControllerDelegate: class {
-    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String)
+    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, touchID: Bool)
     func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController)
 }
 
@@ -21,7 +22,8 @@ class SetPasswordTableViewController: UITableViewController {
     @IBOutlet weak var useTouchIDSwitch: UISwitch!
     
     var delegate: SetPasswordTableViewControllerDelegate?
-    var passwordIsValid = true 
+    var passwordIsValid = true
+    //var useTouchID = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,25 @@ class SetPasswordTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Table View Methods
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0: return 3
+        case 1:
+            return touchIDEnabled() ? 1 : 0
+        default: return 0
+        }
+    }
+
+    // Change header text from default all caps
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if view.isKindOfClass(UITableViewHeaderFooterView) {
+            if let tableViewHeaderFooterView = view as? UITableViewHeaderFooterView {
+                tableViewHeaderFooterView.textLabel!.text = "Create a password for all your journal entries"
+            }
+        }
+    }
     
     // MARK: - Actions
     
@@ -46,7 +67,7 @@ class SetPasswordTableViewController: UITableViewController {
         
         if passwordIsValid {
             if let password = passwordTextField.text {
-                delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password)
+                delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password, touchID: useTouchIDSwitch.on)
                 dismissViewControllerAnimated(true, completion: nil)
             }
         }
@@ -57,6 +78,10 @@ class SetPasswordTableViewController: UITableViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func useTouchIdSwitchChanged(sender: UISwitch) {
+        //useTouchID = sender.on
+        //print("useTouchID?: \(useTouchID)")
+    }
     
     // MARK: - Helper Methods
     
@@ -85,6 +110,19 @@ class SetPasswordTableViewController: UITableViewController {
             
             return
         }
+        
+        passwordIsValid = true
+    }
+    
+    private func touchIDEnabled() -> Bool {
+        let laContext = LAContext()
+        var error: NSError? = nil
+        
+        if laContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+            return true
+        }
+        
+        return false
     }
     
 }
