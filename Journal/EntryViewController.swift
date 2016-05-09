@@ -57,35 +57,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         entryTextView.delegate = self
         setupView()
         setEntryTimestamps()
-        
-        // Notifications
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        
-        notificationCenter.addObserver(
-            self,
-            selector: #selector(EntryViewController.entryWasDeleted(_:)),
-            name: EntryWasDeletedNotificationKey,
-            object: entry)
-        
-        notificationCenter.addObserver(
-            self,
-            selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
-            name: UIContentSizeCategoryDidChangeNotification,
-            object: nil)
-        
-        
-        
-//        if FBSDKAccessToken.currentAccessToken() != nil {
-//            // User already has access token
-//            getFacebookPosts()
-//        } else {
-//            //showLoginButton()
-//            // TODO: Show exclamation badge on Facebook tab
-//        }
-//        
-//        if let _ = Twitter.sharedInstance().sessionStore.session()?.userID {
-//            getTweets()
-//        }
+        addNotificationObservers()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -377,6 +349,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             title = "New Entry"
         }
         
+        addDismissKeyboardButton()
+        
     }
     
     private func fixNavigation() {
@@ -489,6 +463,32 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             
             entry = Entry.getEntry(forDate: date, coreDataStack: coreDataStack)
             invalidDate = false
+        }
+    }
+    
+    private func addNotificationObservers() {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(EntryViewController.entryWasDeleted(_:)),
+            name: EntryWasDeletedNotificationKey,
+            object: entry)
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
+            name: UIContentSizeCategoryDidChangeNotification,
+            object: nil)
+
+    }
+    
+    private func addDismissKeyboardButton() {
+        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            let dismissKeyboardButtonItem = UIBarButtonItem(image: UIImage(named: "HideKeyboard"), style: .Plain, target: entryTextView, action: #selector(UIResponder.resignFirstResponder))
+            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
+            toolbar.items = [dismissKeyboardButtonItem]
+            entryTextView.inputAccessoryView = toolbar
         }
     }
     
