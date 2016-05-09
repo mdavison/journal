@@ -109,11 +109,11 @@ class FacebookTableViewController: UITableViewController {
     
     private func setNoDataLabel() {
         if JournalVariables.entry == nil {
-            noDataLabel.text = "Jounal Entry has not been saved"
+            noDataLabel.text = NSLocalizedString("Jounal Entry has not been saved", comment: "")
             noDataLabel.hidden = false
         } else {
             if facebookPosts.isEmpty {
-                noDataLabel.text = "No posts on this day :("
+                noDataLabel.text = NSLocalizedString("No posts on this day :(", comment: "")
                 noDataLabel.hidden = false
             } else {
                 noDataLabel.hidden = true 

@@ -21,19 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var twitter = JournalTwitter()
     var facebook = JournalFacebook()
     var settings: Settings?
-    //var signInViewController: SignInViewController?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         // Override point for customization after application launch.
         setSettings()
-        
-//        NSNotificationCenter.defaultCenter().addObserver(
-//            self,
-//            selector: #selector(setSettingsNotificationHandler(_:)),
-//            name: PasswordRequiredHasChangedNotificationKey,
-//            object: nil)
         
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
@@ -66,17 +59,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         facebook.coreDataStack = coreDataStack
         
         Fabric.with([Twitter.self])
+
+        let facebookApplication = FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        // TODO: one of these network requests is causing crash every other time on device - 
-        // maybe move these calls somewhere else later in the lifecycle
-        //twitter.requestTweets()
+        //facebook.logout()
         //twitter.logout()
         
-        let facebookApplication = FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        //facebook.requestPosts()
-        //facebook.logout()
-
-        //return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         //return true
         return facebookApplication
     }
@@ -182,11 +170,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             NSLog("Error: \(error) " + "description \(error.localizedDescription)")
         }
     }
-    
-//    @objc private func setSettingsNotificationHandler(notification: NSNotification) {
-//        print("setSettingsNotificationHandler called")
-//        setSettings()
-//    }
     
 }
 

@@ -123,11 +123,11 @@ class TwitterTableViewController: UITableViewController, TWTRTweetViewDelegate {
     
     private func setNoDataLabel() {
         if JournalVariables.entry == nil {
-            noDataLabel.text = "Jounal Entry has not been saved"
+            noDataLabel.text = NSLocalizedString("Jounal Entry has not been saved", comment: "")
             noDataLabel.hidden = false
         } else {
             if twitterTweets.isEmpty {
-                noDataLabel.text = "No tweets on this day :("
+                noDataLabel.text = NSLocalizedString("No tweets on this day :(", comment: "")
                 noDataLabel.hidden = false
             } else {
                 noDataLabel.hidden = true

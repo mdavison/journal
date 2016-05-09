@@ -132,9 +132,7 @@ class JournalTwitter {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: tweetRequest)
         
         do {
-            try coreDataStack.managedObjectContext.executeRequest(deleteRequest) // Not sure what the difference between these two is
-            //try coreDataStack.persistentStoreCoordinator.executeRequest(deleteRequest, withContext: coreDataStack.managedObjectContext)
-            
+            try coreDataStack.managedObjectContext.executeRequest(deleteRequest)
             saveNewTweets(tweets)
         } catch let error as NSError {
             print("Error: \(error) " + "description \(error.localizedDescription)")
