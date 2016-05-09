@@ -23,7 +23,6 @@ class SetPasswordTableViewController: UITableViewController {
     
     var delegate: SetPasswordTableViewControllerDelegate?
     var passwordIsValid = true
-    //var useTouchID = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +32,7 @@ class SetPasswordTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,11 +40,12 @@ class SetPasswordTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Table View Methods
+    // MARK: - Table View data source
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0: return 3
+        case 0:
+            return 3
         case 1:
             return touchIDEnabled() ? 1 : 0
         default: return 0
@@ -55,7 +56,7 @@ class SetPasswordTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if view.isKindOfClass(UITableViewHeaderFooterView) {
             if let tableViewHeaderFooterView = view as? UITableViewHeaderFooterView {
-                tableViewHeaderFooterView.textLabel!.text = "Create a password for all your journal entries"
+                tableViewHeaderFooterView.textLabel!.text = NSLocalizedString("Create a password for all your journal entries", comment: "")
             }
         }
     }

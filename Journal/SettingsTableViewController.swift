@@ -56,8 +56,11 @@ class SettingsTableViewController: UITableViewController {
                 controller.delegate = self
                 
             case Storyboard.ChangePasswordSegueIdentifier:
-                // todo
-                break
+                guard let navigationController = segue.destinationViewController as? UINavigationController,
+                    let controller = navigationController.topViewController as? ChangePasswordTableViewController
+                    else { break }
+                
+                controller.delegate = self
             default:
                 return
             }
@@ -211,5 +214,10 @@ extension SettingsTableViewController: SetPasswordTableViewControllerDelegate {
     func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController) {
         passwordRequiredSwitch.on = false
     }
-    
+}
+
+extension SettingsTableViewController: ChangePasswordTableViewControllerDelegate {
+    func changePasswordTableViewController(controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, touchID: Bool) {
+        saveSettings(passwordRequiredSwitch.on, password: password, touchID: touchID)
+    }
 }
