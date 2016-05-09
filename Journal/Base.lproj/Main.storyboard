@@ -802,9 +802,9 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="r5r-bC-xqY"/>
-                                                    <exclude reference="Zp0-On-1M4"/>
-                                                    <exclude reference="VEg-n5-pOm"/>
                                                     <exclude reference="SBu-60-uaA"/>
+                                                    <exclude reference="VEg-n5-pOm"/>
+                                                    <exclude reference="Zp0-On-1M4"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -847,8 +847,8 @@
                                                 <mask key="constraints">
                                                     <exclude reference="YcZ-p0-EMd"/>
                                                     <exclude reference="AIJ-lW-olT"/>
-                                                    <exclude reference="RPj-ZN-8bP"/>
                                                     <exclude reference="EpP-z3-Fwu"/>
+                                                    <exclude reference="RPj-ZN-8bP"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -887,8 +887,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="tHI-eF-GJx"/>
                                                     <exclude reference="DT0-bc-hvA"/>
+                                                    <exclude reference="tHI-eF-GJx"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -927,8 +927,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="ueC-GE-kE4"/>
                                                     <exclude reference="5Ri-TB-b1s"/>
+                                                    <exclude reference="ueC-GE-kE4"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1083,9 +1083,9 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="Na6-MZ-hbr"/>
-                                                    <exclude reference="n6h-wx-e3L"/>
-                                                    <exclude reference="5Wy-kl-osr"/>
                                                     <exclude reference="2jJ-dP-kt6"/>
+                                                    <exclude reference="5Wy-kl-osr"/>
+                                                    <exclude reference="n6h-wx-e3L"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
