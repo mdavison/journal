@@ -14,7 +14,6 @@ import CoreData
 
 extension Settings {
 
-    @NSManaged var password: String?
     @NSManaged var password_required: NSNumber?
     @NSManaged var use_touch_id: NSNumber?
 

@@ -36,8 +36,10 @@ class SignInViewController: UIViewController {
             dismissViewControllerAnimated(true, completion: nil)
         } else {
             // Touch ID
-            if let _ = settings?.use_touch_id {
-                authenticateWithTouchID()
+            if let settings = settings {
+                if settings.use_touch_id == true {
+                    authenticateWithTouchID()
+                }
             }
         }
 
@@ -52,14 +54,22 @@ class SignInViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func submit(sender: UIButton) {       
-        if let settings = settings {
-            if let passwordEntered = passwordTextField.text {
-                if passwordEntered == settings.password {
-                    JournalVariables.userIsAuthenticated = true
-                    dismissViewControllerAnimated(true, completion: nil)
-                }
-            }
+        let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
+        //print("keychain password: \(keychainPassword)")
+        
+        if passwordTextField.text == keychainPassword {
+            JournalVariables.userIsAuthenticated = true
+            dismissViewControllerAnimated(true, completion: nil)
         }
+        
+//        if let settings = settings {
+//            if let passwordEntered = passwordTextField.text {
+//                if passwordEntered == settings.password {
+//                    JournalVariables.userIsAuthenticated = true
+//                    dismissViewControllerAnimated(true, completion: nil)
+//                }
+//            }
+//        }
     }
     
     

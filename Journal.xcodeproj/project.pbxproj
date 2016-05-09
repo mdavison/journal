@@ -12,6 +12,10 @@
 		9037507B1CA41F7B006D9D58 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */; };
 		9037507C1CA41F7B006D9D58 /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903750781CA41F7B006D9D58 /* TwitterCore.framework */; };
 		9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9037507D1CA45240006D9D58 /* EntryDateViewController.swift */; };
+		9038CB161CDF9D59000F4F71 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9038CB111CDF9D59000F4F71 /* Info.plist */; };
+		9038CB171CDF9D59000F4F71 /* KeychainOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9038CB121CDF9D59000F4F71 /* KeychainOptions.swift */; };
+		9038CB181CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9038CB131CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift */; };
+		9038CB191CDF9D59000F4F71 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9038CB141CDF9D59000F4F71 /* KeychainWrapper.swift */; };
 		9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054569C1C937AD300645C39 /* AppDelegate.swift */; };
 		905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9054569E1C937AD300645C39 /* Journal.xcdatamodeld */; };
 		905456A21C937AD300645C39 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A11C937AD300645C39 /* MasterViewController.swift */; };
@@ -71,6 +75,11 @@
 		903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		903750781CA41F7B006D9D58 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterCore.framework; sourceTree = "<group>"; };
 		9037507D1CA45240006D9D58 /* EntryDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryDateViewController.swift; sourceTree = "<group>"; };
+		9038CB111CDF9D59000F4F71 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9038CB121CDF9D59000F4F71 /* KeychainOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainOptions.swift; sourceTree = "<group>"; };
+		9038CB131CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeychainWrapper+Experimental.swift"; sourceTree = "<group>"; };
+		9038CB141CDF9D59000F4F71 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		9038CB151CDF9D59000F4F71 /* SwiftKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftKeychainWrapper.h; sourceTree = "<group>"; };
 		905456991C937AD300645C39 /* Journal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Journal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9054569C1C937AD300645C39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9054569F1C937AD300645C39 /* Journal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Journal.xcdatamodel; sourceTree = "<group>"; };
@@ -145,6 +154,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9038CB101CDF9D59000F4F71 /* SwiftKeychainWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				9038CB111CDF9D59000F4F71 /* Info.plist */,
+				9038CB121CDF9D59000F4F71 /* KeychainOptions.swift */,
+				9038CB131CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift */,
+				9038CB141CDF9D59000F4F71 /* KeychainWrapper.swift */,
+				9038CB151CDF9D59000F4F71 /* SwiftKeychainWrapper.h */,
+			);
+			path = SwiftKeychainWrapper;
+			sourceTree = "<group>";
+		};
 		905456901C937AD300645C39 = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +212,7 @@
 				90A559C71CAC0B220085F72A /* JournalFacebook.swift */,
 				9054569C1C937AD300645C39 /* AppDelegate.swift */,
 				90E9DB721CB2D7A70092C7AB /* JournalVariables.swift */,
+				9038CB101CDF9D59000F4F71 /* SwiftKeychainWrapper */,
 				905456D21C96F8DE00645C39 /* CoreData */,
 				905456A81C937AD300645C39 /* Assets.xcassets */,
 				905456A51C937AD300645C39 /* Main.storyboard */,
@@ -359,6 +381,7 @@
 				9037507B1CA41F7B006D9D58 /* TwitterKitResources.bundle in Resources */,
 				905456AC1C937AD300645C39 /* LaunchScreen.storyboard in Resources */,
 				905456A91C937AD300645C39 /* Assets.xcassets in Resources */,
+				9038CB161CDF9D59000F4F71 /* Info.plist in Resources */,
 				905456A71C937AD300645C39 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,6 +431,9 @@
 				905457011C9B8BB200645C39 /* FacebookPostTableViewCell.swift in Sources */,
 				90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */,
 				90A559C81CAC0B220085F72A /* JournalFacebook.swift in Sources */,
+				9038CB181CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift in Sources */,
+				9038CB191CDF9D59000F4F71 /* KeychainWrapper.swift in Sources */,
+				9038CB171CDF9D59000F4F71 /* KeychainOptions.swift in Sources */,
 				90E9DBA41CB70FB60092C7AB /* FacebookTableViewController.swift in Sources */,
 				90E9DB7C1CB3F0BA0092C7AB /* Settings+CoreDataProperties.swift in Sources */,
 				90E9DB7F1CB5BB680092C7AB /* SetPasswordTableViewController.swift in Sources */,

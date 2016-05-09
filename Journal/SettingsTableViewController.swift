@@ -69,16 +69,26 @@ class SettingsTableViewController: UITableViewController {
     
     @IBAction func requirePasswordSwitchChanged(sender: UISwitch) {
         if sender.on { // Switched On
-            if let settings = settings {
-                if settings.password == nil { // No password set
-                    performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
-                } else {
-                    saveSettings(true, password: nil, touchID: nil) // Password required, password already set
-                    JournalVariables.userIsAuthenticated = false
-                }
-            } else { // No password settings yet
+            //let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
+            let passwordIsSet = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
+            
+            if passwordIsSet { // Password already in keychain, save settings to require password
+                saveSettings(true, password: nil, touchID: nil)
+                JournalVariables.userIsAuthenticated = false
+            } else { // No password set
                 performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
             }
+            
+//            if let settings = settings {
+//                if settings.password == nil { // No password set
+//                    performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
+//                } else {
+//                    saveSettings(true, password: nil, touchID: nil) // Password required, password already set
+//                    JournalVariables.userIsAuthenticated = false
+//                }
+//            } else { // No password settings yet
+//                performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
+//            }
         } else { // Switched Off
             saveSettings(false, password: nil, touchID: false)
         }
@@ -137,10 +147,9 @@ class SettingsTableViewController: UITableViewController {
             if let required = passwordRequired {
                 settings.password_required = required
             }
-            if let password = password {
-                // TODO: encrypt password
-                settings.password = password
-            }
+//            if let password = password {
+//                settings.password = password
+//            }
             if let touchID = touchID {
                 settings.use_touch_id = touchID
             }
@@ -152,14 +161,17 @@ class SettingsTableViewController: UITableViewController {
                 if let required = passwordRequired {
                     settings.password_required = required
                 }
-                if let password = password {
-                    settings.password = password
-                }
+//                if let password = password {
+//                    settings.password = password
+//                }
                 if let touchID = touchID {
                     settings.use_touch_id = touchID
                 }
-                
             }
+        }
+        
+        if let password = password {
+            KeychainWrapper.standardKeychainAccess().setString(password, forKey: "password")
         }
         
         coreDataStack.saveContext()
@@ -183,6 +195,9 @@ class SettingsTableViewController: UITableViewController {
         } catch let error as NSError {
             NSLog("Error: \(error) " + "description \(error.localizedDescription)")
         }
+        
+        // Clear keychain password
+        KeychainWrapper.standardKeychainAccess().removeObjectForKey("password")
     }
     
 }
