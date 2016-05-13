@@ -14,6 +14,7 @@ class SignInViewController: UIViewController {
 
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var passwordIncorrectLabel: UILabel!
     
     var coreDataStack: CoreDataStack!
     var settings: Settings?
@@ -26,6 +27,9 @@ class SignInViewController: UIViewController {
             coreDataStack = appDelegate.coreDataStack
             settings = appDelegate.settings
         }
+        
+        passwordTextField.delegate = self
+        passwordTextField.becomeFirstResponder()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -54,22 +58,7 @@ class SignInViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func submit(sender: UIButton) {       
-        let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
-        //print("keychain password: \(keychainPassword)")
-        
-        if passwordTextField.text == keychainPassword {
-            JournalVariables.userIsAuthenticated = true
-            dismissViewControllerAnimated(true, completion: nil)
-        }
-        
-//        if let settings = settings {
-//            if let passwordEntered = passwordTextField.text {
-//                if passwordEntered == settings.password {
-//                    JournalVariables.userIsAuthenticated = true
-//                    dismissViewControllerAnimated(true, completion: nil)
-//                }
-//            }
-//        }
+        checkPassword()
     }
     
     
@@ -135,6 +124,29 @@ class SignInViewController: UIViewController {
         }
         
     }
+    
+    private func checkPassword() {
+        let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
+        
+        if passwordTextField.text == keychainPassword {
+            JournalVariables.userIsAuthenticated = true
+            dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            passwordIncorrectLabel.hidden = false
+            passwordTextField.text = ""
+        }
+    }
 
 
+}
+
+
+extension SignInViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        checkPassword()
+        resignFirstResponder()
+        
+        return true
+    }
 }

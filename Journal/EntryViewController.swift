@@ -347,6 +347,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             entryTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
             
             title = "New Entry"
+            entryTextView.becomeFirstResponder()
         }
         
         addDismissKeyboardButton()
