@@ -32,7 +32,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     struct Storyboard {
         static var EntryDateSegueIdentifier = "EntryDate"
-        static var SignInSegueIdentifier = "SignIn"
     }
     
     deinit {
@@ -71,10 +70,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-//        if !JournalVariables.userIsAuthenticated {
-//            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
-//        }
         
         tabBarController?.navigationItem.title = "Journal Entry"
         tabBarController?.navigationItem.rightBarButtonItem = saveButton
@@ -347,11 +342,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             entryTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
             
             title = "New Entry"
-            entryTextView.becomeFirstResponder()
         }
         
+        entryTextView.becomeFirstResponder()
         addDismissKeyboardButton()
-        
     }
     
     private func fixNavigation() {
