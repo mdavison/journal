@@ -10,7 +10,7 @@ import UIKit
 import LocalAuthentication
 
 protocol SetPasswordTableViewControllerDelegate: class {
-    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, touchID: Bool)
+    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, hint: String?, touchID: Bool)
     func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController)
 }
 
@@ -65,10 +65,10 @@ class SetPasswordTableViewController: UITableViewController {
     
     @IBAction func done(sender: UIBarButtonItem) {
         validatePassword()
-        
+        print("hint: \(hintTextField.text)")
         if passwordIsValid {
             if let password = passwordTextField.text {
-                delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password, touchID: useTouchIDSwitch.on)
+                delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password, hint: hintTextField.text, touchID: useTouchIDSwitch.on)
                 dismissViewControllerAnimated(true, completion: nil)
             }
         }

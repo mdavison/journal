@@ -10,7 +10,7 @@ import UIKit
 import LocalAuthentication
 
 protocol ChangePasswordTableViewControllerDelegate: class {
-    func changePasswordTableViewController(controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, touchID: Bool)
+    func changePasswordTableViewController(controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, hint: String?, touchID: Bool)
 }
 
 class ChangePasswordTableViewController: UITableViewController {
@@ -23,6 +23,7 @@ class ChangePasswordTableViewController: UITableViewController {
     
     var delegate: ChangePasswordTableViewControllerDelegate?
     var passwordIsValid = true
+    var settings:Settings?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,9 @@ class ChangePasswordTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        hintTextField.text = settings?.password_hint
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,7 +84,7 @@ class ChangePasswordTableViewController: UITableViewController {
         
         if passwordIsValid {
             if let password = passwordTextField.text {
-                delegate?.changePasswordTableViewController(self, didFinishChangingPassword: password, touchID: useTouchIDSwitch.on)
+                delegate?.changePasswordTableViewController(self, didFinishChangingPassword: password, hint: hintTextField.text, touchID: useTouchIDSwitch.on)
                 dismissViewControllerAnimated(true, completion: nil)
             }
         }
@@ -133,6 +137,7 @@ class ChangePasswordTableViewController: UITableViewController {
         }
         
         passwordIsValid = true
+        
     }
     
     private func invalidPasswordAlert(alertTitle: String, alertTitleComment: String) {

@@ -12,6 +12,7 @@ import CoreData
 class SettingsTableViewController: UITableViewController {
 
     @IBOutlet weak var passwordRequiredSwitch: UISwitch!
+    @IBOutlet weak var changePasswordButton: UIButton!
     
     var coreDataStack: CoreDataStack!
     var settings: Settings?
@@ -25,6 +26,7 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         //clearAllSettings()
+        //KeychainWrapper.standardKeychainAccess().removeObjectForKey("password")
         setSettings()
         setupView()
     }
@@ -34,6 +36,8 @@ class SettingsTableViewController: UITableViewController {
         
         // Remove duplicate nav controller
         tabBarController?.navigationController?.navigationBarHidden = true
+        
+        changePasswordButton.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,6 +65,7 @@ class SettingsTableViewController: UITableViewController {
                     else { break }
                 
                 controller.delegate = self
+                controller.settings = settings
             default:
                 return
             }
@@ -76,24 +81,13 @@ class SettingsTableViewController: UITableViewController {
             let passwordIsSet = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
             
             if passwordIsSet { // Password already in keychain, save settings to require password
-                saveSettings(true, password: nil, touchID: nil)
+                saveSettings(true, password: nil, hint: nil, touchID: nil)
                 JournalVariables.userIsAuthenticated = false
             } else { // No password set
                 performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
             }
-            
-//            if let settings = settings {
-//                if settings.password == nil { // No password set
-//                    performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
-//                } else {
-//                    saveSettings(true, password: nil, touchID: nil) // Password required, password already set
-//                    JournalVariables.userIsAuthenticated = false
-//                }
-//            } else { // No password settings yet
-//                performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
-//            }
         } else { // Switched Off
-            saveSettings(false, password: nil, touchID: false)
+            saveSettings(false, password: nil, hint: nil, touchID: false)
         }
     }
     
@@ -144,15 +138,15 @@ class SettingsTableViewController: UITableViewController {
         }
     }
     
-    private func saveSettings(passwordRequired: Bool?, password: String?, touchID: Bool?) {
+    private func saveSettings(passwordRequired: Bool?, password: String?, hint: String?, touchID: Bool?) {
         if let settings = settings {
             // Update existing
             if let required = passwordRequired {
                 settings.password_required = required
             }
-//            if let password = password {
-//                settings.password = password
-//            }
+            if let hint = hint {
+                settings.password_hint = hint
+            }
             if let touchID = touchID {
                 settings.use_touch_id = touchID
             }
@@ -164,9 +158,9 @@ class SettingsTableViewController: UITableViewController {
                 if let required = passwordRequired {
                     settings.password_required = required
                 }
-//                if let password = password {
-//                    settings.password = password
-//                }
+                if let hint = hint {
+                    settings.password_hint = hint
+                }
                 if let touchID = touchID {
                     settings.use_touch_id = touchID
                 }
@@ -178,6 +172,7 @@ class SettingsTableViewController: UITableViewController {
         }
         
         coreDataStack.saveContext()
+        setSettings()
     }
     
 
@@ -207,8 +202,8 @@ class SettingsTableViewController: UITableViewController {
 
 
 extension SettingsTableViewController: SetPasswordTableViewControllerDelegate {
-    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, touchID: Bool) {
-        saveSettings(passwordRequiredSwitch.on, password: password, touchID: touchID)
+    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, hint: String?, touchID: Bool) {
+        saveSettings(passwordRequiredSwitch.on, password: password, hint: hint, touchID: touchID)
     }
     
     func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController) {
@@ -217,7 +212,7 @@ extension SettingsTableViewController: SetPasswordTableViewControllerDelegate {
 }
 
 extension SettingsTableViewController: ChangePasswordTableViewControllerDelegate {
-    func changePasswordTableViewController(controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, touchID: Bool) {
-        saveSettings(passwordRequiredSwitch.on, password: password, touchID: touchID)
+    func changePasswordTableViewController(controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, hint: String?,  touchID: Bool) {
+        saveSettings(passwordRequiredSwitch.on, password: password, hint: hint, touchID: touchID)
     }
 }

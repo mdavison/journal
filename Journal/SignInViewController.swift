@@ -15,6 +15,8 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var passwordIncorrectLabel: UILabel!
+    @IBOutlet weak var passwordHintLabel: UILabel!
+    @IBOutlet weak var showPasswordHintButton: UIButton!
     
     var coreDataStack: CoreDataStack!
     var settings: Settings?
@@ -39,10 +41,13 @@ class SignInViewController: UIViewController {
         if JournalVariables.userIsAuthenticated {
             dismissViewControllerAnimated(true, completion: nil)
         } else {
-            // Touch ID
             if let settings = settings {
+                // Touch ID
                 if settings.use_touch_id == true {
                     authenticateWithTouchID()
+                }
+                if settings.password_hint == nil || settings.password_hint == "" {
+                    showPasswordHintButton.hidden = true
                 }
             }
         }
@@ -61,6 +66,10 @@ class SignInViewController: UIViewController {
         checkPassword()
     }
     
+    @IBAction func showPasswordHint(sender: UIButton) {
+        passwordHintLabel.text = settings?.password_hint
+        passwordHintLabel.hidden = false
+    }
     
     // MARK: - Helper Methods
     
