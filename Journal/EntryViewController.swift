@@ -113,7 +113,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         title = "Journal Entry"
         
         // Post notification that entry was saved - then listen for it in calendar
-        print("posting entryHasSaved notification")
         NSNotificationCenter.defaultCenter().postNotificationName(HasSavedEntryNotificationKey, object: self)
     }
     
