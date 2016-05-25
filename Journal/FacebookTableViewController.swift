@@ -15,7 +15,6 @@ class FacebookTableViewController: UITableViewController {
 
     @IBOutlet weak var noDataLabel: UILabel!
     
-    //var facebookPosts = [FBPost]()
     var facebookPosts: [FBPost] = [] {
         didSet {
             tableView.reloadData()
@@ -28,11 +27,17 @@ class FacebookTableViewController: UITableViewController {
         static var FacebookPostCellReuseIdentifier = "FacebookPostCell"
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FacebookTableViewController.facebookDidRefresh(_:)), name: FacebookDidRefreshNotificationKey, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,6 +78,15 @@ class FacebookTableViewController: UITableViewController {
         configureCell(cell, facebookPost: post)
         
         return cell
+    }
+    
+    
+    // MARK: - Notification Handling
+    
+    func facebookDidRefresh(notification: NSNotification) {
+        print("facebookDidRefresh notification handling method")
+        setFacebookPosts()
+        setNoDataLabel()
     }
     
     
@@ -127,22 +141,35 @@ class FacebookTableViewController: UITableViewController {
 
     }
     
-    @objc private func refresh() {
-        toggleLoginButton()
-        
+    @objc private func refresh() {        
         if FBSDKAccessToken.currentAccessToken() != nil {
             journalFacebook?.requestPosts()
+        } else {
+            toggleLoginButton()
         }
     }
     
     private func toggleLoginButton() {
         if FBSDKAccessToken.currentAccessToken() == nil {
             loginButton = FBSDKLoginButton()
-            loginButton!.center = view.center
+            loginButton?.center = view.center
             view.addSubview(loginButton!)
+            loginButton?.delegate = self
         } else {
             loginButton?.removeFromSuperview()
         }
     }
 
+}
+
+
+extension FacebookTableViewController: FBSDKLoginButtonDelegate {
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        print("facebook did log in")
+        refresh()
+    }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        print("facebook did log out")
+    }
 }

@@ -11,6 +11,8 @@ import CoreData
 import FBSDKCoreKit
 import FBSDKLoginKit
 
+let FacebookDidRefreshNotificationKey = "com.morgandavison.facebookDidRefreshNotificationKey"
+
 class JournalFacebook {
     
     var coreDataStack: CoreDataStack!
@@ -134,9 +136,13 @@ class JournalFacebook {
                     }
                 }
             }
-            
-            coreDataStack.saveContext()
         }
+        
+        coreDataStack.saveContext()
+        
+        // Post notification that posts have been saved
+        NSNotificationCenter.defaultCenter().postNotificationName(FacebookDidRefreshNotificationKey, object: nil)
+        print("posting FacebookDidRefreshNotificationKey")
     }
     
     private func getTimestamp(forTime time: String) -> Int? {

@@ -71,6 +71,8 @@ class MasterViewController: UITableViewController {
 //        if !JournalVariables.userIsAuthenticated {
 //            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
 //        }
+        
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
