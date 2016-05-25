@@ -36,12 +36,6 @@ class MasterViewController: UITableViewController {
         tabBarController?.navigationItem.rightBarButtonItem = addButton
         
         if let split = self.splitViewController {
-            //let controllers = split.viewControllers
-            //entryViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? EntryViewController
-            
-//            let tabBarController = (controllers[controllers.count-1] as! UINavigationController).topViewController as! UITabBarController
-//            entryViewController = tabBarController.viewControllers![0] as? EntryViewController
-            
             split.view.backgroundColor = UIColor.whiteColor()
         }
         
@@ -68,10 +62,6 @@ class MasterViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-//        if !JournalVariables.userIsAuthenticated {
-//            performSegueWithIdentifier(Storyboard.SignInSegueIdentifier, sender: nil)
-//        }
-        
         tableView.reloadData()
     }
 
@@ -93,18 +83,13 @@ class MasterViewController: UITableViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier != Storyboard.SignInSegueIdentifier {
-            //let tabBarController = (segue.destinationViewController as! UINavigationController).topViewController as! UITabBarController
-            //let tabBarNavController = tabBarController.viewControllers![0] as! UINavigationController
-            //let controller = tabBarController.viewControllers![0] as! EntryViewController
             let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             
             if segue.identifier == Storyboard.AddEntrySegueIdentifier {
-                //let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
                 controller.title = "New Entry"
                 controller.addEntry = true
                 controller.coreDataStack = coreDataStack
             } else if segue.identifier == Storyboard.ShowDetailSegueIdentifier {
-    //            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
                 controller.coreDataStack = coreDataStack
                 
                 if let indexPath = tableView.indexPathForSelectedRow {
