@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+let HasSavedEntryNotificationKey = "com.morgandavison.hasSavedEntryNotificationKey"
+
 class EntryViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var dateButton: UIButton!
@@ -109,6 +111,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         saveButton.title = "Saved"
         setDateButton(withEntry: entry)
         title = "Journal Entry"
+        
+        // Post notification that entry was saved - then listen for it in calendar
+        print("posting entryHasSaved notification")
+        NSNotificationCenter.defaultCenter().postNotificationName(HasSavedEntryNotificationKey, object: self)
     }
     
     @IBAction func applyBoldStyle(sender: UIBarButtonItem) {

@@ -29,6 +29,10 @@ class CalendarCollectionViewController: UICollectionViewController {
         var year: Int
         var entries: [Entry]
     }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +47,12 @@ class CalendarCollectionViewController: UICollectionViewController {
             split.view.backgroundColor = UIColor.whiteColor()
             //split.delegate = self
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(CalendarCollectionViewController.entryHasSaved(_:)),
+            name: HasSavedEntryNotificationKey,
+            object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -90,7 +100,6 @@ class CalendarCollectionViewController: UICollectionViewController {
                     if let dayString = cell.dayNumberLabel.text {
                         if let day = Int(dayString) {
                             let date = getDate(forIndexPath: indexPaths[0], andDay: day)
-                            //let calendar = NSCalendar.currentCalendar()
                             let comparison = calendar.compareDate(date, toDate: NSDate(), toUnitGranularity: .Day)
                             
                             // If selected date is in the future, don't perform segue
@@ -212,6 +221,14 @@ class CalendarCollectionViewController: UICollectionViewController {
     */
 
     
+    // MARK: - Notification Handling
+    
+    @objc func entryHasSaved(notification: NSNotification) {
+        setEntries()
+        setMonthsAndYears()
+        collectionView?.reloadData()
+    }
+    
     
     // MARK: - Helper Methods
     
@@ -328,8 +345,6 @@ class CalendarCollectionViewController: UICollectionViewController {
     }
     
     private func getPadding(forMonthAndYear monthAndYear: MonthYear) -> Int {
-        //let calendar = NSCalendar.currentCalendar()
-        
         // Get day of the week for the first day of the month
         let date = getNSDateFromComponents(monthAndYear.year, month: monthAndYear.month, day: 1)
         let components = calendar.components([.Weekday], fromDate: date)
@@ -354,7 +369,6 @@ class CalendarCollectionViewController: UICollectionViewController {
     }
     
     private func getEntry(forIndexPath indexPath: NSIndexPath, andDay day: Int) -> Entry? {
-        //let selectedDate = getNSDateFromComponents(monthsAndYears[indexPath.section].year, month: monthsAndYears[indexPath.section].month, day: day)
         let selectedDate = getDate(forIndexPath: indexPath, andDay: day)
         let entriesForThisMonth = monthsAndYears[indexPath.section].entries
         
