@@ -18,8 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack()
-    var twitter = JournalTwitter()
-    var facebook = JournalFacebook()
     var settings: Settings?
 
 
@@ -50,29 +48,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let entryNavigationController = splitViewController.viewControllers[1] as! UINavigationController
         
-        let entryTabBarController = entryNavigationController.topViewController as! UITabBarController
-        let entryController = entryTabBarController.viewControllers![0] as! EntryViewController
+        //let entryTabBarController = entryNavigationController.topViewController as! UITabBarController
+        //let entryController = entryTabBarController.viewControllers![0] as! EntryViewController
+        
+        let entryController = entryNavigationController.topViewController as! EntryViewController
         
         entryController.coreDataStack = coreDataStack
         
-        twitter.coreDataStack = coreDataStack
-        facebook.coreDataStack = coreDataStack
-        
-        Fabric.with([Twitter.self])
-
-        let facebookApplication = FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        //facebook.logout()
-        //twitter.logout()
-        
-        //return true
-        return facebookApplication
+        return true
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
+//    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+//        
+//        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+//    }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -101,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Determine if user needs to enter password
         authenticate()
         
-        FBSDKAppEvents.activateApp()
+        //FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(application: UIApplication) {

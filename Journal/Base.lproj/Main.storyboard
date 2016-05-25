@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -141,7 +141,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-23" y="1273"/>
+            <point key="canvasLocation" x="-165" y="1273"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
@@ -335,7 +335,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1507" y="-94"/>
+            <point key="canvasLocation" x="1459" y="-474"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="64A-rb-MQO">
@@ -426,138 +426,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="1jl-jL-2vd" kind="relationship" relationship="rootViewController" id="x0G-Gh-0vy"/>
+                        <segue destination="JEX-9P-axG" kind="relationship" relationship="rootViewController" id="ty5-Qb-Iq9"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SLD-UC-DBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-819" y="1273"/>
-        </scene>
-        <!--Facebook-->
-        <scene sceneID="mfL-fP-kmY">
-            <objects>
-                <tableViewController id="OI7-hF-Y4a" customClass="FacebookTableViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="Go2-pO-I32">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <label key="tableFooterView" hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No posts on this day :(" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wLI-8m-FTm">
-                            <rect key="frame" x="0.0" y="192" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FacebookPostCell" rowHeight="100" id="eJq-sz-8jP" customClass="FacebookPostTableViewCell" customModule="Journal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="100"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eJq-sz-8jP" id="7oi-3U-sKE">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="99.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SDc-Bp-ivZ">
-                                            <rect key="frame" x="8" y="8" width="100" height="100"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="100" id="4mb-Pm-WhK"/>
-                                                <constraint firstAttribute="height" constant="100" id="F30-gx-4sg"/>
-                                            </constraints>
-                                        </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cAX-XP-wex">
-                                            <rect key="frame" x="116" y="8" width="476" height="83.5"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        </textView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="cAX-XP-wex" secondAttribute="bottom" id="D3R-MZ-1lR"/>
-                                        <constraint firstAttribute="topMargin" secondItem="SDc-Bp-ivZ" secondAttribute="top" id="YPC-aU-hvh"/>
-                                        <constraint firstItem="cAX-XP-wex" firstAttribute="leading" secondItem="SDc-Bp-ivZ" secondAttribute="trailing" constant="8" id="jfG-H4-OWd"/>
-                                        <constraint firstAttribute="topMargin" secondItem="cAX-XP-wex" secondAttribute="top" id="kWT-su-OGz"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="SDc-Bp-ivZ" secondAttribute="leading" id="nYo-A8-zlr"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="cAX-XP-wex" secondAttribute="trailing" id="udX-Cy-wdC"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="postImageView" destination="SDc-Bp-ivZ" id="Oly-FB-Ns1"/>
-                                    <outlet property="postTextView" destination="cAX-XP-wex" id="GYl-kK-pVt"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="OI7-hF-Y4a" id="0Rz-tH-MMt"/>
-                            <outlet property="delegate" destination="OI7-hF-Y4a" id="f58-Lw-rJO"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="Facebook" id="74T-Kp-Qud"/>
-                    <connections>
-                        <outlet property="noDataLabel" destination="wLI-8m-FTm" id="9Ve-zN-1eL"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="A99-NE-7zV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-23" y="1978"/>
-        </scene>
-        <!--Twitter-->
-        <scene sceneID="4vI-Qv-bQa">
-            <objects>
-                <tableViewController id="mDc-qT-4Kd" customClass="TwitterTableViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="suV-Kp-Qtx">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <label key="tableFooterView" hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tweets on this day :(" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FcU-gy-soi">
-                            <rect key="frame" x="0.0" y="136" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TwitterTweetCell" id="d2D-Op-hot" customClass="TWTRTweetTableViewCell">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d2D-Op-hot" id="85t-6k-QzM">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="mDc-qT-4Kd" id="HJq-At-8Q2"/>
-                            <outlet property="delegate" destination="mDc-qT-4Kd" id="Ykf-lt-ByR"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="Twitter" id="FSg-ZG-PMK"/>
-                    <connections>
-                        <outlet property="noDataLabel" destination="FcU-gy-soi" id="fUC-sI-oxk"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UE7-LE-Ktj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-23" y="2710"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="4he-n1-h9e">
-            <objects>
-                <tabBarController id="1jl-jL-2vd" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="tPQ-e2-qoM"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="bpy-t1-i7B">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="JEX-9P-axG" kind="relationship" relationship="viewControllers" id="Uvj-K3-cGP"/>
-                        <segue destination="OI7-hF-Y4a" kind="relationship" relationship="viewControllers" id="zeF-Cs-onC"/>
-                        <segue destination="mDc-qT-4Kd" kind="relationship" relationship="viewControllers" id="Ytl-IL-J74"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fVk-O4-pmh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-819" y="1978"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="rQC-6E-yoQ">
@@ -597,7 +471,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ra8-fj-cWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="-86"/>
+            <point key="canvasLocation" x="668" y="-466"/>
         </scene>
         <!--Select Date-->
         <scene sceneID="ilt-5J-EW3">
@@ -663,7 +537,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MRc-AD-NGo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2247" y="1161"/>
+            <point key="canvasLocation" x="1135" y="1273"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QOI-aH-d3L">
@@ -681,7 +555,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="26v-Aq-I5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1435" y="1161"/>
+            <point key="canvasLocation" x="481" y="1273"/>
         </scene>
         <!--Settings-->
         <scene sceneID="vYe-cU-fAg">
@@ -1317,6 +1191,6 @@
         <image name="UnderlineIcon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Tll-UG-LXB"/>
+        <segue reference="7Ir-Oj-5e5"/>
     </inferredMetricsTieBreakers>
 </document>

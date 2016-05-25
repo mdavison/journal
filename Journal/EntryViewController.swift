@@ -8,11 +8,6 @@
 
 import UIKit
 import CoreData
-//import FBSDKCoreKit
-//import FBSDKLoginKit
-//import TwitterKit
-
-let TwitterHasLoggedInNotificationKey = "com.morgandavison.twitterHasLoggedInNotificationKey"
 
 class EntryViewController: UIViewController, UITextViewDelegate {
 
@@ -25,7 +20,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var entryDate: NSDate?
     var sinceTimestamp: Int?
     var untilTimestamp: Int?
-    var journalTwitter = JournalTwitter()
     var invalidDate = false
     var styleApplied = ""
     var addEntry = false
@@ -52,46 +46,20 @@ class EntryViewController: UIViewController, UITextViewDelegate {
                 
         JournalVariables.entry = entry
         
-        journalTwitter.coreDataStack = coreDataStack
         entryTextView.delegate = self
         setupView()
         setEntryTimestamps()
         addNotificationObservers()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        tabBarController?.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-        tabBarController?.navigationItem.leftItemsSupplementBackButton = true
-        
-        fixNavigation() // Duplicate tabBarController navigation needs to be shown and hidden depending on orientation
-    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        tabBarController?.navigationItem.title = "Journal Entry"
-        tabBarController?.navigationItem.rightBarButtonItem = saveButton
         
         // Check if an entry already exists for this date
         if entryExists() {
             saveButton.enabled = false
         }
-    }
-    
-
-    
-    // Redraw view when switches orientation
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        
-        coordinator.animateAlongsideTransition({ (context: UIViewControllerTransitionCoordinatorContext) -> Void in
-            self.fixNavigation()
-        }) { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
-            // complete
-        }
-        
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
 
     override func didReceiveMemoryWarning() {
@@ -286,12 +254,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func twitterHasRefreshed(notification: NSNotification) {
-//        twitterTableView.hidden = true
-//        twitterTweets.removeAll()
-//        getTweets()
-//        twitterTableView.hidden = false
-    }
     
     // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512
     @objc private func preferredContentSizeChanged(notification: NSNotification) {
@@ -346,14 +308,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         entryTextView.becomeFirstResponder()
         addDismissKeyboardButton()
-    }
-    
-    private func fixNavigation() {
-        if let hidden = tabBarController?.navigationController?.navigationBarHidden {
-            if hidden == true {
-                tabBarController?.navigationController?.navigationBarHidden = false
-            }
-        }
     }
     
     private func setDateButton(withEntry entry: Entry?) {
@@ -495,11 +449,9 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             let styledFont = UIFont.preferredFontForTextStyle(style)
             var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
             
-            //let fontDict = [NSFontAttributeName: styledFont]
             currentAttributes.updateValue(styledFont, forKey: NSFontAttributeName)
             
             entryTextView.textStorage.beginEditing()
-            //entryTextView.textStorage.setAttributes(fontDict, range: selectedRange)
             entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
             entryTextView.textStorage.endEditing()
         } else {
@@ -553,8 +505,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             var attributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
             attributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
             
-            //let attributes = [NSParagraphStyleAttributeName: newParagraphStyle]
-            
             entryTextView.textStorage.beginEditing()
             entryTextView.textStorage.setAttributes(attributes, range: selectedRange)
             entryTextView.textStorage.endEditing()
@@ -597,7 +547,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
 }
-
 
 
 
