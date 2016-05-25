@@ -55,7 +55,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		9037507D1CA45240006D9D58 /* EntryDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryDateViewController.swift; sourceTree = "<group>"; };
 		9038CB111CDF9D59000F4F71 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9038CB121CDF9D59000F4F71 /* KeychainOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainOptions.swift; sourceTree = "<group>"; };
@@ -140,7 +139,6 @@
 				905456B51C937AD300645C39 /* JournalTests */,
 				905456C01C937AD300645C39 /* JournalUITests */,
 				9054569A1C937AD300645C39 /* Products */,
-				903750771CA41F7B006D9D58 /* TwitterKitResources.bundle */,
 			);
 			sourceTree = "<group>";
 		};
