@@ -18,9 +18,5 @@ extension Entry {
     //@NSManaged var text: String?
     @NSManaged var attributed_text: NSAttributedString?
     @NSManaged var updated_at: NSDate?
-    //@NSManaged var tweets: NSSet?
-    @NSManaged var tweets: Set<Tweet>?
-//    @NSManaged var fbposts: NSSet?
-    @NSManaged var fbposts: Set<FBPost>?
     
 }

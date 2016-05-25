@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="Entry" representedClassName=".Entry" syncable="YES">
         <attribute name="attributed_text" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="updated_at" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="fbposts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FBPost" inverseName="entry" inverseEntity="FBPost" syncable="YES"/>
-        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="entry" inverseEntity="Tweet" syncable="YES"/>
-    </entity>
-    <entity name="FBPost" representedClassName=".FBPost" syncable="YES">
-        <attribute name="created_at_timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="picture" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <relationship name="entry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Entry" inverseName="fbposts" inverseEntity="Entry" syncable="YES"/>
     </entity>
     <entity name="Settings" representedClassName=".Settings" syncable="YES">
         <attribute name="password_hint" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="password_required" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="use_touch_id" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
     </entity>
-    <entity name="Tweet" representedClassName=".Tweet" syncable="YES">
-        <attribute name="created_at_timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="twtrtweet" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="entry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Entry" inverseName="tweets" inverseEntity="Entry" syncable="YES"/>
-    </entity>
     <elements>
-        <element name="Entry" positionX="261" positionY="198" width="128" height="120"/>
-        <element name="FBPost" positionX="288" positionY="261" width="128" height="105"/>
+        <element name="Entry" positionX="261" positionY="198" width="128" height="90"/>
         <element name="Settings" positionX="279" positionY="270" width="128" height="90"/>
-        <element name="Tweet" positionX="261" positionY="225" width="128" height="90"/>
     </elements>
 </model>
