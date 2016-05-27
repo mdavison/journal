@@ -16,12 +16,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var entryTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var editingToolbar: UIToolbar!
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
     var entryDate: NSDate?
-    var sinceTimestamp: Int?
-    var untilTimestamp: Int?
+    //var sinceTimestamp: Int?
+    //var untilTimestamp: Int?
     var invalidDate = false
     var styleApplied = ""
     var addEntry = false
@@ -50,8 +51,14 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         entryTextView.delegate = self
         setupView()
-        setEntryTimestamps()
+        //setEntryTimestamps()
         addNotificationObservers()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBarHidden = false
     }
     
     
@@ -79,37 +86,17 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
     }
 
-
     
     // MARK: - Actions
     
     @IBAction func save(sender: UIBarButtonItem) {
-        if let entry = entry {
-            // Save existing
-            entry.created_at = getButtonDate()
-            entry.updated_at = NSDate()
-            //entry.text = entryTextView.text
-            entry.attributed_text = entryTextView.attributedText
-            
-            coreDataStack.saveContext()
-        } else {
-            // TODO: Should send a notification so calendar (and maybe list too?) can be highlighted when new entry created when in split view
-            // Create new
-            let entryEntity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: coreDataStack.managedObjectContext)
-            entry = Entry(entity: entryEntity!, insertIntoManagedObjectContext: coreDataStack.managedObjectContext)
-            entry?.created_at = getButtonDate()
-            //entry?.text = entryTextView.text
-            entry?.attributed_text = entryTextView.attributedText
-            
-            coreDataStack.saveContext()
-        }
+        entry = Entry.save(withEntry: entry, withDate: Entry.getButtonDate(forButton: dateButton), withText: entryTextView.attributedText, withCoreDataStack: coreDataStack)
         
-        JournalVariables.entry = entry
-        setEntryTimestamps()
+        //setEntryTimestamps()
         
         saveButton.enabled = false
         saveButton.title = "Saved"
-        setDateButton(withEntry: entry)
+        Entry.setDateButton(forDateButton: dateButton, withEntry: entry)
         title = "Journal Entry"
         
         // Post notification that entry was saved - then listen for it in calendar
@@ -117,30 +104,25 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
-        addOrRemoveFontTrait(withName: "bold", andTrait: UIFontDescriptorSymbolicTraits.TraitBold)
+        
+        if let _ = AttributedText.addOrRemoveFontTrait(withName: "bold",
+                                                           withTrait: UIFontDescriptorSymbolicTraits.TraitBold,
+                                                           withEntryTextView: entryTextView) {
+            showTextNotSelectedAlert()
+        }
     }
     
     @IBAction func applyItalicsStyle(sender: UIBarButtonItem) {
-        addOrRemoveFontTrait(withName: "oblique", andTrait: UIFontDescriptorSymbolicTraits.TraitItalic)
+        
+        if let _ = AttributedText.addOrRemoveFontTrait(withName: "oblique",
+                                                       withTrait: UIFontDescriptorSymbolicTraits.TraitItalic,
+                                                       withEntryTextView: entryTextView) {
+            showTextNotSelectedAlert()
+        }
     }
     
     @IBAction func applyUnderlineStyle(sender: UIBarButtonItem) {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
-            
-            if (currentAttributes[NSUnderlineStyleAttributeName] == nil) ||
-                (currentAttributes[NSUnderlineStyleAttributeName]?.integerValue == 0) {
-                currentAttributes.updateValue(1, forKey: NSUnderlineStyleAttributeName)
-            } else {
-                currentAttributes.updateValue(0, forKey: NSUnderlineStyleAttributeName)
-            }
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
+        if let _ = AttributedText.applyUnderlineStyle(withEntryTextView: entryTextView) {
             showTextNotSelectedAlert()
         }
     }
@@ -151,23 +133,23 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         let titleActionTitle = NSLocalizedString("Title", comment: "")
         let titleAction = UIAlertAction(title: titleActionTitle, style: .Default) { (action) in
-            self.applyStyleToSelection(UIFontTextStyleTitle1)
+            AttributedText.applyStyleToSelection(UIFontTextStyleTitle1, withEntryTextView: self.entryTextView)
         }
         let subHeadlineActionTitle = NSLocalizedString("SubHeading", comment: "")
         let subHeadlineAction = UIAlertAction(title: subHeadlineActionTitle, style: .Default) { (action) in
-            self.applyStyleToSelection(UIFontTextStyleSubheadline)
+            AttributedText.applyStyleToSelection(UIFontTextStyleSubheadline, withEntryTextView: self.entryTextView)
         }
         let bodyActionTitle = NSLocalizedString("Body", comment: "")
         let bodyAction = UIAlertAction(title: bodyActionTitle, style: .Default) { (action) in
-            self.applyStyleToSelection(UIFontTextStyleBody)
+            AttributedText.applyStyleToSelection(UIFontTextStyleBody, withEntryTextView: self.entryTextView)
         }
         let footnoteActionTitle = NSLocalizedString("Footnote", comment: "")
         let footnoteAction = UIAlertAction(title: footnoteActionTitle, style: .Default) { (action) in
-            self.applyStyleToSelection(UIFontTextStyleFootnote)
+            AttributedText.applyStyleToSelection(UIFontTextStyleFootnote, withEntryTextView: self.entryTextView)
         }
         let captionActionTitle = NSLocalizedString("Caption", comment: "")
         let captionAction = UIAlertAction(title: captionActionTitle, style: .Default) { (action) in
-            self.applyStyleToSelection(UIFontTextStyleCaption1)
+            AttributedText.applyStyleToSelection(UIFontTextStyleCaption1, withEntryTextView: self.entryTextView)
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
@@ -181,19 +163,28 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         alert.addAction(cancelAction)
         
+        // If on iPad, have to attach to toolbar
+        alert.popoverPresentationController?.sourceView = editingToolbar
+        
         presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func alignTextLeft(sender: UIBarButtonItem) { 
-        setParagraphAlignment(NSTextAlignment.Left)
+        if let _ = AttributedText.setParagraphAlignment(forAlignment: NSTextAlignment.Left, withEntryTextView: entryTextView) {
+            showTextNotSelectedAlert()
+        }
     }
     
     @IBAction func alignTextCenter(sender: UIBarButtonItem) {
-        setParagraphAlignment(NSTextAlignment.Center)
+        if let _ = AttributedText.setParagraphAlignment(forAlignment: NSTextAlignment.Center, withEntryTextView: entryTextView) {
+            showTextNotSelectedAlert()
+        }
     }
     
     @IBAction func alignTextRight(sender: UIBarButtonItem) {
-        setParagraphAlignment(NSTextAlignment.Right)
+        if let _ = AttributedText.setParagraphAlignment(forAlignment: NSTextAlignment.Right, withEntryTextView: entryTextView) {
+            showTextNotSelectedAlert()
+        }
     }
     
     @IBAction func changeTextColor(sender: UIBarButtonItem) {        
@@ -202,31 +193,31 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         let blackActionTitle = NSLocalizedString("Black", comment: "The color black")
         let blackAction = UIAlertAction(title: blackActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.blackColor())
+            AttributedText.changeTextColor(UIColor.blackColor(), forEntryTextView: self.entryTextView)
         }
         let redActionTitle = NSLocalizedString("Red", comment: "The color red")
         let redAction = UIAlertAction(title: redActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.redColor())
+            AttributedText.changeTextColor(UIColor.redColor(), forEntryTextView: self.entryTextView)
         }
         let orangeActionTitle = NSLocalizedString("Orange", comment: "The color orange")
         let orangeAction = UIAlertAction(title: orangeActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.orangeColor())
+            AttributedText.changeTextColor(UIColor.orangeColor(), forEntryTextView: self.entryTextView)
         }
         let yellowActionTitle = NSLocalizedString("Yellow", comment: "The color yellow")
         let yellowAction = UIAlertAction(title: yellowActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.yellowColor())
+            AttributedText.changeTextColor(UIColor.yellowColor(), forEntryTextView: self.entryTextView)
         }
         let greenActionTitle = NSLocalizedString("Green", comment: "The color green")
         let greenAction = UIAlertAction(title: greenActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.greenColor())
+            AttributedText.changeTextColor(UIColor.greenColor(), forEntryTextView: self.entryTextView)
         }
         let blueActionTitle = NSLocalizedString("Blue", comment: "The color blue")
         let blueAction = UIAlertAction(title: blueActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.blueColor())
+            AttributedText.changeTextColor(UIColor.blueColor(), forEntryTextView: self.entryTextView)
         }
         let purpleActionTitle = NSLocalizedString("Purple", comment: "The color purple")
         let purpleAction = UIAlertAction(title: purpleActionTitle, style: .Default) { (action) in
-            self.changeTextColor(UIColor.purpleColor())
+            AttributedText.changeTextColor(UIColor.purpleColor(), forEntryTextView: self.entryTextView)
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
@@ -242,6 +233,9 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         alert.addAction(cancelAction)
         
+        // If on iPad, have to attach to toolbar
+        alert.popoverPresentationController?.sourceView = editingToolbar
+        
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -253,7 +247,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             if notificationEntry == entry {
                 entry = nil
                 JournalVariables.entry = nil
-                JournalVariables.entryTimestamps = nil
+                //JournalVariables.entryTimestamps = nil
                 setupView()
             }
         }
@@ -296,13 +290,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         tabBarController?.navigationItem.rightBarButtonItem = saveButton
         
         if let entry = entry {
-            setDateButton(withEntry: entry)
+            Entry.setDateButton(forDateButton: dateButton, withEntry: entry)
             entryTextView.attributedText = entry.attributed_text
         } else {
             if let entryDate = entryDate {
-                setDateButton(withDate: entryDate)
+                Entry.setDateButton(forDateButton: dateButton, withDate: entryDate)
             } else {
-                setDateButton(withEntry: nil)
+                Entry.setDateButton(forDateButton: dateButton, withEntry: nil)
             }
             saveButton.enabled = false
             entryTextView.attributedText = NSAttributedString()
@@ -315,82 +309,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         addDismissKeyboardButton()
     }
     
-    private func setDateButton(withEntry entry: Entry?) {
-        if let entry = entry {
-            let formatter = getFormatter()
-            dateButton.setTitle(formatter.stringFromDate(entry.created_at!), forState: .Normal)
-        } else {
-            let formatter = getFormatter()
-            dateButton.setTitle(formatter.stringFromDate(NSDate()), forState: .Normal)
-        }
-    }
-    
-    private func setDateButton(withDate date: NSDate) {
-        let formatter = getFormatter()
-        
-        dateButton.setTitle(formatter.stringFromDate(date), forState: .Normal)
-    }
-    
-    private func getButtonDate() -> NSDate {
-        let formatter = getFormatter()
-        let buttonDate = formatter.dateFromString(dateButton.currentTitle!)
-        if let date = buttonDate {
-            return date
-        }
-        
-        return NSDate()
-    }
-    
-    private func getFormatter() -> NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .MediumStyle
-        formatter.timeStyle = .ShortStyle
-        
-        return formatter
-    }
-    
-    private func getEntryTimestamps() -> [String: Int] {
-        let calendar = NSCalendar.currentCalendar()
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        var since = NSDate()
-        var until = NSDate()
-        
-        if let entry = entry {
-            if let createdAt = entry.created_at {
-                // get date portion only of createdAt
-                let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: createdAt)
-                
-                // set the time to midnight and the last second
-                let entryDateBegin = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
-                let entryDateEnd = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
-                
-                since = formatter.dateFromString(entryDateBegin)!
-                until = formatter.dateFromString(entryDateEnd)!
-            }
-        } else {
-            let currentDateComponents = calendar.components([.Day, .Month, .Year], fromDate: NSDate())
-            let currentDateBegin = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 00:00:00"
-            let currentDateEnd = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 23:59:59"
-            
-            since = formatter.dateFromString(currentDateBegin)!
-            until = formatter.dateFromString(currentDateEnd)!
-        }
-        
-        let sinceTimestamp = Int(since.timeIntervalSince1970)
-        let untilTimestamp = Int(until.timeIntervalSince1970)
-        
-        return ["since": sinceTimestamp, "until": untilTimestamp]
-    }
-    
-    private func setEntryTimestamps() {
-        let timestamps = getEntryTimestamps()
-        
-        JournalVariables.entryTimestamps = timestamps
-        
-        sinceTimestamp = timestamps["since"]
-        untilTimestamp = timestamps["until"]
-    }
     
     private func entryExists() -> Bool {
         if entry == nil { // Adding a new entry
@@ -446,101 +364,9 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    // Heading, Subheading, etc.
-    private func applyStyleToSelection(style: String) {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            let styledFont = UIFont.preferredFontForTextStyle(style)
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
-            
-            currentAttributes.updateValue(styledFont, forKey: NSFontAttributeName)
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            showTextNotSelectedAlert()
-        }
-    }
-    
-    private func addOrRemoveFontTrait(withName name: String, andTrait trait: UIFontDescriptorSymbolicTraits) {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
-            let currentFontAttributes = currentAttributes[NSFontAttributeName]
-            let fontDescriptor = currentFontAttributes!.fontDescriptor
-            let currentFontSize = CGFloat(fontDescriptor().fontAttributes()["NSFontSizeAttribute"]! as! NSNumber)
-            
-            var changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(trait)
-            
-            if let fontNameAttribute = fontDescriptor().fontAttributes()["NSFontNameAttribute"] as? String {
-                if fontNameAttribute.lowercaseString.rangeOfString(name) == nil {
-                    let existingTraitsRaw = fontDescriptor().symbolicTraits.rawValue | trait.rawValue
-                    let existingTraits = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsRaw)
-                    changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(existingTraits)
-                } else {
-                    let existingTraitsWithoutTraitRaw = fontDescriptor().symbolicTraits.rawValue & ~trait.rawValue
-                    let existingTraitsWithoutTrait = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsWithoutTraitRaw)
-                    changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(existingTraitsWithoutTrait)
-                }
-            }
-            
-            let updatedFont = UIFont(descriptor: changedFontDescriptor, size: currentFontSize)
-
-            currentAttributes.updateValue(updatedFont, forKey: NSFontAttributeName)
-            
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            showTextNotSelectedAlert()
-        }
-    }
-    
-    private func setParagraphAlignment(alignment: NSTextAlignment) {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            let newParagraphStyle = NSMutableParagraphStyle()
-            newParagraphStyle.alignment = alignment
-            
-            var attributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
-            attributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(attributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            showTextNotSelectedAlert()
-        }
-    }
-    
-    private func changeTextColor(color: UIColor) {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
-            
-            if (currentAttributes[NSForegroundColorAttributeName] == nil) ||
-                (currentAttributes[NSForegroundColorAttributeName] as! UIColor != color) {
-                
-                currentAttributes.updateValue(color, forKey: NSForegroundColorAttributeName)
-            }
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            showTextNotSelectedAlert()
-        }
-    }
-    
     private func showTextNotSelectedAlert() {
         let alertMessage = NSLocalizedString("Please select some text in order to apply styles.", comment: "")
-        let alertTitle = NSLocalizedString("Nothing Selected", comment: "")
+        let alertTitle = NSLocalizedString("Select Text", comment: "")
         let actionTitle = NSLocalizedString("OK", comment: "")
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
@@ -557,7 +383,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
 
 extension EntryViewController: EntryDateViewControllerDelegate {
     func entryDateViewController(controller: EntryDateViewController, didSaveDate date: NSDate) {
-        setDateButton(withDate: date)
+        Entry.setDateButton(forDateButton: dateButton, withDate: date)
         
         invalidDate = false
         
@@ -567,7 +393,7 @@ extension EntryViewController: EntryDateViewControllerDelegate {
             coreDataStack.saveContext()
             
             // Update the timestamps
-            setEntryTimestamps()
+            //setEntryTimestamps()
         }
     }
 }

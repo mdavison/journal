@@ -11,6 +11,6 @@ import Foundation
 struct JournalVariables {
     static var userIsAuthenticated = false
     static var entry: Entry?
-    static var entryTimestamps: [String: Int]?
+    //static var entryTimestamps: [String: Int]?
     static var loggedInTwitter = false 
 }

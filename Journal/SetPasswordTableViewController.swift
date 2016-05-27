@@ -65,7 +65,6 @@ class SetPasswordTableViewController: UITableViewController {
     
     @IBAction func done(sender: UIBarButtonItem) {
         validatePassword()
-        print("hint: \(hintTextField.text)")
         if passwordIsValid {
             if let password = passwordTextField.text {
                 delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password, hint: hintTextField.text, touchID: useTouchIDSwitch.on)
@@ -90,29 +89,29 @@ class SetPasswordTableViewController: UITableViewController {
         if passwordTextField.text!.characters.count == 0 {
             passwordIsValid = false
             
-            let alertTitle = NSLocalizedString("Enter a Password", comment: "Password text field is blank.")
-            let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion:nil)
+            invalidPasswordAlert("Enter a Password", titleComment: "Password text field is blank.")
             
             return
         }
         if passwordTextField.text != verifyPasswordTextField.text {
             passwordIsValid = false
             
-            let alertTitle = NSLocalizedString("Passwords Don't Match", comment: "Password and Confirm Password text fields are not the same.")
-            let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion:nil)
+            invalidPasswordAlert("Passwords Don't Match", titleComment: "Password and Confirm Password text fields are not the same.")
             
             return
         }
         
         passwordIsValid = true
+    }
+    
+    private func invalidPasswordAlert(title: String, titleComment: String) {
+        let alertTitle = NSLocalizedString(title, comment: titleComment)
+        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .Alert)
+        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion:nil)
+
     }
     
     private func touchIDEnabled() -> Bool {

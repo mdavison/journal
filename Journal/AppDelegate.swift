@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let tabBarController = masterNavigationController.viewControllers[0] as! UITabBarController
         let tabBarMasterNavController = tabBarController.viewControllers![0] as! UINavigationController
         let masterViewController = tabBarMasterNavController.viewControllers[0] as! MasterViewController
-        masterViewController.managedObjectContext = coreDataStack.managedObjectContext
+        //masterViewController.managedObjectContext = coreDataStack.managedObjectContext
         masterViewController.coreDataStack = coreDataStack
         
         let tabBarCalendarNavController = tabBarController.viewControllers![1] as! UINavigationController

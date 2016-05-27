@@ -135,6 +135,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="dateButton" destination="44C-kb-TuA" id="RRo-Jb-a7d"/>
+                        <outlet property="editingToolbar" destination="8W7-Ie-gYm" id="V0L-h6-cRa"/>
                         <outlet property="entryTextView" destination="niX-it-HWc" id="UWj-Ls-bZG"/>
                         <outlet property="saveButton" destination="lto-Mo-wCV" id="Xge-fw-ApK"/>
                     </connections>
@@ -277,7 +278,7 @@
                     </collectionView>
                     <navigationItem key="navigationItem" title="Calendar" id="9ff-MV-9C9"/>
                     <connections>
-                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="AddEntryFromCalendarCollection" id="357-TG-ddf"/>
+                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="AddEntryFromCalendarCollection" id="R2L-Dg-hI6"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vRi-t1-A66" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -568,7 +569,7 @@
                         <sections>
                             <tableViewSection id="VMn-aa-FDw">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="djz-Xj-ZCO">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="djz-Xj-ZCO">
                                         <rect key="frame" x="0.0" y="99" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="djz-Xj-ZCO" id="j8y-oN-mPH">
@@ -675,7 +676,7 @@
                         <sections>
                             <tableViewSection headerTitle="Change your password" id="Wny-CH-hws">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="71S-Qm-Bb5">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="71S-Qm-Bb5">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="71S-Qm-Bb5" id="PV8-fa-8Ju">
@@ -719,7 +720,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="f3l-DI-Vqd">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="f3l-DI-Vqd">
                                         <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f3l-DI-Vqd" id="rsU-qf-DIE">
@@ -763,7 +764,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GXM-Sl-Hg4">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="GXM-Sl-Hg4">
                                         <rect key="frame" x="0.0" y="201.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GXM-Sl-Hg4" id="au5-zo-BRD">
@@ -803,7 +804,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="agZ-ts-yzC">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="agZ-ts-yzC">
                                         <rect key="frame" x="0.0" y="245.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="agZ-ts-yzC" id="569-5X-AfH">
@@ -847,7 +848,7 @@
                             </tableViewSection>
                             <tableViewSection footerTitle="IMPORTANT: If you forget this password, you won't be able to view any of your journal entries" id="6Cc-WD-yMX">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5wp-S2-Gpe">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="5wp-S2-Gpe">
                                         <rect key="frame" x="0.0" y="325.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5wp-S2-Gpe" id="AKz-7B-sZe">
@@ -956,7 +957,7 @@
                         <sections>
                             <tableViewSection headerTitle="Create a password for all your journal entries" id="ShC-VI-fUX">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="7IO-LZ-aIX">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="7IO-LZ-aIX">
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7IO-LZ-aIX" id="iRb-PE-uuQ">
@@ -1000,7 +1001,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1iz-8k-TpF">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="1iz-8k-TpF">
                                         <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1iz-8k-TpF" id="JsH-Z4-a5l">
@@ -1040,7 +1041,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BqE-Jy-kyM">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="BqE-Jy-kyM">
                                         <rect key="frame" x="0.0" y="201.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BqE-Jy-kyM" id="hTj-Fc-xd1">
@@ -1084,7 +1085,7 @@
                             </tableViewSection>
                             <tableViewSection footerTitle="IMPORTANT: If you forget this password, you won't be able to view any of your journal entries" id="d2D-9B-uAl">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Bnh-Ph-6bS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Bnh-Ph-6bS">
                                         <rect key="frame" x="0.0" y="281.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bnh-Ph-6bS" id="7ZZ-xn-MVW">
@@ -1191,6 +1192,6 @@
         <image name="UnderlineIcon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7Ir-Oj-5e5"/>
+        <segue reference="12W-Di-MNP"/>
     </inferredMetricsTieBreakers>
 </document>

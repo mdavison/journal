@@ -26,7 +26,6 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         //clearAllSettings()
-        //KeychainWrapper.standardKeychainAccess().removeObjectForKey("password")
         setSettings()
         setupView()
     }
@@ -92,24 +91,24 @@ class SettingsTableViewController: UITableViewController {
     }
     
     @IBAction func exportEntries(sender: UIButton) {
-        if let entries = Entry.getAllEntries(coreDataStack) {
-            if let data = Entry.getExportData(forEntries: entries) {
-                let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-                let documentsDirectory = paths[0] as NSString
-                let filename = documentsDirectory.stringByAppendingPathComponent("journal_entries.txt")
+        let (urlForExportData, error) = Entry.getURLForExportData(withCoreDataStack: coreDataStack)
+        
+        if let url = urlForExportData {
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            
+            if let popoverController = activityViewController.popoverPresentationController {
+                popoverController.sourceView = sender
+            }
+            
+            presentViewController(activityViewController, animated: true, completion: nil)
+        } else {
+            // Show error alert
+            if let error = error {
+                let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+                let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                alertController.addAction(action)
                 
-                data.writeToFile(filename, atomically: true)
-                let url = NSURL(fileURLWithPath: filename)
-                
-                let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                
-                if let popoverController = activityViewController.popoverPresentationController {
-                    popoverController.sourceView = sender
-                }
-                
-                presentViewController(activityViewController, animated: true, completion: nil)
-            } else {
-                NSLog("Unable to prepare data")
+                presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -117,16 +116,8 @@ class SettingsTableViewController: UITableViewController {
     // MARK: - Helper Methods
     
     private func setSettings() {
-        let fetchRequest = NSFetchRequest(entityName: "Settings")
-        
-        do {
-            if let settingsArray = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Settings] {
-                if let setting = settingsArray.last {
-                    settings = setting
-                }
-            }
-        } catch let error as NSError {
-            NSLog("Error: \(error) " + "description \(error.localizedDescription)")
+        if let settings = Settings.getSettings(withCoreDataStack: coreDataStack) {
+            self.settings = settings
         }
     }
     
@@ -139,63 +130,20 @@ class SettingsTableViewController: UITableViewController {
     }
     
     private func saveSettings(passwordRequired: Bool?, password: String?, hint: String?, touchID: Bool?) {
-        if let settings = settings {
-            // Update existing
-            if let required = passwordRequired {
-                settings.password_required = required
-            }
-            if let hint = hint {
-                settings.password_hint = hint
-            }
-            if let touchID = touchID {
-                settings.use_touch_id = touchID
-            }
-        } else {
-            // Create new
-            if let entity = NSEntityDescription.entityForName("Settings", inManagedObjectContext: coreDataStack.managedObjectContext) {
-                let settings = Settings(entity: entity, insertIntoManagedObjectContext: coreDataStack.managedObjectContext)
-                
-                if let required = passwordRequired {
-                    settings.password_required = required
-                }
-                if let hint = hint {
-                    settings.password_hint = hint
-                }
-                if let touchID = touchID {
-                    settings.use_touch_id = touchID
-                }
-            }
+        if let settings = Settings.saveSettings(withCoreDataStack: coreDataStack,
+                                                passwordRequired: passwordRequired,
+                                                password: password,
+                                                hint: hint,
+                                                touchID: touchID) {
+            self.settings = settings
         }
-        
-        if let password = password {
-            KeychainWrapper.standardKeychainAccess().setString(password, forKey: "password")
-        }
-        
-        coreDataStack.saveContext()
-        setSettings()
     }
     
 
     
     // For development 
     private func clearAllSettings() {
-        print("clearAllSettings")
-        let fetchRequest = NSFetchRequest(entityName: "Settings")
-        
-        do {
-            if let settingsArray = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Settings] {
-                for setting in settingsArray {
-                    print("deleting object: \(setting)")
-                    coreDataStack.managedObjectContext.deleteObject(setting)
-                }
-                coreDataStack.saveContext()
-            }
-        } catch let error as NSError {
-            NSLog("Error: \(error) " + "description \(error.localizedDescription)")
-        }
-        
-        // Clear keychain password
-        KeychainWrapper.standardKeychainAccess().removeObjectForKey("password")
+        Settings.clearAllSettings(withCoreDataStack: coreDataStack)
     }
     
 }

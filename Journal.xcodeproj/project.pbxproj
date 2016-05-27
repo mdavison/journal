@@ -12,6 +12,9 @@
 		9038CB171CDF9D59000F4F71 /* KeychainOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9038CB121CDF9D59000F4F71 /* KeychainOptions.swift */; };
 		9038CB181CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9038CB131CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift */; };
 		9038CB191CDF9D59000F4F71 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9038CB141CDF9D59000F4F71 /* KeychainWrapper.swift */; };
+		904C49DB1CF762F900574139 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C49DA1CF762F900574139 /* Calendar.swift */; };
+		904C49DE1CF795C100574139 /* MonthYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C49DD1CF795C100574139 /* MonthYear.swift */; };
+		904C49E11CF8B03500574139 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C49E01CF8B03500574139 /* AttributedText.swift */; };
 		9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054569C1C937AD300645C39 /* AppDelegate.swift */; };
 		905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9054569E1C937AD300645C39 /* Journal.xcdatamodeld */; };
 		905456A21C937AD300645C39 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A11C937AD300645C39 /* MasterViewController.swift */; };
@@ -61,6 +64,9 @@
 		9038CB131CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeychainWrapper+Experimental.swift"; sourceTree = "<group>"; };
 		9038CB141CDF9D59000F4F71 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		9038CB151CDF9D59000F4F71 /* SwiftKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftKeychainWrapper.h; sourceTree = "<group>"; };
+		904C49DA1CF762F900574139 /* Calendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
+		904C49DD1CF795C100574139 /* MonthYear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthYear.swift; sourceTree = "<group>"; };
+		904C49E01CF8B03500574139 /* AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		905456991C937AD300645C39 /* Journal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Journal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9054569C1C937AD300645C39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9054569F1C937AD300645C39 /* Journal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Journal.xcdatamodel; sourceTree = "<group>"; };
@@ -131,6 +137,16 @@
 			path = SwiftKeychainWrapper;
 			sourceTree = "<group>";
 		};
+		904C49DC1CF7630800574139 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				904C49DA1CF762F900574139 /* Calendar.swift */,
+				904C49E01CF8B03500574139 /* AttributedText.swift */,
+				904C49DD1CF795C100574139 /* MonthYear.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		905456901C937AD300645C39 = {
 			isa = PBXGroup;
 			children = (
@@ -166,10 +182,11 @@
 				909F714C1CE0DE250085C617 /* ChangePasswordTableViewController.swift */,
 				905456A31C937AD300645C39 /* EntryViewController.swift */,
 				9037507D1CA45240006D9D58 /* EntryDateViewController.swift */,
-				9054569C1C937AD300645C39 /* AppDelegate.swift */,
-				90E9DB721CB2D7A70092C7AB /* JournalVariables.swift */,
-				9038CB101CDF9D59000F4F71 /* SwiftKeychainWrapper */,
+				904C49DC1CF7630800574139 /* Models */,
 				905456D21C96F8DE00645C39 /* CoreData */,
+				90E9DB721CB2D7A70092C7AB /* JournalVariables.swift */,
+				9054569C1C937AD300645C39 /* AppDelegate.swift */,
+				9038CB101CDF9D59000F4F71 /* SwiftKeychainWrapper */,
 				905456A81C937AD300645C39 /* Assets.xcassets */,
 				905456A51C937AD300645C39 /* Main.storyboard */,
 				905456AA1C937AD300645C39 /* LaunchScreen.storyboard */,
@@ -383,10 +400,13 @@
 				90E9DB7F1CB5BB680092C7AB /* SetPasswordTableViewController.swift in Sources */,
 				90E9DB7D1CB3F0BA0092C7AB /* Settings.swift in Sources */,
 				90A559F21CADDFA90085F72A /* CalendarCollectionViewController.swift in Sources */,
+				904C49DB1CF762F900574139 /* Calendar.swift in Sources */,
+				904C49E11CF8B03500574139 /* AttributedText.swift in Sources */,
 				90A559F41CB2D1490085F72A /* SignInViewController.swift in Sources */,
 				905456D11C96F8D800645C39 /* CoreDataStack.swift in Sources */,
 				90E9DB731CB2D7A70092C7AB /* JournalVariables.swift in Sources */,
 				9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */,
+				904C49DE1CF795C100574139 /* MonthYear.swift in Sources */,
 				905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */,
 				905456A21C937AD300645C39 /* MasterViewController.swift in Sources */,
 				9037507E1CA45240006D9D58 /* EntryDateViewController.swift in Sources */,

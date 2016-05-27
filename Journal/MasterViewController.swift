@@ -14,8 +14,7 @@ let EntryWasDeletedNotificationKey = "com.morgandavison.entryWasDeletedNotificat
 class MasterViewController: UITableViewController {
 
     var coreDataStack: CoreDataStack!
-    //var entryViewController: EntryViewController? = nil
-    var managedObjectContext: NSManagedObjectContext? = nil
+    //var managedObjectContext: NSManagedObjectContext? = nil
     
     struct Storyboard {
         static var AddEntrySegueIdentifier = "AddEntry"
@@ -26,7 +25,7 @@ class MasterViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-                                
+                                        
         self.navigationController?.navigationBarHidden = true
         tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
         tabBarController?.title = "Main"
@@ -85,7 +84,7 @@ class MasterViewController: UITableViewController {
         if segue.identifier != Storyboard.SignInSegueIdentifier {
             let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
             
-            if segue.identifier == Storyboard.AddEntrySegueIdentifier {
+            if segue.identifier == Storyboard.AddEntrySegueIdentifier {                
                 controller.title = "New Entry"
                 controller.addEntry = true
                 controller.coreDataStack = coreDataStack
@@ -139,19 +138,6 @@ class MasterViewController: UITableViewController {
         }
     }
     
-//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-////        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-////        let textLabel = cell.textLabel
-////        let detailTextLabel = cell.detailTextLabel
-////        
-////        textLabel?.sizeToFit()
-////        detailTextLabel?.sizeToFit()
-////        
-////        return (textLabel!.frame.height + detailTextLabel!.frame.height) * 1.7
-//        
-//        return tableView.estimatedRowHeight
-//    }
-    
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         let textLabel = cell.textLabel
@@ -164,7 +150,6 @@ class MasterViewController: UITableViewController {
     }
     
 
-    
 
     // MARK: - Fetched results controller
 
@@ -173,36 +158,41 @@ class MasterViewController: UITableViewController {
             return _fetchedResultsController!
         }
         
-        let fetchRequest = NSFetchRequest()
-        // Edit the entity name as appropriate.
-        let entity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: self.managedObjectContext!)
-        fetchRequest.entity = entity
+//        let fetchRequest = NSFetchRequest()
+//        // Edit the entity name as appropriate.
+//        let entity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: self.managedObjectContext!)
+//        fetchRequest.entity = entity
+//        
+//        // Set the batch size to a suitable number.
+//        fetchRequest.fetchBatchSize = 20
+//        
+//        // Edit the sort key as appropriate.
+//        let sortDescriptor = NSSortDescriptor(key: "created_at", ascending: false)
+//        
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//        
+//        // Edit the section name key path and cache name if appropriate.
+//        // nil for section name key path means "no sections".
+//        //let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
+//        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+//        aFetchedResultsController.delegate = self
+//        _fetchedResultsController = aFetchedResultsController
+//        
+//        do {
+//            try _fetchedResultsController!.performFetch()
+//        } catch let error as NSError {
+//             // Replace this implementation with code to handle the error appropriately.
+//             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+//             //print("Unresolved error \(error), \(error.userInfo)")
+//             //abort()
+//            
+//            print("Error: \(error) \n" + "Description: \(error.localizedDescription)")
+//        }
         
-        // Set the batch size to a suitable number.
-        fetchRequest.fetchBatchSize = 20
         
-        // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "created_at", ascending: false)
-        
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        // Edit the section name key path and cache name if appropriate.
-        // nil for section name key path means "no sections".
-        //let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
-        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-        aFetchedResultsController.delegate = self
-        _fetchedResultsController = aFetchedResultsController
-        
-        do {
-            try _fetchedResultsController!.performFetch()
-        } catch let error as NSError {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-             //print("Unresolved error \(error), \(error.userInfo)")
-             //abort()
-            
-            print("Error: \(error) \n" + "Description: \(error.localizedDescription)")
-        }
+        let fetchedResultsController = Entry.getFetchedResultsController(coreDataStack)
+        fetchedResultsController.delegate = self
+        _fetchedResultsController = fetchedResultsController
         
         return _fetchedResultsController!
     }    
