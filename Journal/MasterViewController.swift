@@ -42,6 +42,11 @@ class MasterViewController: UITableViewController {
                                                          selector: #selector(MasterViewController.preferredContentSizeChanged(_:)),
                                                          name: UIContentSizeCategoryDidChangeNotification,
                                                          object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(MasterViewController.persistentStoreCoordinatorStoresDidChange(_:)),
+                                                         name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
+                                                         object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -62,6 +67,9 @@ class MasterViewController: UITableViewController {
         super.viewDidAppear(animated)
         
         tableView.reloadData()
+        
+        // Reset to get latest results
+        _fetchedResultsController = nil 
     }
 
     override func didReceiveMemoryWarning() {
@@ -205,6 +213,11 @@ class MasterViewController: UITableViewController {
     // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512 
     @objc private func preferredContentSizeChanged(notification: NSNotification) {
         print("preferredContentSizeChanged")
+        tableView.reloadData()
+    }
+    
+    @objc private func persistentStoreCoordinatorStoresDidChange(notification: NSNotification) {
+        _fetchedResultsController = nil
         tableView.reloadData()
     }
     

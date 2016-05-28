@@ -46,6 +46,11 @@ class CalendarCollectionViewController: UICollectionViewController {
             selector: #selector(CalendarCollectionViewController.entryHasSaved(_:)),
             name: HasSavedEntryNotificationKey,
             object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: #selector(CalendarCollectionViewController.persistentStoreCoordinatorStoresDidChange(_:)),
+            name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
+            object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -162,6 +167,12 @@ class CalendarCollectionViewController: UICollectionViewController {
     // MARK: - Notification Handling
     
     @objc func entryHasSaved(notification: NSNotification) {
+        setEntries()
+        setMonthsYears()
+        collectionView?.reloadData()
+    }
+    
+    @objc private func persistentStoreCoordinatorStoresDidChange(notification: NSNotification) {
         setEntries()
         setMonthsYears()
         collectionView?.reloadData()
