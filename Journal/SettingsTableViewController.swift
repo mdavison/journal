@@ -12,7 +12,7 @@ import CoreData
 class SettingsTableViewController: UITableViewController {
 
     @IBOutlet weak var passwordRequiredSwitch: UISwitch!
-    @IBOutlet weak var changePasswordButton: UIButton!
+    @IBOutlet weak var changePasswordLabel: UILabel!
     
     var coreDataStack: CoreDataStack!
     var settings: Settings?
@@ -36,7 +36,8 @@ class SettingsTableViewController: UITableViewController {
         // Remove duplicate nav controller
         tabBarController?.navigationController?.navigationBarHidden = true
         
-        changePasswordButton.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
+        //changePasswordButton.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
+        changePasswordLabel.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,6 +47,16 @@ class SettingsTableViewController: UITableViewController {
 
     
     // MARK: - Navigation
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == Storyboard.ChangePasswordSegueIdentifier {
+            if !KeychainWrapper.standardKeychainAccess().hasValueForKey("password") {
+                return false
+            }
+        }
+        
+        return true 
+    }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -598,27 +598,25 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="VTP-oY-5va">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="ShU-Tq-g8i" style="IBUITableViewCellStyleDefault" id="VTP-oY-5va">
                                         <rect key="frame" x="0.0" y="143" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VTP-oY-5va" id="Hui-uM-fEp">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dft-y8-WgK">
-                                                    <rect key="frame" x="16" y="7" width="576" height="30"/>
-                                                    <state key="normal" title="Change Password"/>
-                                                    <connections>
-                                                        <segue destination="7fQ-Fo-IMh" kind="presentation" identifier="ChangePassword" id="iec-zU-OXR"/>
-                                                    </connections>
-                                                </button>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Change Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ShU-Tq-g8i">
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="dft-y8-WgK" firstAttribute="leading" secondItem="Hui-uM-fEp" secondAttribute="leadingMargin" constant="8" id="BQa-bN-HiC"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="dft-y8-WgK" secondAttribute="trailing" id="cIU-4H-gf2"/>
-                                                <constraint firstItem="dft-y8-WgK" firstAttribute="centerY" secondItem="Hui-uM-fEp" secondAttribute="centerY" id="pdy-4L-0xo"/>
-                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="7fQ-Fo-IMh" kind="presentation" identifier="ChangePassword" id="o8Q-xi-NcS"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -656,7 +654,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="R0D-hK-eya"/>
                     <connections>
-                        <outlet property="changePasswordButton" destination="dft-y8-WgK" id="QAA-KB-mwB"/>
+                        <outlet property="changePasswordLabel" destination="ShU-Tq-g8i" id="Eg9-UT-7AX"/>
                         <outlet property="passwordRequiredSwitch" destination="TUf-aX-Q4H" id="Xug-Je-USJ"/>
                         <segue destination="jPf-Tg-eG0" kind="presentation" identifier="SetPassword" id="wDz-Gf-g9d"/>
                     </connections>
