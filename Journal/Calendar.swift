@@ -107,7 +107,7 @@ class Calendar {
         }
     }
     
-    func getDate(forIndexPath indexPath: NSIndexPath, withDay day: Int, withMonthsYears monthsYears: [MonthYear]) -> NSDate {
+    func getDate(forIndexPath indexPath: NSIndexPath, withDay day: Int, withMonthsYears monthsYears: [MonthYear]) -> NSDate {        
         return getNSDateFromComponents(monthsYears[indexPath.section].year, month: monthsYears[indexPath.section].month, day: day)
     }
     
@@ -162,13 +162,19 @@ class Calendar {
 
     
     private func getNSDateFromComponents(year: Int, month: Int, day: Int?) -> NSDate {
-        //let calendar = NSCalendar.currentCalendar()
         let components = NSDateComponents()
+        
         components.month = month
         components.year = year
         if let day = day {
             components.day = day
         }
+        
+        let currentTimeComponents = currentCalendar.components([.Hour, .Minute, .Second], fromDate: NSDate())
+        
+        components.hour = currentTimeComponents.hour
+        components.minute = currentTimeComponents.minute
+        components.second = currentTimeComponents.second
         
         return currentCalendar.dateFromComponents(components)!
     }

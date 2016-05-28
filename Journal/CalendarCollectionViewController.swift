@@ -109,7 +109,6 @@ class CalendarCollectionViewController: UICollectionViewController {
         } else if segue.identifier == Storyboard.ShowEntrySegueIdentifier {
             controller.coreDataStack = coreDataStack
             
-            // If there is an entry for selected cell
             if let indexPaths = collectionView?.indexPathsForSelectedItems() {
                 let indexPath = indexPaths[0]
                 
