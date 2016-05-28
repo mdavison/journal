@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EntryViewController" customModule="Journal" customModuleProvider="target">
+            <connections>
+                <outlet property="editingToolbar" destination="di2-uP-Xvk" id="qss-Wa-Z4C"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="di2-uP-Xvk" customClass="EditingToolbar" customModule="Journal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <items>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="ee0-m6-jpt"/>
+                <barButtonItem image="BoldIcon" id="axY-nN-yKS">
+                    <connections>
+                        <action selector="applyBoldStyle:" destination="-1" id="auw-zr-eG0"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="ItalicsIcon" id="QwF-bA-ijo">
+                    <connections>
+                        <action selector="applyItalicsStyle:" destination="-1" id="bTf-vC-gj6"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="UnderlineIcon" id="dNK-ZB-USJ">
+                    <connections>
+                        <action selector="applyUnderlineStyle:" destination="-1" id="MSi-r4-cih"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="AlignLeftIcon" id="3FN-bR-kVQ">
+                    <connections>
+                        <action selector="alignTextLeft:" destination="-1" id="mZM-go-jfx"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="AlignCenterIcon" id="jNm-Fi-exd">
+                    <connections>
+                        <action selector="alignTextCenter:" destination="-1" id="wqP-ee-ANR"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="AlignRightIcon" id="6w2-60-2XW">
+                    <connections>
+                        <action selector="alignTextRight:" destination="-1" id="0eE-kM-czS"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="TextColorIcon" id="l2m-0U-oBf">
+                    <connections>
+                        <action selector="changeTextColor:" destination="-1" id="fW3-WT-Fmm"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="ParagraphIcon" id="3Jj-Di-LrX">
+                    <connections>
+                        <action selector="applySize:" destination="-1" id="urJ-Pf-IkX"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="xFi-BJ-BV3"/>
+            </items>
+        </toolbar>
+    </objects>
+    <resources>
+        <image name="AlignCenterIcon" width="25" height="25"/>
+        <image name="AlignLeftIcon" width="25" height="25"/>
+        <image name="AlignRightIcon" width="25" height="25"/>
+        <image name="BoldIcon" width="25" height="25"/>
+        <image name="ItalicsIcon" width="25" height="25"/>
+        <image name="ParagraphIcon" width="25" height="25"/>
+        <image name="TextColorIcon" width="25" height="25"/>
+        <image name="UnderlineIcon" width="25" height="25"/>
+    </resources>
+</document>

@@ -16,13 +16,11 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var entryTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var editingToolbar: UIToolbar!
+    @IBOutlet var editingToolbar: EditingToolbar!
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
     var entryDate: NSDate?
-    //var sinceTimestamp: Int?
-    //var untilTimestamp: Int?
     var invalidDate = false
     var styleApplied = ""
     var addEntry = false
@@ -51,7 +49,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         entryTextView.delegate = self
         setupView()
-        //setEntryTimestamps()
         addNotificationObservers()
     }
     
@@ -91,8 +88,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func save(sender: UIBarButtonItem) {
         entry = Entry.save(withEntry: entry, withDate: Entry.getButtonDate(forButton: dateButton), withText: entryTextView.attributedText, withCoreDataStack: coreDataStack)
-        
-        //setEntryTimestamps()
         
         saveButton.enabled = false
         saveButton.title = "Saved"
@@ -306,7 +301,12 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
         
         entryTextView.becomeFirstResponder()
-        addDismissKeyboardButton()
+        //addDismissKeyboardButton()
+        
+        // Add the toolbar
+        if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
+            entryTextView.inputAccessoryView = toolbar
+        }
     }
     
     
@@ -355,14 +355,14 @@ class EntryViewController: UIViewController, UITextViewDelegate {
 
     }
     
-    private func addDismissKeyboardButton() {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            let dismissKeyboardButtonItem = UIBarButtonItem(image: UIImage(named: "HideKeyboard"), style: .Plain, target: entryTextView, action: #selector(UIResponder.resignFirstResponder))
-            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
-            toolbar.items = [dismissKeyboardButtonItem]
-            entryTextView.inputAccessoryView = toolbar
-        }
-    }
+//    private func addDismissKeyboardButton() {
+//        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+//            let dismissKeyboardButtonItem = UIBarButtonItem(image: UIImage(named: "HideKeyboard"), style: .Plain, target: entryTextView, action: #selector(UIResponder.resignFirstResponder))
+//            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
+//            toolbar.items = [dismissKeyboardButtonItem]
+//            entryTextView.inputAccessoryView = toolbar
+//        }
+//    }
     
     private func showTextNotSelectedAlert() {
         let alertMessage = NSLocalizedString("Please select some text in order to apply styles.", comment: "")
@@ -391,9 +391,6 @@ extension EntryViewController: EntryDateViewControllerDelegate {
         if let entry = entry {
             entry.created_at = date
             coreDataStack.saveContext()
-            
-            // Update the timestamps
-            //setEntryTimestamps()
         }
     }
 }
