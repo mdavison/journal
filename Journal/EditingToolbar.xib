@@ -57,6 +57,11 @@
                     </connections>
                 </barButtonItem>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="xFi-BJ-BV3"/>
+                <barButtonItem image="HideKeyboard" id="QRt-QZ-gfB">
+                    <connections>
+                        <action selector="hideEditingToolbar:" destination="-1" id="hac-Ff-NPL"/>
+                    </connections>
+                </barButtonItem>
             </items>
         </toolbar>
     </objects>
@@ -65,6 +70,7 @@
         <image name="AlignLeftIcon" width="25" height="25"/>
         <image name="AlignRightIcon" width="25" height="25"/>
         <image name="BoldIcon" width="25" height="25"/>
+        <image name="HideKeyboard" width="25" height="25"/>
         <image name="ItalicsIcon" width="25" height="25"/>
         <image name="ParagraphIcon" width="25" height="25"/>
         <image name="TextColorIcon" width="25" height="25"/>

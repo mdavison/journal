@@ -81,8 +81,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if invalidDate == false {
             saveButton.enabled = true
         }
+        
+        if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
+            entryTextView.inputAccessoryView = toolbar
+            entryTextView.reloadInputViews()
+        }
     }
-
+    
     
     // MARK: - Actions
     
@@ -234,6 +239,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         presentViewController(alert, animated: true, completion: nil)
     }
     
+    @IBAction func hideEditingToolbar(sender: UIBarButtonItem) {
+        entryTextView.inputAccessoryView = nil
+        entryTextView.reloadInputViews()
+    }
     
     // MARK: - Notification Handling
     
@@ -301,7 +310,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         }
         
         entryTextView.becomeFirstResponder()
-        //addDismissKeyboardButton()
         
         // Add the toolbar
         if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
@@ -378,7 +386,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
 }
-
 
 
 extension EntryViewController: EntryDateViewControllerDelegate {
