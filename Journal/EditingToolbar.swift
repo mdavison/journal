@@ -10,6 +10,9 @@ import UIKit
 
 class EditingToolbar: UIToolbar {
 
+    @IBOutlet weak var textColorButton: UIBarButtonItem!
+    @IBOutlet weak var textSizeButton: UIBarButtonItem!
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

@@ -63,6 +63,10 @@
                     </connections>
                 </barButtonItem>
             </items>
+            <connections>
+                <outlet property="textColorButton" destination="l2m-0U-oBf" id="giT-l7-sgt"/>
+                <outlet property="textSizeButton" destination="3Jj-Di-LrX" id="oem-sK-4sk"/>
+            </connections>
         </toolbar>
     </objects>
     <resources>

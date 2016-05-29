@@ -164,7 +164,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         alert.addAction(cancelAction)
         
         // If on iPad, have to attach to toolbar
-        alert.popoverPresentationController?.sourceView = editingToolbar
+        alert.popoverPresentationController?.barButtonItem = editingToolbar.textSizeButton
         
         presentViewController(alert, animated: true, completion: nil)
     }
@@ -234,7 +234,8 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         alert.addAction(cancelAction)
         
         // If on iPad, have to attach to toolbar
-        alert.popoverPresentationController?.sourceView = editingToolbar
+        alert.popoverPresentationController?.barButtonItem = editingToolbar.textColorButton
+
         
         presentViewController(alert, animated: true, completion: nil)
     }
