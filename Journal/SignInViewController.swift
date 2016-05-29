@@ -14,9 +14,8 @@ class SignInViewController: UIViewController {
 
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var passwordIncorrectLabel: UILabel!
     @IBOutlet weak var passwordHintLabel: UILabel!
-    @IBOutlet weak var showPasswordHintButton: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackView: UIStackView!
     
     var coreDataStack: CoreDataStack!
@@ -53,9 +52,6 @@ class SignInViewController: UIViewController {
                 if settings.use_touch_id == true {
                     authenticateWithTouchID()
                 }
-                if settings.password_hint == nil || settings.password_hint == "" {
-                    showPasswordHintButton.hidden = true
-                }
             }
         }
 
@@ -73,11 +69,6 @@ class SignInViewController: UIViewController {
         checkPassword()
     }
     
-    @IBAction func showPasswordHint(sender: UIButton) {
-        passwordHintLabel.text = settings?.password_hint
-        passwordHintLabel.hidden = false
-    }
-    
     
     // MARK: - Notification Handling
     
@@ -87,23 +78,10 @@ class SignInViewController: UIViewController {
     
     @objc private func keyboardDidShow(notification: NSNotification) {
         print("keyboardDidShow notification handled")
-        
-//        UIView.beginAnimations(nil, context: nil)
-//        UIView.setAnimationDuration(0.3)
-//        UIView.setAnimationBeginsFromCurrentState(true)
-//        view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y - 50.0, width: view.frame.size.width, height: view.frame.size.height)
-//        UIView.commitAnimations()
-        
     }
 
     @objc private func keyboardDidHide(notification: NSNotification) {
         print("keyboardDidHide notification handled")
-        
-//        UIView.beginAnimations(nil, context: nil)
-//        UIView.setAnimationDuration(0.3)
-//        UIView.setAnimationBeginsFromCurrentState(true)
-//        view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y + 50.0, width: view.frame.size.width, height: view.frame.size.height)
-//        UIView.commitAnimations()
     }
     
     
@@ -210,10 +188,9 @@ extension SignInViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        print("textFieldShouldBeginEditing")
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+//        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidToggle(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
         
