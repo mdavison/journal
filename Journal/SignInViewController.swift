@@ -17,9 +17,16 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var passwordIncorrectLabel: UILabel!
     @IBOutlet weak var passwordHintLabel: UILabel!
     @IBOutlet weak var showPasswordHintButton: UIButton!
+    @IBOutlet weak var stackView: UIStackView!
     
     var coreDataStack: CoreDataStack!
     var settings: Settings?
+    let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
+    var failedAttempts = 0
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +77,35 @@ class SignInViewController: UIViewController {
         passwordHintLabel.text = settings?.password_hint
         passwordHintLabel.hidden = false
     }
+    
+    
+    // MARK: - Notification Handling
+    
+    @objc private func keyboardDidToggle(notification: NSNotification) {
+        print("keyboardDidToggle notification handled")
+    }
+    
+    @objc private func keyboardDidShow(notification: NSNotification) {
+        print("keyboardDidShow notification handled")
+        
+//        UIView.beginAnimations(nil, context: nil)
+//        UIView.setAnimationDuration(0.3)
+//        UIView.setAnimationBeginsFromCurrentState(true)
+//        view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y - 50.0, width: view.frame.size.width, height: view.frame.size.height)
+//        UIView.commitAnimations()
+        
+    }
+
+    @objc private func keyboardDidHide(notification: NSNotification) {
+        print("keyboardDidHide notification handled")
+        
+//        UIView.beginAnimations(nil, context: nil)
+//        UIView.setAnimationDuration(0.3)
+//        UIView.setAnimationBeginsFromCurrentState(true)
+//        view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y + 50.0, width: view.frame.size.width, height: view.frame.size.height)
+//        UIView.commitAnimations()
+    }
+    
     
     // MARK: - Helper Methods
     
@@ -135,14 +171,28 @@ class SignInViewController: UIViewController {
     }
     
     private func checkPassword() {
-        let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
-        
         if passwordTextField.text == keychainPassword {
             JournalVariables.userIsAuthenticated = true
             dismissViewControllerAnimated(true, completion: nil)
         } else {
-            passwordIncorrectLabel.hidden = false
+            // Password is wrong - make the stackView shake
+            let animation = CABasicAnimation(keyPath: "position")
+            animation.duration = 0.05
+            animation.repeatCount = 2
+            animation.autoreverses = true
+            animation.fromValue = NSValue(CGPoint: CGPointMake(stackView.center.x - 6.0, stackView.center.y))
+            animation.toValue = NSValue(CGPoint: CGPointMake(stackView.center.x + 6.0, stackView.center.y))
+            stackView.layer.addAnimation(animation, forKey: "position")
+            
+            
+            failedAttempts += 1
             passwordTextField.text = ""
+            
+            if failedAttempts > 2 {
+                if let hint = settings?.password_hint {
+                    passwordHintLabel.text = "Hint: \(hint)"
+                }
+            }
         }
     }
 
@@ -158,4 +208,16 @@ extension SignInViewController: UITextFieldDelegate {
         
         return true
     }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        print("textFieldShouldBeginEditing")
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)
+        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidToggle(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
+        
+        return true
+    }
+    
 }

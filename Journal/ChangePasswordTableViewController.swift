@@ -35,6 +35,12 @@ class ChangePasswordTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         hintTextField.text = settings?.password_hint
+        
+        if touchIDEnabled() {
+            if settings?.use_touch_id == true {
+                useTouchIDSwitch.on = true 
+            }
+        }
 
     }
 

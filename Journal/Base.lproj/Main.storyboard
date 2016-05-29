@@ -294,10 +294,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="GPg-ct-UJA">
-                                <rect key="frame" x="200" y="245" width="200" height="111"/>
+                                <rect key="frame" x="200" y="248.5" width="200" height="103"/>
                                 <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uge-pv-bnO">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="D4Y-CF-kdW"/>
+                                            <constraint firstAttribute="height" constant="20" id="LlX-1U-ukj"/>
+                                            <constraint firstAttribute="height" constant="20" id="iZe-o2-OYt"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="LlX-1U-ukj"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pxY-B1-EwZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                        <rect key="frame" x="0.0" y="30" width="200" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="n1V-rq-dE3"/>
                                         </constraints>
@@ -305,39 +321,13 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-tO-3YO">
-                                        <rect key="frame" x="72" y="40" width="55" height="33"/>
+                                        <rect key="frame" x="72" y="70" width="55" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Submit"/>
                                         <connections>
                                             <action selector="submit:" destination="lhG-pz-l0a" eventType="touchUpInside" id="v0f-Pq-0DL"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nCf-uC-ZSh">
-                                        <rect key="frame" x="69" y="83" width="62" height="28"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Show Hint"/>
-                                        <connections>
-                                            <action selector="showPasswordHint:" destination="lhG-pz-l0a" eventType="touchUpInside" id="fI5-iS-8Bm"/>
-                                        </connections>
-                                    </button>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password is incorrect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1r-7c-LfT">
-                                        <rect key="frame" x="0.0" y="116" width="200" height="0.0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="coO-AI-Ttt"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                        <color key="textColor" red="0.50196081400000003" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hint" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uge-pv-bnO">
-                                        <rect key="frame" x="0.0" y="116" width="200" height="0.0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="D4Y-CF-kdW"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="4x8-sh-ytU"/>
@@ -352,9 +342,8 @@
                     </view>
                     <connections>
                         <outlet property="passwordHintLabel" destination="Uge-pv-bnO" id="kvm-hZ-hUo"/>
-                        <outlet property="passwordIncorrectLabel" destination="N1r-7c-LfT" id="xoK-WQ-4cK"/>
                         <outlet property="passwordTextField" destination="pxY-B1-EwZ" id="9vf-4E-blP"/>
-                        <outlet property="showPasswordHintButton" destination="nCf-uC-ZSh" id="4J9-Z4-uQR"/>
+                        <outlet property="stackView" destination="GPg-ct-UJA" id="1da-0i-tEG"/>
                         <outlet property="submitButton" destination="ECZ-tO-3YO" id="2SD-0i-TGE"/>
                     </connections>
                 </viewController>
