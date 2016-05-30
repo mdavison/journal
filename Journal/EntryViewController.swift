@@ -52,6 +52,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         setupView()
         addNotificationObservers()
         attributedTextModel.entryTextView = entryTextView
+        attributedTextModel.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -84,6 +85,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             saveButton.enabled = true
         }
         
+//        if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
+//            entryTextView.inputAccessoryView = toolbar
+//            entryTextView.reloadInputViews()
+//        }
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
         if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
@@ -106,6 +114,9 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
+        // This works
+        //editingToolbar.boldButton.image = UIImage(named: "BoldIconFilled")
+        
         attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptorSymbolicTraits.TraitBold)
     }
     
@@ -384,6 +395,28 @@ extension EntryViewController: EntryDateViewControllerDelegate {
             entry.created_at = date
             coreDataStack.saveContext()
         }
+    }
+}
+
+
+extension EntryViewController: AttributedTextDelegate {
+    
+    func buttonToggled(forButtonName buttonName: EditingToolbarButtonName, isOn on: Bool) {
+        switch buttonName {
+        case EditingToolbarButtonName.Bold:
+            print("bold toggled")
+            editingToolbar.boldButton.image = on ? UIImage(named: "BoldIconFilled") : UIImage(named: "BoldIcon")
+        case EditingToolbarButtonName.Italic:
+            editingToolbar.italicsButton.image = on ? UIImage(named: "ItalicsIconFilled") : UIImage(named: "ItalicsIcon")
+        case EditingToolbarButtonName.Underline:
+            editingToolbar.underlineButton.image = on ? UIImage(named: "UnderlineIconFilled") : UIImage(named: "UnderlineIcon")
+        default:
+            return
+        }
+    }
+    
+    func buttonToggled(forColor color: UIColor) {
+        editingToolbar.textColorButton.tintColor = color
     }
 }
 
