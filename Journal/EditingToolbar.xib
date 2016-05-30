@@ -64,6 +64,7 @@
                 </barButtonItem>
             </items>
             <connections>
+                <outlet property="boldButton" destination="axY-nN-yKS" id="GSt-3e-2Y5"/>
                 <outlet property="textColorButton" destination="l2m-0U-oBf" id="giT-l7-sgt"/>
                 <outlet property="textSizeButton" destination="3Jj-Di-LrX" id="oem-sK-4sk"/>
             </connections>

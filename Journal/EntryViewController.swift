@@ -24,6 +24,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var invalidDate = false
     var styleApplied = ""
     var addEntry = false
+    var attributedTextModel = AttributedText()
     
     struct Storyboard {
         static var EntryDateSegueIdentifier = "EntryDate"
@@ -50,6 +51,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         entryTextView.delegate = self
         setupView()
         addNotificationObservers()
+        attributedTextModel.entryTextView = entryTextView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -104,27 +106,15 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
-        
-        if let _ = AttributedText.addOrRemoveFontTrait(withName: "bold",
-                                                           withTrait: UIFontDescriptorSymbolicTraits.TraitBold,
-                                                           withEntryTextView: entryTextView) {
-            showTextNotSelectedAlert()
-        }
+        attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptorSymbolicTraits.TraitBold)
     }
     
     @IBAction func applyItalicsStyle(sender: UIBarButtonItem) {
-        
-        if let _ = AttributedText.addOrRemoveFontTrait(withName: "oblique",
-                                                       withTrait: UIFontDescriptorSymbolicTraits.TraitItalic,
-                                                       withEntryTextView: entryTextView) {
-            showTextNotSelectedAlert()
-        }
+        attributedTextModel.addOrRemoveFontTrait(withName: "oblique", withTrait: UIFontDescriptorSymbolicTraits.TraitItalic)
     }
     
     @IBAction func applyUnderlineStyle(sender: UIBarButtonItem) {
-        if let _ = AttributedText.applyUnderlineStyle(withEntryTextView: entryTextView) {
-            showTextNotSelectedAlert()
-        }
+        attributedTextModel.applyUnderlineStyle()
     }
     
     @IBAction func applySize(sender: UIBarButtonItem) {
@@ -133,23 +123,23 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         let titleActionTitle = NSLocalizedString("Title", comment: "")
         let titleAction = UIAlertAction(title: titleActionTitle, style: .Default) { (action) in
-            AttributedText.applyStyleToSelection(UIFontTextStyleTitle1, withEntryTextView: self.entryTextView)
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleTitle1)
         }
         let subHeadlineActionTitle = NSLocalizedString("SubHeading", comment: "")
         let subHeadlineAction = UIAlertAction(title: subHeadlineActionTitle, style: .Default) { (action) in
-            AttributedText.applyStyleToSelection(UIFontTextStyleSubheadline, withEntryTextView: self.entryTextView)
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleSubheadline)
         }
         let bodyActionTitle = NSLocalizedString("Body", comment: "")
         let bodyAction = UIAlertAction(title: bodyActionTitle, style: .Default) { (action) in
-            AttributedText.applyStyleToSelection(UIFontTextStyleBody, withEntryTextView: self.entryTextView)
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleBody)
         }
         let footnoteActionTitle = NSLocalizedString("Footnote", comment: "")
         let footnoteAction = UIAlertAction(title: footnoteActionTitle, style: .Default) { (action) in
-            AttributedText.applyStyleToSelection(UIFontTextStyleFootnote, withEntryTextView: self.entryTextView)
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleFootnote)
         }
         let captionActionTitle = NSLocalizedString("Caption", comment: "")
         let captionAction = UIAlertAction(title: captionActionTitle, style: .Default) { (action) in
-            AttributedText.applyStyleToSelection(UIFontTextStyleCaption1, withEntryTextView: self.entryTextView)
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleCaption1)
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
@@ -170,21 +160,15 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func alignTextLeft(sender: UIBarButtonItem) { 
-        if let _ = AttributedText.setParagraphAlignment(forAlignment: NSTextAlignment.Left, withEntryTextView: entryTextView) {
-            showTextNotSelectedAlert()
-        }
+        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.Left)
     }
     
     @IBAction func alignTextCenter(sender: UIBarButtonItem) {
-        if let _ = AttributedText.setParagraphAlignment(forAlignment: NSTextAlignment.Center, withEntryTextView: entryTextView) {
-            showTextNotSelectedAlert()
-        }
+        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.Center)
     }
     
     @IBAction func alignTextRight(sender: UIBarButtonItem) {
-        if let _ = AttributedText.setParagraphAlignment(forAlignment: NSTextAlignment.Right, withEntryTextView: entryTextView) {
-            showTextNotSelectedAlert()
-        }
+        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.Right)
     }
     
     @IBAction func changeTextColor(sender: UIBarButtonItem) {        
@@ -193,31 +177,31 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         
         let blackActionTitle = NSLocalizedString("Black", comment: "The color black")
         let blackAction = UIAlertAction(title: blackActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.blackColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.blackColor())
         }
         let redActionTitle = NSLocalizedString("Red", comment: "The color red")
         let redAction = UIAlertAction(title: redActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.redColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.redColor())
         }
         let orangeActionTitle = NSLocalizedString("Orange", comment: "The color orange")
         let orangeAction = UIAlertAction(title: orangeActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.orangeColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.orangeColor())
         }
         let yellowActionTitle = NSLocalizedString("Yellow", comment: "The color yellow")
         let yellowAction = UIAlertAction(title: yellowActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.yellowColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.yellowColor())
         }
         let greenActionTitle = NSLocalizedString("Green", comment: "The color green")
         let greenAction = UIAlertAction(title: greenActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.greenColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.greenColor())
         }
         let blueActionTitle = NSLocalizedString("Blue", comment: "The color blue")
         let blueAction = UIAlertAction(title: blueActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.blueColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.blueColor())
         }
         let purpleActionTitle = NSLocalizedString("Purple", comment: "The color purple")
         let purpleAction = UIAlertAction(title: purpleActionTitle, style: .Default) { (action) in
-            AttributedText.changeTextColor(UIColor.purpleColor(), forEntryTextView: self.entryTextView)
+            self.attributedTextModel.changeTextColor(UIColor.purpleColor())
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
@@ -373,18 +357,18 @@ class EntryViewController: UIViewController, UITextViewDelegate {
 //        }
 //    }
     
-    private func showTextNotSelectedAlert() {
-        let alertMessage = NSLocalizedString("Please select some text in order to apply styles.", comment: "")
-        let alertTitle = NSLocalizedString("Select Text", comment: "")
-        let actionTitle = NSLocalizedString("OK", comment: "")
-        
-        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
-        let action = UIAlertAction(title: actionTitle, style: .Default, handler: nil)
-        
-        alert.addAction(action)
-        
-        presentViewController(alert, animated: true, completion: nil)
-    }
+//    private func showTextNotSelectedAlert() {
+//        let alertMessage = NSLocalizedString("Please select some text in order to apply styles.", comment: "")
+//        let alertTitle = NSLocalizedString("Select Text", comment: "")
+//        let actionTitle = NSLocalizedString("OK", comment: "")
+//        
+//        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
+//        let action = UIAlertAction(title: actionTitle, style: .Default, handler: nil)
+//        
+//        alert.addAction(action)
+//        
+//        presentViewController(alert, animated: true, completion: nil)
+//    }
     
 }
 

@@ -10,12 +10,20 @@ import UIKit
 
 class AttributedText {
     
-    static func addOrRemoveFontTrait(withName name: String, withTrait trait: UIFontDescriptorSymbolicTraits, withEntryTextView entryTextView: UITextView) -> String? {
-        
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+    var entryTextView: UITextView?
+    var currentAttributes = [String: AnyObject]()
+    
+    
+    func addOrRemoveFontTrait(withName name: String, withTrait trait: UIFontDescriptorSymbolicTraits) {
+        if let entryTextView = entryTextView {
+            let selectedRange = entryTextView.selectedRange
+            
+            if selectedRange.length > 0 {
+                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            } else {
+                currentAttributes = entryTextView.typingAttributes
+            }
+            
             let currentFontAttributes = currentAttributes[NSFontAttributeName]
             let fontDescriptor = currentFontAttributes!.fontDescriptor
             let currentFontSize = CGFloat(fontDescriptor().fontAttributes()["NSFontSizeAttribute"]! as! NSNumber)
@@ -38,23 +46,25 @@ class AttributedText {
             
             currentAttributes.updateValue(updatedFont, forKey: NSFontAttributeName)
             
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            //showTextNotSelectedAlert()
-            return "Text not selected"
+            if selectedRange.length > 0 {
+                entryTextView.textStorage.beginEditing()
+                entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+                entryTextView.textStorage.endEditing()
+            } else {
+                entryTextView.typingAttributes = currentAttributes
+            }
         }
-        
-        return nil 
     }
-    
-    static func applyUnderlineStyle(withEntryTextView entryTextView: UITextView) -> String? {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+
+    func applyUnderlineStyle() {
+        if let entryTextView = entryTextView {
+            let selectedRange = entryTextView.selectedRange
+            
+            if selectedRange.length > 0 {
+                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            } else {
+                currentAttributes = entryTextView.typingAttributes
+            }
             
             if (currentAttributes[NSUnderlineStyleAttributeName] == nil) ||
                 (currentAttributes[NSUnderlineStyleAttributeName]?.integerValue == 0) {
@@ -63,63 +73,75 @@ class AttributedText {
                 currentAttributes.updateValue(0, forKey: NSUnderlineStyleAttributeName)
             }
             
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            //showTextNotSelectedAlert()
-            return "Text not selected"
+            if selectedRange.length > 0 {
+                entryTextView.textStorage.beginEditing()
+                entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+                entryTextView.textStorage.endEditing()
+            } else {
+                entryTextView.typingAttributes = currentAttributes
+            }
         }
-        
-        return nil 
     }
     
-    static func setParagraphAlignment(forAlignment alignment: NSTextAlignment, withEntryTextView entryTextView: UITextView) -> String? {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            let newParagraphStyle = NSMutableParagraphStyle()
-            newParagraphStyle.alignment = alignment
-            
-            var attributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
-            attributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
-            
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(attributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            //showTextNotSelectedAlert()
-            return "Text not selected"
-        }
-        
-        return nil
-    }
-    
-    static func applyStyleToSelection(style: String, withEntryTextView entryTextView: UITextView)  -> String? {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
+    func applyStyleToSelection(style: String) {
+        if let entryTextView = entryTextView {
+            let selectedRange = entryTextView.selectedRange
             let styledFont = UIFont.preferredFontForTextStyle(style)
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            var currentAttributes = [String: AnyObject]()
+            
+            if selectedRange.length > 0 {
+                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            } else {
+                currentAttributes = entryTextView.typingAttributes
+            }
             
             currentAttributes.updateValue(styledFont, forKey: NSFontAttributeName)
             
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            //showTextNotSelectedAlert()
-            return "Text not selected"
+            if selectedRange.length > 0 {
+                entryTextView.textStorage.beginEditing()
+                entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+                entryTextView.textStorage.endEditing()
+            } else {
+                entryTextView.typingAttributes = currentAttributes
+            }
         }
-        
-        return nil 
+    }
+
+    func setParagraphAlignment(forAlignment alignment: NSTextAlignment) {
+        if let entryTextView = entryTextView {
+            let selectedRange = entryTextView.selectedRange
+            let newParagraphStyle = NSMutableParagraphStyle()
+            newParagraphStyle.alignment = alignment
+            
+            var currentAttributes = [String: AnyObject]()
+            if selectedRange.length > 0 {
+                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            } else {
+                currentAttributes = entryTextView.typingAttributes
+            }
+            
+            currentAttributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
+            
+            if selectedRange.length > 0 {
+                entryTextView.textStorage.beginEditing()
+                entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+                entryTextView.textStorage.endEditing()
+            } else {
+                entryTextView.typingAttributes = currentAttributes
+            }
+        }
     }
     
-    static func changeTextColor(color: UIColor, forEntryTextView entryTextView: UITextView) -> String? {
-        let selectedRange = entryTextView.selectedRange
-        
-        if selectedRange.length > 0 {
-            var currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+    func changeTextColor(color: UIColor) {
+        if let entryTextView = entryTextView {
+            let selectedRange = entryTextView.selectedRange
+            var currentAttributes = [String: AnyObject]()
+            
+            if selectedRange.length > 0 {
+                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+            } else {
+                currentAttributes = entryTextView.typingAttributes
+            }
             
             if (currentAttributes[NSForegroundColorAttributeName] == nil) ||
                 (currentAttributes[NSForegroundColorAttributeName] as! UIColor != color) {
@@ -127,17 +149,16 @@ class AttributedText {
                 currentAttributes.updateValue(color, forKey: NSForegroundColorAttributeName)
             }
             
-            entryTextView.textStorage.beginEditing()
-            entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
-            entryTextView.textStorage.endEditing()
-        } else {
-            //showTextNotSelectedAlert()
-            return "Text not selected"
+            if selectedRange.length > 0 {
+                entryTextView.textStorage.beginEditing()
+                entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
+                entryTextView.textStorage.endEditing()
+            } else {
+                entryTextView.typingAttributes = currentAttributes
+            }
         }
-        
-        return nil 
     }
-
+    
     
 
 }

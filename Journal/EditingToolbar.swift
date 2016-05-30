@@ -10,6 +10,7 @@ import UIKit
 
 class EditingToolbar: UIToolbar {
 
+    @IBOutlet weak var boldButton: UIBarButtonItem!
     @IBOutlet weak var textColorButton: UIBarButtonItem!
     @IBOutlet weak var textSizeButton: UIBarButtonItem!
     
