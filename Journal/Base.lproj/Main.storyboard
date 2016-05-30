@@ -46,16 +46,25 @@
                                 <attributedString key="attributedText"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0N-08-ZxK">
+                                <rect key="frame" x="555" y="567" width="25" height="25"/>
+                                <state key="normal" image="showToolbar"/>
+                                <connections>
+                                    <action selector="showEditingToolbar:" destination="JEX-9P-axG" eventType="touchUpInside" id="y12-Jc-SZS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="9NC-Dx-BtM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="e0N-08-ZxK" secondAttribute="trailing" id="Aj6-tq-stV"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="20" id="E8I-uv-YVC"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="GrP-2x-hlj"/>
                             <constraint firstAttribute="trailingMargin" secondItem="niX-it-HWc" secondAttribute="trailing" id="Noe-Ic-DVp"/>
                             <constraint firstAttribute="leadingMargin" secondItem="niX-it-HWc" secondAttribute="leading" id="S3G-DT-5qs"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="SBa-9w-Fau"/>
                             <constraint firstAttribute="trailingMargin" secondItem="44C-kb-TuA" secondAttribute="trailing" id="V0Q-yE-9x1"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="e0N-08-ZxK" secondAttribute="bottom" constant="8" symbolic="YES" id="W4U-jD-Ksz"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="XLk-bI-QLJ"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="bottom" secondItem="svH-Pt-448" secondAttribute="bottomMargin" constant="-93" id="oei-VQ-BWj"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="8" symbolic="YES" id="vb3-DT-ctK"/>
@@ -1138,6 +1147,9 @@
             <point key="canvasLocation" x="2279" y="-1695"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="showToolbar" width="25" height="25"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="12W-Di-MNP"/>
     </inferredMetricsTieBreakers>

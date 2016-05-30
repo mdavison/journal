@@ -25,6 +25,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var styleApplied = ""
     var addEntry = false
     var attributedTextModel = AttributedText()
+    var toolbar: EditingToolbar?
     
     struct Storyboard {
         static var EntryDateSegueIdentifier = "EntryDate"
@@ -84,15 +85,10 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if invalidDate == false {
             saveButton.enabled = true
         }
-        
-//        if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
-//            entryTextView.inputAccessoryView = toolbar
-//            entryTextView.reloadInputViews()
-//        }
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
-        if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
+        if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
         }
@@ -240,6 +236,14 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         entryTextView.reloadInputViews()
     }
     
+    @IBAction func showEditingToolbar(sender: UIButton) {
+        if let toolbar = toolbar {
+            entryTextView.inputAccessoryView = toolbar
+            entryTextView.reloadInputViews()
+        }
+    }
+    
+    
     // MARK: - Notification Handling
     
     func entryWasDeleted(notification: NSNotification) {
@@ -247,7 +251,6 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             if notificationEntry == entry {
                 entry = nil
                 JournalVariables.entry = nil
-                //JournalVariables.entryTimestamps = nil
                 setupView()
             }
         }
@@ -308,9 +311,11 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         entryTextView.becomeFirstResponder()
         
         // Add the toolbar
-        if let toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar {
+        toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar
+        if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
         }
+        
     }
     
     
