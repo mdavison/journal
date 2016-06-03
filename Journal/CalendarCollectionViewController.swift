@@ -40,7 +40,7 @@ class CalendarCollectionViewController: UICollectionViewController {
             split.view.backgroundColor = UIColor.whiteColor()
             //split.delegate = self
         }
-        
+                
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: #selector(CalendarCollectionViewController.entryHasSaved(_:)),
@@ -131,7 +131,7 @@ class CalendarCollectionViewController: UICollectionViewController {
     }
     
 
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return calendar.getNumberOfMonths(forEntries: entries)

@@ -292,6 +292,9 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     private func setupView() {
         tabBarController?.navigationItem.rightBarButtonItem = saveButton
         
+        // Theme
+        Theme.setup(withNavigationController: navigationController)
+        
         if let entry = entry {
             Entry.setDateButton(forDateButton: dateButton, withEntry: entry)
             entryTextView.attributedText = entry.attributed_text
@@ -314,7 +317,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
+            
+            // Theme
+            toolbar.barTintColor = Theme.Colors.barTint
+            toolbar.tintColor = Theme.Colors.tint
         }
+        
+        
         
     }
     

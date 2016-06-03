@@ -149,13 +149,15 @@ class Calendar {
     func getHeaderView(forCollectionView collectionView: UICollectionView, withIndexPath indexPath: NSIndexPath, withMonthsYears monthsYears: [MonthYear]) -> CalendarCollectionReusableHeaderView {
         let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", forIndexPath: indexPath) as! CalendarCollectionReusableHeaderView
         
-        headerView.backgroundColor = UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1)
+        //headerView.backgroundColor = UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1)
+        headerView.backgroundColor = Theme.Colors.sky
         
         let dateFormatter = NSDateFormatter()
         let monthText = dateFormatter.shortMonthSymbols[monthsYears[indexPath.section].month - 1]
         let yearText = monthsYears[indexPath.section].year
         
         headerView.titleLabel.text = "\(monthText) \(yearText)".uppercaseString
+        headerView.titleLabel.textColor = UIColor.whiteColor()
         
         return headerView
     }
@@ -187,19 +189,73 @@ class Calendar {
         return components.weekday - 1
     }
     
-    private func setIndication(forCell cell: UICollectionViewCell, withIndexPath indexPath: NSIndexPath, withDay day: Int, withMonthsYears monthsYears: [MonthYear]) {
+    private func setIndication(forCell cell: CalendarCollectionViewCell, withIndexPath indexPath: NSIndexPath, withDay day: Int, withMonthsYears monthsYears: [MonthYear]) {
         // Indicate entry for this date
         if let _ = getEntry(forIndexPath: indexPath, withDay: day, withMonthsYears: monthsYears) {
-            cell.backgroundColor = UIColor.lightGrayColor()
+            //cell.backgroundColor = UIColor.lightGrayColor()
+            cell.backgroundColor = UIColor(red: 215.0/255.0, green: 249.0/255.0, blue: 1, alpha: 1.0)
         }
         
         // Indicate today
-        // TODO: draw a red circle around the number instead of making the background red
+        // Clear any existing red circles, otherwise they will stay and show up in wrong places
+        removeRedCircle(forCell: cell)
+        
         let date = getDate(forIndexPath: indexPath, withDay: day, withMonthsYears: monthsYears)
         let comparison = currentCalendar.compareDate(date, toDate: NSDate(), toUnitGranularity: .Day)
         if comparison == .OrderedSame {
-            cell.backgroundColor = UIColor.redColor()
+            //cell.backgroundColor = UIColor.redColor()
+            drawCircle(forCell: cell)
+        }
+    }
+    
+    private func drawCircle(forCell cell: CalendarCollectionViewCell) {
+        // Draw a circle
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: cell.frame.width/2,y: cell.frame.width/2), radius: CGFloat(cell.frame.width/3.3), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.CGPath
+        
+        // Set the fill color to red
+        shapeLayer.fillColor = UIColor.redColor().CGColor
+        
+        cell.layer.addSublayer(shapeLayer)
+        
+        // Add a label on top, since the drawn circle covers the existing label
+        let label = UILabel(frame: CGRect(x: 19, y: 18, width: 20, height: 20))
+        label.textColor = UIColor.whiteColor()
+        //label.font = UIFont.preferredFontForTextStyle("body")
+        
+        label.translatesAutoresizingMaskIntoConstraints = false // So we can set constraints
+        label.text = cell.dayNumberLabel.text
+        cell.addSubview(label)
+        
+        // Add constraints
+        let centerXConstraint = NSLayoutConstraint(item: label, attribute: .CenterX, relatedBy: .Equal, toItem: cell, attribute: .CenterX, multiplier: 1.0, constant: 0)
+        let centerYConstraint = NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: cell, attribute: .CenterY, multiplier: 1.0, constant: 0)
+        cell.addConstraints([centerXConstraint, centerYConstraint])
+        label.frame.size = label.intrinsicContentSize()
+    }
+    
+    private func removeRedCircle(forCell cell: CalendarCollectionViewCell) {
+        // Remove label (subview)
+        if let label = cell.subviews[safe: 1] {
+            label.removeFromSuperview()
+        }
+        
+        // Remove circle (sublayer)
+        if let circle = cell.layer.sublayers?[safe: 1] {
+            if circle.isKindOfClass(CAShapeLayer) {
+                circle.removeFromSuperlayer()
+            }
         }
     }
 
+}
+
+
+// Prevent array out of bounds error when checking for sublayers
+extension Array {
+    subscript (safe index: Int) -> Element? {
+        return indices ~= index ? self[index] : nil
+    }
 }

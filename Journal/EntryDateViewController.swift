@@ -32,6 +32,9 @@ class EntryDateViewController: UIViewController {
             messageLabel.hidden = false
             saveButton.enabled = false
         }
+        
+        // Theme
+        Theme.setup(withNavigationController: navigationController)
 
     }
 

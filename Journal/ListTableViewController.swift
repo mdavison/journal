@@ -1,5 +1,5 @@
 //
-//  MasterViewController.swift
+//  ListTableViewController.swift
 //  Journal
 //
 //  Created by Morgan Davison on 3/11/16.
@@ -11,7 +11,7 @@ import CoreData
 
 let EntryWasDeletedNotificationKey = "com.morgandavison.entryWasDeletedNotificationKey"
 
-class MasterViewController: UITableViewController {
+class ListTableViewController: UITableViewController {
 
     var coreDataStack: CoreDataStack!
     //var managedObjectContext: NSManagedObjectContext? = nil
@@ -28,10 +28,13 @@ class MasterViewController: UITableViewController {
                                         
         self.navigationController?.navigationBarHidden = true
         tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
-        tabBarController?.title = "Main"
+        tabBarController?.title = "List"
         //tabBarController?.tabBar.alpha = 0.9 // Can make tab bar translucent
+        
+        // Theme
+        Theme.setup(withNavigationController: tabBarController?.navigationController)
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MasterViewController.insertNewEntry(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(ListTableViewController.insertNewEntry(_:)))
         tabBarController?.navigationItem.rightBarButtonItem = addButton
         
         if let split = self.splitViewController {
@@ -39,12 +42,12 @@ class MasterViewController: UITableViewController {
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(MasterViewController.preferredContentSizeChanged(_:)),
+                                                         selector: #selector(ListTableViewController.preferredContentSizeChanged(_:)),
                                                          name: UIContentSizeCategoryDidChangeNotification,
                                                          object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(MasterViewController.persistentStoreCoordinatorStoresDidChange(_:)),
+                                                         selector: #selector(ListTableViewController.persistentStoreCoordinatorStoresDidChange(_:)),
                                                          name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
                                                          object: nil)
     }
@@ -122,7 +125,7 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ListTableViewCell
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
@@ -146,16 +149,16 @@ class MasterViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        let textLabel = cell.textLabel
-        let detailTextLabel = cell.detailTextLabel
-        
-        textLabel?.sizeToFit()
-        detailTextLabel?.sizeToFit()
-        
-        return (textLabel!.frame.height + detailTextLabel!.frame.height) * 1.7
-    }
+//    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+//        let textLabel = cell.textLabel
+//        let detailTextLabel = cell.detailTextLabel
+//        
+//        textLabel?.sizeToFit()
+//        detailTextLabel?.sizeToFit()
+//        
+//        return (textLabel!.frame.height + detailTextLabel!.frame.height) * 1.7
+//    }
     
 
 
@@ -224,24 +227,26 @@ class MasterViewController: UITableViewController {
     
     // MARK: - Helper Methods
     
-    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let entry = fetchedResultsController.objectAtIndexPath(indexPath) as! Entry
-        
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .ShortStyle
-        formatter.timeStyle = .ShortStyle
-        
-        if let entryText = entry.attributed_text {
-            cell.textLabel?.text = entryText.string
+    private func configureCell(cell: ListTableViewCell, atIndexPath indexPath: NSIndexPath) {
+        if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
+            if let entryText = entry.attributed_text {
+                cell.entryTextLabel.text = entryText.string
+            }
+            
+            if let entryDate = entry.created_at {
+                let formatter = NSDateFormatter()
+                formatter.dateFormat = "dd"
+                cell.dayLabel.text = formatter.stringFromDate(entryDate)
+                formatter.dateFormat = "MMM yyyy"
+                cell.monthYearLabel.text = formatter.stringFromDate(entryDate)
+            }
         }
-        //cell.detailTextLabel?.text = "\(entry.created_at)"
-        cell.detailTextLabel?.text = formatter.stringFromDate(entry.created_at!)
     }
     
 }
 
 
-extension MasterViewController: NSFetchedResultsControllerDelegate {
+extension ListTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         self.tableView.beginUpdates()
@@ -265,7 +270,8 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
         case .Delete:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Update:
-            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+            //self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!) as! ListTableViewCell, atIndexPath: indexPath!)
         case .Move:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
