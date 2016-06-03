@@ -230,41 +230,6 @@ class Entry: NSManagedObject {
         
         dateButton.setTitle(formatter.stringFromDate(date), forState: .Normal)
     }
-    
-    // I think this was only used for Facebook and Twitter integration
-//    static func getTimestamps(forEntry entry: Entry?) -> [String: Int] {
-//        let calendar = NSCalendar.currentCalendar()
-//        let formatter = NSDateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//        var since = NSDate()
-//        var until = NSDate()
-//        
-//        if let entry = entry {
-//            if let createdAt = entry.created_at {
-//                // get date portion only of createdAt
-//                let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: createdAt)
-//                
-//                // set the time to midnight and the last second
-//                let entryDateBegin = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
-//                let entryDateEnd = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
-//                
-//                since = formatter.dateFromString(entryDateBegin)!
-//                until = formatter.dateFromString(entryDateEnd)!
-//            }
-//        } else {
-//            let currentDateComponents = calendar.components([.Day, .Month, .Year], fromDate: NSDate())
-//            let currentDateBegin = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 00:00:00"
-//            let currentDateEnd = "\(currentDateComponents.year)-\(currentDateComponents.month)-\(currentDateComponents.day) 23:59:59"
-//            
-//            since = formatter.dateFromString(currentDateBegin)!
-//            until = formatter.dateFromString(currentDateEnd)!
-//        }
-//        
-//        let sinceTimestamp = Int(since.timeIntervalSince1970)
-//        let untilTimestamp = Int(until.timeIntervalSince1970)
-//        
-//        return ["since": sinceTimestamp, "until": untilTimestamp]
-//    }
 
     
 }

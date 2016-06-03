@@ -19,6 +19,10 @@
 		904C49EB1CFA535A00574139 /* EditingToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C49EA1CFA535A00574139 /* EditingToolbar.swift */; };
 		904C4A121CFCCD3300574139 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C4A111CFCCD3300574139 /* ListTableViewCell.swift */; };
 		904C4A141CFCE1BE00574139 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C4A131CFCE1BE00574139 /* Theme.swift */; };
+		904C4B0D1D01BAB300574139 /* EntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C4B0C1D01BAB300574139 /* EntryTests.swift */; };
+		904C4B0F1D01BD3000574139 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C4B0E1D01BD3000574139 /* TestCoreDataStack.swift */; };
+		904C4B111D0224F900574139 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C4B101D0224F900574139 /* SettingsTests.swift */; };
+		904C4B131D022E0E00574139 /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904C4B121D022E0E00574139 /* CalendarTests.swift */; };
 		9054569D1C937AD300645C39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054569C1C937AD300645C39 /* AppDelegate.swift */; };
 		905456A01C937AD300645C39 /* Journal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9054569E1C937AD300645C39 /* Journal.xcdatamodeld */; };
 		905456A21C937AD300645C39 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456A11C937AD300645C39 /* ListTableViewController.swift */; };
@@ -75,6 +79,10 @@
 		904C49EA1CFA535A00574139 /* EditingToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditingToolbar.swift; sourceTree = "<group>"; };
 		904C4A111CFCCD3300574139 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		904C4A131CFCE1BE00574139 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		904C4B0C1D01BAB300574139 /* EntryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryTests.swift; sourceTree = "<group>"; };
+		904C4B0E1D01BD3000574139 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
+		904C4B101D0224F900574139 /* SettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
+		904C4B121D022E0E00574139 /* CalendarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTests.swift; sourceTree = "<group>"; };
 		905456991C937AD300645C39 /* Journal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Journal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9054569C1C937AD300645C39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9054569F1C937AD300645C39 /* Journal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Journal.xcdatamodel; sourceTree = "<group>"; };
@@ -211,7 +219,11 @@
 		905456B51C937AD300645C39 /* JournalTests */ = {
 			isa = PBXGroup;
 			children = (
+				904C4B0C1D01BAB300574139 /* EntryTests.swift */,
+				904C4B101D0224F900574139 /* SettingsTests.swift */,
+				904C4B121D022E0E00574139 /* CalendarTests.swift */,
 				905456B61C937AD300645C39 /* JournalTests.swift */,
+				904C4B0E1D01BD3000574139 /* TestCoreDataStack.swift */,
 				905456B81C937AD300645C39 /* Info.plist */,
 			);
 			path = JournalTests;
@@ -436,7 +448,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				904C4B0D1D01BAB300574139 /* EntryTests.swift in Sources */,
 				905456B71C937AD300645C39 /* JournalTests.swift in Sources */,
+				904C4B111D0224F900574139 /* SettingsTests.swift in Sources */,
+				904C4B131D022E0E00574139 /* CalendarTests.swift in Sources */,
+				904C4B0F1D01BD3000574139 /* TestCoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
