@@ -6,10 +6,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Master-->
+        <!--List-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController title="Master" id="RMx-3f-FxP" sceneMemberID="viewController">
+                <navigationController title="List" id="RMx-3f-FxP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -35,6 +35,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="44C-kb-TuA">
                                 <rect key="frame" x="20" y="72" width="560" height="30"/>
+                                <accessibility key="accessibilityConfiguration" label="Tap to change date"/>
                                 <state key="normal" title="Date"/>
                                 <connections>
                                     <segue destination="QQb-W7-YPp" kind="presentation" identifier="EntryDate" id="l4D-PB-NoZ"/>
@@ -114,7 +115,7 @@
         <!--Calendar-->
         <scene sceneID="3AC-Mf-0Ej">
             <objects>
-                <collectionViewController id="8AQ-s7-GfR" customClass="CalendarCollectionViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController title="Calendar" id="8AQ-s7-GfR" customClass="CalendarCollectionViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="nnq-wZ-ki3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -237,10 +238,10 @@
             </objects>
             <point key="canvasLocation" x="1435" y="-1157"/>
         </scene>
-        <!--Master-->
+        <!--List-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="ListTableViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="List" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="ListTableViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -391,6 +392,7 @@
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pxY-B1-EwZ">
                                                 <rect key="frame" x="0.0" y="30" width="200" height="30"/>
+                                                <accessibility key="accessibilityConfiguration" label="Enter password"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="200" id="DnS-4s-fEf"/>
                                                     <constraint firstAttribute="width" constant="200" id="n1V-rq-dE3"/>
@@ -405,6 +407,7 @@
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-tO-3YO">
                                                 <rect key="frame" x="72" y="70" width="55" height="33"/>
+                                                <accessibility key="accessibilityConfiguration" label="Submit button"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Submit">
                                                     <color key="titleColor" red="0.14901960784313725" green="0.80000000000000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -596,7 +599,7 @@
         <!--Settings-->
         <scene sceneID="vYe-cU-fAg">
             <objects>
-                <tableViewController id="Ny3-Fx-Dv4" customClass="SettingsTableViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Settings" id="Ny3-Fx-Dv4" customClass="SettingsTableViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="fSj-HX-5CP">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -613,12 +616,14 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TUf-aX-Q4H">
                                                     <rect key="frame" x="543" y="6.5" width="51" height="31"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Require password switch"/>
                                                     <connections>
                                                         <action selector="requirePasswordSwitchChanged:" destination="Ny3-Fx-Dv4" eventType="valueChanged" id="8WQ-8B-Ajm"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Require Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ioj-zt-YiC">
                                                     <rect key="frame" x="13" y="11" width="522" height="21"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Require Password"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -649,6 +654,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" label="Change Password">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <connections>
                                             <segue destination="7fQ-Fo-IMh" kind="presentation" identifier="ChangePassword" id="o8Q-xi-NcS"/>
                                         </connections>
@@ -666,6 +674,7 @@
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4I-FB-y0V">
                                                     <rect key="frame" x="16" y="7" width="576" height="30"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Export Entries"/>
                                                     <state key="normal" title="Export Entries"/>
                                                     <connections>
                                                         <action selector="exportEntries:" destination="Ny3-Fx-Dv4" eventType="touchUpInside" id="dir-1E-1z0"/>
@@ -896,6 +905,7 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cQg-Ow-9fo">
                                                     <rect key="frame" x="543" y="6.5" width="51" height="31"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Use Touch ID switch"/>
                                                     <connections>
                                                         <action selector="useTouchIdSwitchChanged:" destination="W6M-5W-IdN" eventType="valueChanged" id="ZmD-Nk-avx"/>
                                                     </connections>
@@ -1008,6 +1018,7 @@
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Required" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dW3-f5-9N6">
                                                     <rect key="frame" x="172" y="8" width="420" height="27.5"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Password field"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                 </textField>
@@ -1052,6 +1063,7 @@
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Required" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oTB-52-aZv">
                                                     <rect key="frame" x="172" y="8" width="420" height="27.5"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Verify password"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                 </textField>
@@ -1092,6 +1104,7 @@
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recommended" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="POa-wJ-SQJ">
                                                     <rect key="frame" x="172" y="8" width="420" height="27.5"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Password hint"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 </textField>
@@ -1133,6 +1146,7 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Czb-O8-RkY">
                                                     <rect key="frame" x="543" y="6.5" width="51" height="31"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Use touch ID switch"/>
                                                     <connections>
                                                         <action selector="useTouchIdSwitchChanged:" destination="W6M-5W-IdN" eventType="valueChanged" id="LK5-gp-yZA"/>
                                                     </connections>
@@ -1221,6 +1235,6 @@
         <image name="showToolbar" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="R2L-Dg-hI6"/>
+        <segue reference="6S0-TO-JiA"/>
     </inferredMetricsTieBreakers>
 </document>

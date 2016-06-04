@@ -7,9 +7,10 @@
 //
 
 import XCTest
+//@testable import Journal
 
 class JournalUITests: XCTestCase {
-        
+    
     override func setUp() {
         super.setUp()
         
@@ -28,24 +29,137 @@ class JournalUITests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testCalendarTab() {
+        XCUIDevice.sharedDevice().orientation = .Portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+        } else if device == UIUserInterfaceIdiom.Phone {
+            XCUIApplication().tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+        }
     }
     
-//    func testAddEntry() {
-//        
-//        let app = XCUIApplication()
-//        app.navigationBars["List"].buttons["Add"].tap()
-//        
-//        let textView = app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
-//        
-//        XCTAssert(textView.exists)
-//        
-//        textView.tap()
-//        textView.typeText("Foo Bar.")
-//        app.navigationBars.matchingIdentifier("New Entry").buttons["Save"].tap()
-//        
-//    }
+    func testSettingsTab() {
+        XCUIDevice.sharedDevice().orientation = .Portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+        } else if device == UIUserInterfaceIdiom.Phone {
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+        }
+    }
+    
+    func testInsertNewEntry() {
+        XCUIDevice.sharedDevice().orientation = .Portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            app.navigationBars["List"].buttons["Add"].tap()
+            app.otherElements["PopoverDismissRegion"].tap()
+        } else if device == UIUserInterfaceIdiom.Phone {
+            app.navigationBars["List"].buttons["Add"].tap()
+        }
+    }
+    
+    func testInsertNewEntryFromCalendarTab() {
+        XCUIDevice.sharedDevice().orientation = .Portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            
+            let app2 = app
+            app2.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+            app2.navigationBars["Calendar"].buttons["Add"].tap()
+            app.otherElements["PopoverDismissRegion"].tap()
+        } else if device == UIUserInterfaceIdiom.Phone {
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+            app.navigationBars["List"].buttons["Add"].tap()
+        }
+    }
+    
+    func testSaveEntry() {
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+            app.navigationBars["New Entry"].buttons["Save"].tap()
+        }
+    }
+    
+    func testAddEntryFromCalendarBySelectingDate() {
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+        } else if device == UIUserInterfaceIdiom.Phone {
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+            app.collectionViews.childrenMatchingType(.Cell).elementBoundByIndex(41).staticTexts["6"].tap()
+        }
+    }
+    
+    func testExportEntries() {
+        XCUIDevice.sharedDevice().orientation = .Portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+            app.tables.buttons["Export Entries"].tap()
+            
+            // Assert that the action sheet appears
+            XCTAssert(app.sheets.collectionViews.collectionViews.buttons["Mail"].exists)
+        } else if device == UIUserInterfaceIdiom.Phone {
+            XCUIDevice.sharedDevice().orientation = .Portrait
+            
+            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+            
+            // Can't get this to work
+//            app.tables.buttons["Export Entries"].tap()
+//            XCTAssert(app.sheets.collectionViews.collectionViews.buttons["Mail"].exists)
+            
+        }
+    }
+    
+    func testChangeDateOfEntry() {
+        XCUIDevice.sharedDevice().orientation = .Portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.currentDevice().userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.Pad {
+            app.buttons["Tap to change date"].tap()
+            app.datePickers.pickerWheels["Today"].tap()
+            app.navigationBars["Select Date"].buttons["Save"].tap()
+        } else if device == UIUserInterfaceIdiom.Phone {
+            XCUIDevice.sharedDevice().orientation = .Portrait
+            
+            app.navigationBars["List"].buttons["Add"].tap()
+            
+            // Can't get this to work
+//            app.buttons["Tap to change date"].tap()
+//            app.datePickers.pickerWheels["Today"].tap()
+//            app.navigationBars["Select Date"].buttons["Save"].tap()
+        }
+    }
     
 }
