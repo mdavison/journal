@@ -226,8 +226,8 @@ extension ListTableViewController: NSFetchedResultsControllerDelegate {
         case .Delete:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Update:
-            if let indexPath = indexPath {
-                self.configureCell(tableView.cellForRowAtIndexPath(indexPath) as! ListTableViewCell, atIndexPath: indexPath)
+            if let indexPath = indexPath, let cell =  tableView.cellForRowAtIndexPath(indexPath) as? ListTableViewCell {
+                self.configureCell(cell, atIndexPath: indexPath)
             }
         case .Move:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
