@@ -27,6 +27,11 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     var addEntry = false
     var attributedTextModel = AttributedText()
     var toolbar: EditingToolbar?
+    var edited = false {
+        didSet {
+           saveButton.enabled = edited
+        }
+    }
     
     struct Storyboard {
         static var EntryDateSegueIdentifier = "EntryDate"
@@ -72,6 +77,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             saveButton.enabled = false
         }
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if edited {
+            // Auto save
+            saveAndNotify()
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -82,6 +94,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     // MARK: - UITextViewDelegate Methods
     
     func textViewDidChange(textView: UITextView) {
+        edited = true 
         saveButton.title = "Save"
         if invalidDate == false {
             saveButton.enabled = true
@@ -106,21 +119,15 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     // MARK: - Actions
     
     @IBAction func save(sender: UIBarButtonItem) {
-        entry = Entry.save(withEntry: entry, withDate: Entry.getButtonDate(forButton: dateButton), withText: entryTextView.attributedText, withCoreDataStack: coreDataStack)
+        saveAndNotify()
         
         saveButton.enabled = false
-        saveButton.title = "Saved"
+        saveButton.title = "Saved" // This doesn't work
         Entry.setDateButton(forDateButton: dateButton, withEntry: entry)
         title = "Journal Entry"
-        
-        // Post notification that entry was saved - then listen for it in calendar
-        NSNotificationCenter.defaultCenter().postNotificationName(HasSavedEntryNotificationKey, object: self)
     }
     
     @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
-        // This works
-        //editingToolbar.boldButton.image = UIImage(named: "BoldIconFilled")
-        
         attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptorSymbolicTraits.TraitBold)
     }
     
@@ -378,30 +385,14 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
             name: UIContentSizeCategoryDidChangeNotification,
             object: nil)
-
     }
     
-//    private func addDismissKeyboardButton() {
-//        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-//            let dismissKeyboardButtonItem = UIBarButtonItem(image: UIImage(named: "HideKeyboard"), style: .Plain, target: entryTextView, action: #selector(UIResponder.resignFirstResponder))
-//            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
-//            toolbar.items = [dismissKeyboardButtonItem]
-//            entryTextView.inputAccessoryView = toolbar
-//        }
-//    }
-    
-//    private func showTextNotSelectedAlert() {
-//        let alertMessage = NSLocalizedString("Please select some text in order to apply styles.", comment: "")
-//        let alertTitle = NSLocalizedString("Select Text", comment: "")
-//        let actionTitle = NSLocalizedString("OK", comment: "")
-//        
-//        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
-//        let action = UIAlertAction(title: actionTitle, style: .Default, handler: nil)
-//        
-//        alert.addAction(action)
-//        
-//        presentViewController(alert, animated: true, completion: nil)
-//    }
+    private func saveAndNotify() {
+        entry = Entry.save(withEntry: entry, withDate: Entry.getButtonDate(forButton: dateButton), withText: entryTextView.attributedText, withCoreDataStack: coreDataStack)
+        
+        // Post notification that entry was saved - then listen for it in calendar
+        NSNotificationCenter.defaultCenter().postNotificationName(HasSavedEntryNotificationKey, object: self)
+    }
     
 }
 
@@ -426,7 +417,6 @@ extension EntryViewController: AttributedTextDelegate {
     func buttonToggled(forButtonName buttonName: EditingToolbarButtonName, isOn on: Bool) {
         switch buttonName {
         case EditingToolbarButtonName.Bold:
-            print("bold toggled")
             editingToolbar.boldButton.image = on ? UIImage(named: "BoldIconFilled") : UIImage(named: "BoldIcon")
         case EditingToolbarButtonName.Italic:
             editingToolbar.italicsButton.image = on ? UIImage(named: "ItalicsIconFilled") : UIImage(named: "ItalicsIcon")
@@ -439,6 +429,10 @@ extension EntryViewController: AttributedTextDelegate {
     
     func buttonToggled(forColor color: UIColor) {
         editingToolbar.textColorButton.tintColor = color
+    }
+    
+    func textWasEdited() {
+        edited = true
     }
 }
 

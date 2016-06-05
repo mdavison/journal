@@ -11,6 +11,7 @@ import UIKit
 protocol AttributedTextDelegate: class {
     func buttonToggled(forButtonName buttonName: EditingToolbarButtonName, isOn on: Bool)
     func buttonToggled(forColor color: UIColor)
+    func textWasEdited()
 }
 
 class AttributedText {
@@ -58,6 +59,7 @@ class AttributedText {
                 entryTextView.textStorage.beginEditing()
                 entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
                 entryTextView.textStorage.endEditing()
+                delegate?.textWasEdited()
             } else {
                 entryTextView.typingAttributes = currentAttributes
             }
@@ -90,6 +92,7 @@ class AttributedText {
                 entryTextView.textStorage.beginEditing()
                 entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
                 entryTextView.textStorage.endEditing()
+                delegate?.textWasEdited()
             } else {
                 entryTextView.typingAttributes = currentAttributes
             }
@@ -116,6 +119,7 @@ class AttributedText {
                 entryTextView.textStorage.beginEditing()
                 entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
                 entryTextView.textStorage.endEditing()
+                delegate?.textWasEdited()
             } else {
                 entryTextView.typingAttributes = currentAttributes
             }
@@ -141,6 +145,7 @@ class AttributedText {
                 entryTextView.textStorage.beginEditing()
                 entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
                 entryTextView.textStorage.endEditing()
+                delegate?.textWasEdited()
             } else {
                 entryTextView.typingAttributes = currentAttributes
             }
@@ -168,6 +173,7 @@ class AttributedText {
                 entryTextView.textStorage.beginEditing()
                 entryTextView.textStorage.setAttributes(currentAttributes, range: selectedRange)
                 entryTextView.textStorage.endEditing()
+                delegate?.textWasEdited()
             } else {
                 entryTextView.typingAttributes = currentAttributes
             }
