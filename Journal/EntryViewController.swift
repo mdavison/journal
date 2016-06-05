@@ -99,6 +99,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if invalidDate == false {
             saveButton.enabled = true
         }
+        
+        // If user started to create new entry but then deleted the
+        // text, assume they didn't mean to create the entry and
+        // don't autosave
+        if entry == nil && entryTextView.attributedText.string.isEmpty {
+            edited = false
+        }
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
