@@ -17,6 +17,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var entryTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet var editingToolbar: EditingToolbar!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
@@ -91,6 +92,13 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
+        }
+        
+        // Determine if InputAssistantView is visible (ipad only)
+        // and adjust bottom edge of entryTextView accordingly
+        if entryTextView.inputAssistantItem.leadingBarButtonGroups.isEmpty {
+            // On iphone, so make bottom edge lower
+            bottomConstraint.constant = 40
         }
     }
     

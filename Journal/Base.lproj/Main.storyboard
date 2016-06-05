@@ -42,7 +42,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
-                                <rect key="frame" x="20" y="110" width="560" height="482"/>
+                                <rect key="frame" x="20" y="110" width="560" height="400"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <attributedString key="attributedText"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -59,6 +59,7 @@
                         <constraints>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="9NC-Dx-BtM"/>
                             <constraint firstAttribute="trailingMargin" secondItem="e0N-08-ZxK" secondAttribute="trailing" id="Aj6-tq-stV"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="90" id="Blo-mw-eC0"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="20" id="E8I-uv-YVC"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="GrP-2x-hlj"/>
                             <constraint firstAttribute="trailingMargin" secondItem="niX-it-HWc" secondAttribute="trailing" id="Noe-Ic-DVp"/>
@@ -67,6 +68,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="44C-kb-TuA" secondAttribute="trailing" id="V0Q-yE-9x1"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="e0N-08-ZxK" secondAttribute="bottom" constant="8" symbolic="YES" id="W4U-jD-Ksz"/>
                             <constraint firstItem="44C-kb-TuA" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="XLk-bI-QLJ"/>
+                            <constraint firstItem="e0N-08-ZxK" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="8" symbolic="YES" id="XXb-5K-tcO"/>
                             <constraint firstItem="niX-it-HWc" firstAttribute="bottom" secondItem="svH-Pt-448" secondAttribute="bottomMargin" constant="-93" id="oei-VQ-BWj"/>
                             <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="8" symbolic="YES" id="vb3-DT-ctK"/>
                         </constraints>
@@ -75,6 +77,8 @@
                                 <exclude reference="GrP-2x-hlj"/>
                                 <exclude reference="oei-VQ-BWj"/>
                                 <exclude reference="E8I-uv-YVC"/>
+                                <exclude reference="vb3-DT-ctK"/>
+                                <exclude reference="XXb-5K-tcO"/>
                             </mask>
                         </variation>
                     </view>
@@ -88,6 +92,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomConstraint" destination="Blo-mw-eC0" id="wnJ-Bd-h1g"/>
                         <outlet property="dateButton" destination="44C-kb-TuA" id="RRo-Jb-a7d"/>
                         <outlet property="entryTextView" destination="niX-it-HWc" id="UWj-Ls-bZG"/>
                         <outlet property="saveButton" destination="lto-Mo-wCV" id="Xge-fw-ApK"/>
