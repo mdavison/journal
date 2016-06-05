@@ -95,6 +95,9 @@ class Calendar {
             day = (indexPath.row + 1) - padding
         }
         
+        // Clear any existing red circles, otherwise they will stay and show up in wrong places
+        removeRedCircle(forCell: cell)
+        
         if day > 0 { // Not a blank cell
             cell.dayNumberLabel.text = "\(day)"
             
@@ -197,9 +200,6 @@ class Calendar {
         }
         
         // Indicate today
-        // Clear any existing red circles, otherwise they will stay and show up in wrong places
-        removeRedCircle(forCell: cell)
-        
         let date = getDate(forIndexPath: indexPath, withDay: day, withMonthsYears: monthsYears)
         let comparison = currentCalendar.compareDate(date, toDate: NSDate(), toUnitGranularity: .Day)
         if comparison == .OrderedSame {
