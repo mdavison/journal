@@ -16,7 +16,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var entryTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet var editingToolbar: EditingToolbar!
+    @IBOutlet weak var editingToolbar: EditingToolbar!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     var coreDataStack: CoreDataStack!
@@ -38,7 +38,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
     }
     
     deinit {
-       NSNotificationCenter.defaultCenter().removeObserver(self)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func viewDidLoad() {

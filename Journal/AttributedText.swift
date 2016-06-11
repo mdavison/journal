@@ -18,7 +18,7 @@ class AttributedText {
     
     var entryTextView: UITextView?
     var currentAttributes = [String: AnyObject]()
-    var delegate: AttributedTextDelegate?
+    weak var delegate: AttributedTextDelegate?
     
     
     func addOrRemoveFontTrait(withName name: String, withTrait trait: UIFontDescriptorSymbolicTraits) {
