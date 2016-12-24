@@ -336,7 +336,7 @@ class EntryViewController: UIViewController, UITextViewDelegate {
         entryTextView.becomeFirstResponder()
         
         // Add the toolbar
-        toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil).first as? EditingToolbar
+        toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil)!.first as? EditingToolbar
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             

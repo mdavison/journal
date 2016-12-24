@@ -51,7 +51,7 @@ class AttributedText {
                 }
             }
             
-            let updatedFont = UIFont(descriptor: changedFontDescriptor, size: currentFontSize)
+            let updatedFont = UIFont(descriptor: changedFontDescriptor!, size: currentFontSize)
             
             currentAttributes.updateValue(updatedFont, forKey: NSFontAttributeName)
             
