@@ -11,7 +11,7 @@ import CoreData
 
 let HasSavedEntryNotificationKey = "com.morgandavison.hasSavedEntryNotificationKey"
 
-class EntryViewController: UIViewController, UITextViewDelegate {
+class EntryViewController: UITableViewController, UITextViewDelegate {
 
     @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var entryTextView: UITextView!
@@ -120,6 +120,16 @@ class EntryViewController: UIViewController, UITextViewDelegate {
             // On iphone, so make bottom edge lower
             bottomConstraint.constant = 40
         }
+    }
+    
+    // MARK: - Table View Controller Methods
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
     
     
