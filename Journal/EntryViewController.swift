@@ -113,13 +113,6 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
         }
-        
-        // Determine if InputAssistantView is visible (ipad only)
-        // and adjust bottom edge of entryTextView accordingly
-        if entryTextView.inputAssistantItem.leadingBarButtonGroups.isEmpty {
-            // On iphone, so make bottom edge lower
-            bottomConstraint.constant = 40
-        }
     }
     
     // MARK: - Table View Controller Methods
@@ -263,10 +256,10 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         presentViewController(alert, animated: true, completion: nil)
     }
     
-    @IBAction func hideEditingToolbar(sender: UIBarButtonItem) {
-        entryTextView.inputAccessoryView = nil
-        entryTextView.reloadInputViews()
-    }
+//    @IBAction func hideEditingToolbar(sender: UIBarButtonItem) {
+//        entryTextView.inputAccessoryView = nil
+//        entryTextView.reloadInputViews()
+//    }
     
     @IBAction func showEditingToolbar(sender: UIButton) {
         if let toolbar = toolbar {
@@ -293,6 +286,12 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     @objc private func preferredContentSizeChanged(notification: NSNotification) {
         print("preferredContentSizeChanged in entry")
         entryTextView.font = UIFont.preferredFontForTextStyle(styleApplied)
+    }
+    
+    func hideEditingToolbar() {
+        entryTextView.inputAccessoryView = nil
+        //entryTextView.reloadInputViews()
+        entryTextView.resignFirstResponder()
     }
 
 
@@ -401,6 +400,12 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
             self,
             selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
             name: UIContentSizeCategoryDidChangeNotification,
+            object: nil)
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(EntryViewController.hideEditingToolbar),
+            name: UIKeyboardDidHideNotification,
             object: nil)
     }
     

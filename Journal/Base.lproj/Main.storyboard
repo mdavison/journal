@@ -25,84 +25,6 @@
             </objects>
             <point key="canvasLocation" x="-934" y="-254"/>
         </scene>
-        <!--Detail-->
-        <scene sceneID="yUG-lL-AsK">
-            <objects>
-                <viewController storyboardIdentifier="MainEntryView" title="Detail" id="JEX-9P-axG" customClass="EntryViewController" customModule="Journal" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SYR-Wa-9uf"/>
-                        <viewControllerLayoutGuide type="bottom" id="GAO-Cl-Wes"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="svH-Pt-448">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="44C-kb-TuA">
-                                <rect key="frame" x="20" y="72" width="560" height="30"/>
-                                <accessibility key="accessibilityConfiguration" label="Tap to change date"/>
-                                <state key="normal" title="Date"/>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="niX-it-HWc">
-                                <rect key="frame" x="20" y="110" width="560" height="400"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <attributedString key="attributedText"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0N-08-ZxK">
-                                <rect key="frame" x="555" y="567" width="25" height="25"/>
-                                <state key="normal" image="showToolbar"/>
-                                <connections>
-                                    <action selector="showEditingToolbar:" destination="JEX-9P-axG" eventType="touchUpInside" id="y12-Jc-SZS"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="44C-kb-TuA" secondAttribute="bottom" constant="8" symbolic="YES" id="9NC-Dx-BtM"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="e0N-08-ZxK" secondAttribute="trailing" id="Aj6-tq-stV"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="90" id="Blo-mw-eC0"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="20" id="E8I-uv-YVC"/>
-                            <constraint firstItem="niX-it-HWc" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="GrP-2x-hlj"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="niX-it-HWc" secondAttribute="trailing" id="Noe-Ic-DVp"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="niX-it-HWc" secondAttribute="leading" id="S3G-DT-5qs"/>
-                            <constraint firstItem="44C-kb-TuA" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="SBa-9w-Fau"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="44C-kb-TuA" secondAttribute="trailing" id="V0Q-yE-9x1"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="e0N-08-ZxK" secondAttribute="bottom" constant="8" symbolic="YES" id="W4U-jD-Ksz"/>
-                            <constraint firstItem="44C-kb-TuA" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" symbolic="YES" id="XLk-bI-QLJ"/>
-                            <constraint firstItem="e0N-08-ZxK" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="8" symbolic="YES" id="XXb-5K-tcO"/>
-                            <constraint firstItem="niX-it-HWc" firstAttribute="bottom" secondItem="svH-Pt-448" secondAttribute="bottomMargin" constant="-93" id="oei-VQ-BWj"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="niX-it-HWc" secondAttribute="bottom" constant="8" symbolic="YES" id="vb3-DT-ctK"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="GrP-2x-hlj"/>
-                                <exclude reference="oei-VQ-BWj"/>
-                                <exclude reference="E8I-uv-YVC"/>
-                                <exclude reference="vb3-DT-ctK"/>
-                                <exclude reference="XXb-5K-tcO"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Entry" id="zwx-ZT-p4Z"/>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Journal Entry" id="mOI-FS-AaM">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="lto-Mo-wCV">
-                            <connections>
-                                <action selector="save:" destination="JEX-9P-axG" id="qus-Jg-2Xq"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="bottomConstraint" destination="Blo-mw-eC0" id="wnJ-Bd-h1g"/>
-                        <outlet property="dateButton" destination="44C-kb-TuA" id="RRo-Jb-a7d"/>
-                        <outlet property="entryTextView" destination="niX-it-HWc" id="UWj-Ls-bZG"/>
-                        <outlet property="saveButton" destination="lto-Mo-wCV" id="Xge-fw-ApK"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-64" y="1986"/>
-        </scene>
         <!--Journal Entry-->
         <scene sceneID="GhW-Uj-XKh">
             <objects>
@@ -122,17 +44,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4L3-Fu-EXo">
-                                                    <rect key="frame" x="8" y="46" width="752" height="785"/>
+                                                    <rect key="frame" x="8" y="46" width="752" height="817.5"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <attributedString key="attributedText"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C04-Kx-HnF">
-                                                    <rect key="frame" x="8" y="8" width="752" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <accessibility key="accessibilityConfiguration" label="Tap to change date"/>
-                                                    <state key="normal" title="Date"/>
-                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1z-KL-2mv">
                                                     <rect key="frame" x="8" y="8" width="752" height="30"/>
                                                     <accessibility key="accessibilityConfiguration" label="Tap to change date"/>
@@ -141,23 +57,14 @@
                                                         <segue destination="QQb-W7-YPp" kind="presentation" identifier="EntryDate" id="GtI-Md-T9p"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzI-Yt-mZD">
-                                                    <rect key="frame" x="735" y="838.5" width="25" height="25"/>
-                                                    <state key="normal" image="showToolbar"/>
-                                                    <connections>
-                                                        <action selector="showEditingToolbar:" destination="yOJ-ue-aRd" eventType="touchUpInside" id="S5S-Eq-7vG"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="leadingMargin" secondItem="b1z-KL-2mv" secondAttribute="leading" id="7BJ-SE-et3"/>
-                                                <constraint firstItem="lzI-Yt-mZD" firstAttribute="bottom" secondItem="B4m-6b-i8S" secondAttribute="bottomMargin" id="7q9-XL-GyK"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="b1z-KL-2mv" secondAttribute="trailing" id="B6l-7h-YMB"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="4L3-Fu-EXo" secondAttribute="leading" id="K8R-8z-4Y0"/>
                                                 <constraint firstItem="b1z-KL-2mv" firstAttribute="top" secondItem="B4m-6b-i8S" secondAttribute="topMargin" id="SJ8-JK-rcC"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="lzI-Yt-mZD" secondAttribute="trailing" id="ZPR-Ku-ind"/>
-                                                <constraint firstItem="4L3-Fu-EXo" firstAttribute="top" secondItem="b1z-KL-2mv" secondAttribute="bottom" constant="8" symbolic="YES" id="exK-ce-2cs"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="4L3-Fu-EXo" secondAttribute="bottom" constant="32" id="miP-Xn-gY5"/>
+                                                <constraint firstItem="4L3-Fu-EXo" firstAttribute="top" secondItem="b1z-KL-2mv" secondAttribute="bottom" constant="8" symbolic="YES" id="hyP-Zk-sh3"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="4L3-Fu-EXo" secondAttribute="bottom" id="miP-Xn-gY5"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="4L3-Fu-EXo" secondAttribute="trailing" id="wuS-pI-P86"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1318,7 +1225,6 @@
         <image name="CalendarViewIconFilled" width="25" height="25"/>
         <image name="ListViewIconFilled" width="25" height="25"/>
         <image name="SettingsIconFilled" width="25" height="25"/>
-        <image name="showToolbar" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>

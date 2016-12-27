@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EntryViewController" customModule="Journal" customModuleProvider="target">
@@ -57,11 +61,6 @@
                     </connections>
                 </barButtonItem>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="xFi-BJ-BV3"/>
-                <barButtonItem image="HideToolbar" id="QRt-QZ-gfB">
-                    <connections>
-                        <action selector="hideEditingToolbar:" destination="-1" id="hac-Ff-NPL"/>
-                    </connections>
-                </barButtonItem>
             </items>
             <connections>
                 <outlet property="boldButton" destination="axY-nN-yKS" id="GSt-3e-2Y5"/>
@@ -77,7 +76,6 @@
         <image name="AlignLeftIcon" width="25" height="25"/>
         <image name="AlignRightIcon" width="25" height="25"/>
         <image name="BoldIcon" width="25" height="25"/>
-        <image name="HideToolbar" width="25" height="25"/>
         <image name="ItalicsIcon" width="25" height="25"/>
         <image name="ParagraphIcon" width="25" height="25"/>
         <image name="TextColorIcon" width="25" height="25"/>
