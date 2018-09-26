@@ -9,14 +9,14 @@
 import UIKit
 
 enum EditingToolbarButtonName {
-    case Bold
-    case Italic
-    case Underline
-    case AlignLeft
-    case AlignCenter
-    case AlignRight
-    case Color
-    case Size 
+    case bold
+    case italic
+    case underline
+    case alignLeft
+    case alignCenter
+    case alignRight
+    case color
+    case size 
 }
 
 class EditingToolbar: UIToolbar {

@@ -21,7 +21,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     var coreDataStack: CoreDataStack!
     var entry: Entry?
-    var entryDate: NSDate?
+    var entryDate: Date?
     var invalidDate = false
     var styleApplied = ""
     var addEntry = false
@@ -29,7 +29,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     var toolbar: EditingToolbar?
     var edited = false {
         didSet {
-           saveButton.enabled = edited
+           saveButton.isEnabled = edited
         }
     }
     
@@ -38,7 +38,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {
@@ -47,7 +47,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         if addEntry { // User tapped Add button
             if entryExists() {
                 invalidDate = true
-                performSegueWithIdentifier(Storyboard.EntryDateSegueIdentifier, sender: nil)
+                performSegue(withIdentifier: Storyboard.EntryDateSegueIdentifier, sender: nil)
             }
         } else { // App loaded and entry already exists for today
             loadEntryForDateIfExists()
@@ -62,23 +62,23 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         attributedTextModel.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.navigationBarHidden = false
+        navigationController?.isNavigationBarHidden = false
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Check if an entry already exists for this date
         if entryExists() {
-            saveButton.enabled = false
+            saveButton.isEnabled = false
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         if edited {
             // Auto save
             saveAndNotify()
@@ -93,11 +93,11 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     // MARK: - UITextViewDelegate Methods
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         edited = true 
         saveButton.title = "Save"
         if invalidDate == false {
-            saveButton.enabled = true
+            saveButton.isEnabled = true
         }
         
         // If user started to create new entry but then deleted the
@@ -108,7 +108,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
@@ -117,65 +117,65 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     // MARK: - Table View Controller Methods
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
     
     // MARK: - Actions
     
-    @IBAction func save(sender: UIBarButtonItem) {
+    @IBAction func save(_ sender: UIBarButtonItem) {
         saveAndNotify()
         
-        saveButton.enabled = false
+        saveButton.isEnabled = false
         saveButton.title = "Saved" // This doesn't work
         Entry.setDateButton(forDateButton: dateButton, withEntry: entry)
         title = "Journal Entry"
     }
     
-    @IBAction func applyBoldStyle(sender: UIBarButtonItem) {
-        attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptorSymbolicTraits.TraitBold)
+    @IBAction func applyBoldStyle(_ sender: UIBarButtonItem) {
+        attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptorSymbolicTraits.traitBold)
     }
     
-    @IBAction func applyItalicsStyle(sender: UIBarButtonItem) {
-        attributedTextModel.addOrRemoveFontTrait(withName: "oblique", withTrait: UIFontDescriptorSymbolicTraits.TraitItalic)
+    @IBAction func applyItalicsStyle(_ sender: UIBarButtonItem) {
+        attributedTextModel.addOrRemoveFontTrait(withName: "oblique", withTrait: UIFontDescriptorSymbolicTraits.traitItalic)
     }
     
-    @IBAction func applyUnderlineStyle(sender: UIBarButtonItem) {
+    @IBAction func applyUnderlineStyle(_ sender: UIBarButtonItem) {
         attributedTextModel.applyUnderlineStyle()
     }
     
-    @IBAction func applySize(sender: UIBarButtonItem) {
+    @IBAction func applySize(_ sender: UIBarButtonItem) {
         let alertTitle = NSLocalizedString("Select Text Style", comment: "")
-        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .actionSheet)
         
         let titleActionTitle = NSLocalizedString("Title", comment: "")
-        let titleAction = UIAlertAction(title: titleActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleTitle1)
+        let titleAction = UIAlertAction(title: titleActionTitle, style: .default) { (action) in
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.title1.rawValue)
         }
         let subHeadlineActionTitle = NSLocalizedString("SubHeading", comment: "")
-        let subHeadlineAction = UIAlertAction(title: subHeadlineActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleSubheadline)
+        let subHeadlineAction = UIAlertAction(title: subHeadlineActionTitle, style: .default) { (action) in
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.subheadline.rawValue)
         }
         let bodyActionTitle = NSLocalizedString("Body", comment: "")
-        let bodyAction = UIAlertAction(title: bodyActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleBody)
+        let bodyAction = UIAlertAction(title: bodyActionTitle, style: .default) { (action) in
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.body.rawValue)
         }
         let footnoteActionTitle = NSLocalizedString("Footnote", comment: "")
-        let footnoteAction = UIAlertAction(title: footnoteActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleFootnote)
+        let footnoteAction = UIAlertAction(title: footnoteActionTitle, style: .default) { (action) in
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.footnote.rawValue)
         }
         let captionActionTitle = NSLocalizedString("Caption", comment: "")
-        let captionAction = UIAlertAction(title: captionActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyleCaption1)
+        let captionAction = UIAlertAction(title: captionActionTitle, style: .default) { (action) in
+            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.caption1.rawValue)
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
-        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil)
         
         alert.addAction(titleAction)
         alert.addAction(subHeadlineAction)
@@ -188,56 +188,56 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         // If on iPad, have to attach to toolbar
         alert.popoverPresentationController?.barButtonItem = editingToolbar.textSizeButton
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func alignTextLeft(sender: UIBarButtonItem) { 
-        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.Left)
+    @IBAction func alignTextLeft(_ sender: UIBarButtonItem) { 
+        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.left)
     }
     
-    @IBAction func alignTextCenter(sender: UIBarButtonItem) {
-        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.Center)
+    @IBAction func alignTextCenter(_ sender: UIBarButtonItem) {
+        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.center)
     }
     
-    @IBAction func alignTextRight(sender: UIBarButtonItem) {
-        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.Right)
+    @IBAction func alignTextRight(_ sender: UIBarButtonItem) {
+        attributedTextModel.setParagraphAlignment(forAlignment: NSTextAlignment.right)
     }
     
-    @IBAction func changeTextColor(sender: UIBarButtonItem) {        
+    @IBAction func changeTextColor(_ sender: UIBarButtonItem) {        
         let alertTitle = NSLocalizedString("Select Text Color", comment: "")
-        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .actionSheet)
         
         let blackActionTitle = NSLocalizedString("Black", comment: "The color black")
-        let blackAction = UIAlertAction(title: blackActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.blackColor())
+        let blackAction = UIAlertAction(title: blackActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.black)
         }
         let redActionTitle = NSLocalizedString("Red", comment: "The color red")
-        let redAction = UIAlertAction(title: redActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.redColor())
+        let redAction = UIAlertAction(title: redActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.red)
         }
         let orangeActionTitle = NSLocalizedString("Orange", comment: "The color orange")
-        let orangeAction = UIAlertAction(title: orangeActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.orangeColor())
+        let orangeAction = UIAlertAction(title: orangeActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.orange)
         }
         let yellowActionTitle = NSLocalizedString("Yellow", comment: "The color yellow")
-        let yellowAction = UIAlertAction(title: yellowActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.yellowColor())
+        let yellowAction = UIAlertAction(title: yellowActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.yellow)
         }
         let greenActionTitle = NSLocalizedString("Green", comment: "The color green")
-        let greenAction = UIAlertAction(title: greenActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.greenColor())
+        let greenAction = UIAlertAction(title: greenActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.green)
         }
         let blueActionTitle = NSLocalizedString("Blue", comment: "The color blue")
-        let blueAction = UIAlertAction(title: blueActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.blueColor())
+        let blueAction = UIAlertAction(title: blueActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.blue)
         }
         let purpleActionTitle = NSLocalizedString("Purple", comment: "The color purple")
-        let purpleAction = UIAlertAction(title: purpleActionTitle, style: .Default) { (action) in
-            self.attributedTextModel.changeTextColor(UIColor.purpleColor())
+        let purpleAction = UIAlertAction(title: purpleActionTitle, style: .default) { (action) in
+            self.attributedTextModel.changeTextColor(UIColor.purple)
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
-        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil)
         
         alert.addAction(blackAction)
         alert.addAction(redAction)
@@ -253,7 +253,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         alert.popoverPresentationController?.barButtonItem = editingToolbar.textColorButton
 
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
 //    @IBAction func hideEditingToolbar(sender: UIBarButtonItem) {
@@ -261,7 +261,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
 //        entryTextView.reloadInputViews()
 //    }
     
-    @IBAction func showEditingToolbar(sender: UIButton) {
+    @IBAction func showEditingToolbar(_ sender: UIButton) {
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
@@ -271,7 +271,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     // MARK: - Notification Handling
     
-    func entryWasDeleted(notification: NSNotification) {
+    func entryWasDeleted(_ notification: Notification) {
         if let notificationEntry = notification.object as? Entry {
             if notificationEntry == entry {
                 entry = nil
@@ -283,9 +283,9 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     
     // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512
-    @objc private func preferredContentSizeChanged(notification: NSNotification) {
+    @objc fileprivate func preferredContentSizeChanged(_ notification: Notification) {
         print("preferredContentSizeChanged in entry")
-        entryTextView.font = UIFont.preferredFontForTextStyle(styleApplied)
+        entryTextView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: styleApplied))
     }
     
     func hideEditingToolbar() {
@@ -299,11 +299,11 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
             case Storyboard.EntryDateSegueIdentifier:
-                guard let navController = segue.destinationViewController as? UINavigationController,
+                guard let navController = segue.destination as? UINavigationController,
                     let controller = navController.topViewController as? EntryDateViewController else { return }
                 
                 controller.delegate = self
@@ -320,7 +320,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     // MARK: - Helper Methods
     
-    private func setupView() {
+    fileprivate func setupView() {
         tabBarController?.navigationItem.rightBarButtonItem = saveButton
         
         // Theme
@@ -335,9 +335,9 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
             } else {
                 Entry.setDateButton(forDateButton: dateButton, withEntry: nil)
             }
-            saveButton.enabled = false
+            saveButton.isEnabled = false
             entryTextView.attributedText = NSAttributedString()
-            entryTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            entryTextView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
             
             title = "New Entry"
         }
@@ -345,7 +345,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         entryTextView.becomeFirstResponder()
         
         // Add the toolbar
-        toolbar = NSBundle.mainBundle().loadNibNamed("EditingToolbar", owner: self, options: nil)!.first as? EditingToolbar
+        toolbar = Bundle.main.loadNibNamed("EditingToolbar", owner: self, options: nil)!.first as? EditingToolbar
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             
@@ -359,11 +359,11 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     }
     
     
-    private func entryExists() -> Bool {
+    fileprivate func entryExists() -> Bool {
         if entry == nil { // Adding a new entry
             
             // If a date is set, use that, otherwise use today's date
-            var date = NSDate()
+            var date = Date()
             if let entryDate = entryDate {
                 date = entryDate
             }
@@ -374,10 +374,10 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         return false
     }
     
-    private func loadEntryForDateIfExists() {
+    fileprivate func loadEntryForDateIfExists() {
         if entry == nil {
             // If a date is set, use that, otherwise use today's date
-            var date = NSDate()
+            var date = Date()
             if let entryDate = entryDate {
                 date = entryDate
             }
@@ -387,40 +387,40 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    private func addNotificationObservers() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+    fileprivate func addNotificationObservers() {
+        let notificationCenter = NotificationCenter.default
         
         notificationCenter.addObserver(
             self,
             selector: #selector(EntryViewController.entryWasDeleted(_:)),
-            name: EntryWasDeletedNotificationKey,
+            name: NSNotification.Name(rawValue: EntryWasDeletedNotificationKey),
             object: entry)
         
         notificationCenter.addObserver(
             self,
             selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
-            name: UIContentSizeCategoryDidChangeNotification,
+            name: NSNotification.Name.UIContentSizeCategoryDidChange,
             object: nil)
         
         notificationCenter.addObserver(
             self,
             selector: #selector(EntryViewController.hideEditingToolbar),
-            name: UIKeyboardDidHideNotification,
+            name: NSNotification.Name.UIKeyboardDidHide,
             object: nil)
     }
     
-    private func saveAndNotify() {
+    fileprivate func saveAndNotify() {
         entry = Entry.save(withEntry: entry, withDate: Entry.getButtonDate(forButton: dateButton), withText: entryTextView.attributedText, withCoreDataStack: coreDataStack)
         
         // Post notification that entry was saved - then listen for it in calendar
-        NSNotificationCenter.defaultCenter().postNotificationName(HasSavedEntryNotificationKey, object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: HasSavedEntryNotificationKey), object: self)
     }
     
 }
 
 
 extension EntryViewController: EntryDateViewControllerDelegate {
-    func entryDateViewController(controller: EntryDateViewController, didSaveDate date: NSDate) {
+    func entryDateViewController(_ controller: EntryDateViewController, didSaveDate date: Date) {
         Entry.setDateButton(forDateButton: dateButton, withDate: date)
         
         invalidDate = false
@@ -438,11 +438,11 @@ extension EntryViewController: AttributedTextDelegate {
     
     func buttonToggled(forButtonName buttonName: EditingToolbarButtonName, isOn on: Bool) {
         switch buttonName {
-        case EditingToolbarButtonName.Bold:
+        case EditingToolbarButtonName.bold:
             editingToolbar.boldButton.image = on ? UIImage(named: "BoldIconFilled") : UIImage(named: "BoldIcon")
-        case EditingToolbarButtonName.Italic:
+        case EditingToolbarButtonName.italic:
             editingToolbar.italicsButton.image = on ? UIImage(named: "ItalicsIconFilled") : UIImage(named: "ItalicsIcon")
-        case EditingToolbarButtonName.Underline:
+        case EditingToolbarButtonName.underline:
             editingToolbar.underlineButton.image = on ? UIImage(named: "UnderlineIconFilled") : UIImage(named: "UnderlineIcon")
         default:
             return

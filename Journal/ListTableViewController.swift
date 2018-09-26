@@ -26,47 +26,47 @@ class ListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                                         
-        self.navigationController?.navigationBarHidden = true
-        tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationController?.isNavigationBarHidden = true
+        tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem
         tabBarController?.title = "List"
         //tabBarController?.tabBar.alpha = 0.9 // Can make tab bar translucent
         
         // Theme
         Theme.setup(withNavigationController: tabBarController?.navigationController)
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(ListTableViewController.insertNewEntry(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(ListTableViewController.insertNewEntry(_:)))
         tabBarController?.navigationItem.rightBarButtonItem = addButton
         
         if let split = self.splitViewController {
-            split.view.backgroundColor = UIColor.whiteColor()
+            split.view.backgroundColor = UIColor.white
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(ListTableViewController.preferredContentSizeChanged(_:)),
-                                                         name: UIContentSizeCategoryDidChangeNotification,
+                                                         name: NSNotification.Name.UIContentSizeCategoryDidChange,
                                                          object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(ListTableViewController.persistentStoreCoordinatorStoresDidChange(_:)),
-                                                         name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
+                                                         name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange,
                                                          object: nil)
     }
 
-    override func viewWillAppear(animated: Bool) {
-        self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+    override func viewWillAppear(_ animated: Bool) {
+        self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
         super.viewWillAppear(animated)
         
-        tabBarController?.navigationController?.navigationBarHidden = false
+        tabBarController?.navigationController?.isNavigationBarHidden = false
         
         if JournalVariables.userIsAuthenticated {
-            tableView.hidden = false
+            tableView.isHidden = false
         }
         
         // Check for changes in iCloud
         coreDataStack.updateContextWithUbiquitousContentUpdates = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         tableView.reloadData()
@@ -83,17 +83,17 @@ class ListTableViewController: UITableViewController {
     
     // MARK: - Actions
     
-    @IBAction func insertNewEntry(sender: UIBarButtonItem) {
-        performSegueWithIdentifier(Storyboard.AddEntrySegueIdentifier, sender: sender)
+    @IBAction func insertNewEntry(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: Storyboard.AddEntrySegueIdentifier, sender: sender)
     }
 
     
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier != Storyboard.SignInSegueIdentifier {
-            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+            let controller = (segue.destination as! UINavigationController).topViewController as! EntryViewController
             
             if segue.identifier == Storyboard.AddEntrySegueIdentifier {                
                 controller.title = "New Entry"
@@ -103,8 +103,8 @@ class ListTableViewController: UITableViewController {
                 controller.coreDataStack = coreDataStack
                 
                 if let indexPath = tableView.indexPathForSelectedRow {
-                    if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
-                        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+                    if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
+                        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                         controller.navigationItem.leftItemsSupplementBackButton = true
                         controller.entry = entry
                     }
@@ -115,36 +115,36 @@ class ListTableViewController: UITableViewController {
 
     // MARK: - Table View
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.fetchedResultsController.sections?.count ?? 0
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sectionInfo = self.fetchedResultsController.sections![section]
         return sectionInfo.numberOfObjects
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ListTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ListTableViewCell
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
 
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
 
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .Delete {
-            let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry
+        if editingStyle == .delete {
+            let entry = fetchedResultsController.object(at: indexPath) as? Entry
             if let entry = entry {
-                coreDataStack.managedObjectContext.deleteObject(entry)
+                coreDataStack.managedObjectContext.delete(entry)
                 coreDataStack.saveContext()
                 
                 // Send notification
-                NSNotificationCenter.defaultCenter().postNotificationName(EntryWasDeletedNotificationKey, object: entry)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: EntryWasDeletedNotificationKey), object: entry)
             }
         }
     }
@@ -152,7 +152,7 @@ class ListTableViewController: UITableViewController {
 
     // MARK: - Fetched results controller
 
-    var fetchedResultsController: NSFetchedResultsController {
+    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> {
         if _fetchedResultsController != nil {
             return _fetchedResultsController!
         }
@@ -163,19 +163,19 @@ class ListTableViewController: UITableViewController {
         
         return _fetchedResultsController!
     }    
-    var _fetchedResultsController: NSFetchedResultsController? = nil
+    var _fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
 
     
     
     // MARK: - Notification Handling 
     
     // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512 
-    @objc private func preferredContentSizeChanged(notification: NSNotification) {
+    @objc fileprivate func preferredContentSizeChanged(_ notification: Notification) {
         print("preferredContentSizeChanged")
         tableView.reloadData()
     }
     
-    @objc private func persistentStoreCoordinatorStoresDidChange(notification: NSNotification) {
+    @objc fileprivate func persistentStoreCoordinatorStoresDidChange(_ notification: Notification) {
         _fetchedResultsController = nil
         tableView.reloadData()
     }
@@ -183,18 +183,18 @@ class ListTableViewController: UITableViewController {
     
     // MARK: - Helper Methods
     
-    private func configureCell(cell: ListTableViewCell, atIndexPath indexPath: NSIndexPath) {
-        if let entry = fetchedResultsController.objectAtIndexPath(indexPath) as? Entry {
+    fileprivate func configureCell(_ cell: ListTableViewCell, atIndexPath indexPath: IndexPath) {
+        if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
             if let entryText = entry.attributed_text {
                 cell.entryTextLabel.text = entryText.string
             }
             
             if let entryDate = entry.created_at {
-                let formatter = NSDateFormatter()
+                let formatter = DateFormatter()
                 formatter.dateFormat = "dd"
-                cell.dayLabel.text = formatter.stringFromDate(entryDate)
+                cell.dayLabel.text = formatter.string(from: entryDate as Date)
                 formatter.dateFormat = "MMM yyyy"
-                cell.monthYearLabel.text = formatter.stringFromDate(entryDate)
+                cell.monthYearLabel.text = formatter.string(from: entryDate as Date)
             }
         }
     }
@@ -204,38 +204,38 @@ class ListTableViewController: UITableViewController {
 
 extension ListTableViewController: NSFetchedResultsControllerDelegate {
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            self.tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-        case .Update:
-            if let indexPath = indexPath, let cell =  tableView.cellForRowAtIndexPath(indexPath) as? ListTableViewCell {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+        case .update:
+            if let indexPath = indexPath, let cell =  tableView.cellForRow(at: indexPath) as? ListTableViewCell {
                 self.configureCell(cell, atIndexPath: indexPath)
             }
-        case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
     

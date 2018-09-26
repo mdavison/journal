@@ -14,9 +14,9 @@ import CoreData
 
 extension Entry {
 
-    @NSManaged var created_at: NSDate?
+    @NSManaged var created_at: Date?
     //@NSManaged var text: String?
     @NSManaged var attributed_text: NSAttributedString?
-    @NSManaged var updated_at: NSDate?
+    @NSManaged var updated_at: Date?
     
 }

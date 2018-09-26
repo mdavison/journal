@@ -27,26 +27,26 @@ class AttributedText {
             let selectedRange = entryTextView.selectedRange
             
             if selectedRange.length > 0 {
-                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
             } else {
-                currentAttributes = entryTextView.typingAttributes
+                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
             }
             
             let currentFontAttributes = currentAttributes[NSFontAttributeName]
             let fontDescriptor = currentFontAttributes!.fontDescriptor
-            let currentFontSize = CGFloat(fontDescriptor().fontAttributes()["NSFontSizeAttribute"]! as! NSNumber)
+            let currentFontSize = CGFloat(fontDescriptor?.fontAttributes["NSFontSizeAttribute"]! as! NSNumber)
             
-            var changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(trait)
+            var changedFontDescriptor = UIFontDescriptor().withSymbolicTraits(trait)
             
-            if let fontNameAttribute = fontDescriptor().fontAttributes()["NSFontNameAttribute"] as? String {
-                if fontNameAttribute.lowercaseString.rangeOfString(name) == nil {
-                    let existingTraitsRaw = fontDescriptor().symbolicTraits.rawValue | trait.rawValue
+            if let fontNameAttribute = fontDescriptor?.fontAttributes["NSFontNameAttribute"] as? String {
+                if fontNameAttribute.lowercased().range(of: name) == nil {
+                    let existingTraitsRaw = (fontDescriptor?.symbolicTraits.rawValue)! | trait.rawValue
                     let existingTraits = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsRaw)
-                    changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(existingTraits)
+                    changedFontDescriptor = UIFontDescriptor().withSymbolicTraits(existingTraits)
                 } else {
-                    let existingTraitsWithoutTraitRaw = fontDescriptor().symbolicTraits.rawValue & ~trait.rawValue
+                    let existingTraitsWithoutTraitRaw = (fontDescriptor?.symbolicTraits.rawValue)! & ~trait.rawValue
                     let existingTraitsWithoutTrait = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsWithoutTraitRaw)
-                    changedFontDescriptor = UIFontDescriptor().fontDescriptorWithSymbolicTraits(existingTraitsWithoutTrait)
+                    changedFontDescriptor = UIFontDescriptor().withSymbolicTraits(existingTraitsWithoutTrait)
                     isOn = false
                 }
             }
@@ -75,16 +75,16 @@ class AttributedText {
             let selectedRange = entryTextView.selectedRange
             
             if selectedRange.length > 0 {
-                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
             } else {
-                currentAttributes = entryTextView.typingAttributes
+                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
             }
             
             if (currentAttributes[NSUnderlineStyleAttributeName] == nil) ||
-                (currentAttributes[NSUnderlineStyleAttributeName]?.integerValue == 0) {
-                currentAttributes.updateValue(1, forKey: NSUnderlineStyleAttributeName)
+                (currentAttributes[NSUnderlineStyleAttributeName]?.intValue == 0) {
+                currentAttributes.updateValue(1 as AnyObject, forKey: NSUnderlineStyleAttributeName)
             } else {
-                currentAttributes.updateValue(0, forKey: NSUnderlineStyleAttributeName)
+                currentAttributes.updateValue(0 as AnyObject, forKey: NSUnderlineStyleAttributeName)
                 isOn = false
             }
             
@@ -101,16 +101,16 @@ class AttributedText {
         }
     }
     
-    func applyStyleToSelection(style: String) {
+    func applyStyleToSelection(_ style: String) {
         if let entryTextView = entryTextView {
             let selectedRange = entryTextView.selectedRange
-            let styledFont = UIFont.preferredFontForTextStyle(style)
+            let styledFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: style))
             var currentAttributes = [String: AnyObject]()
             
             if selectedRange.length > 0 {
-                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
             } else {
-                currentAttributes = entryTextView.typingAttributes
+                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
             }
             
             currentAttributes.updateValue(styledFont, forKey: NSFontAttributeName)
@@ -134,9 +134,9 @@ class AttributedText {
             
             var currentAttributes = [String: AnyObject]()
             if selectedRange.length > 0 {
-                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
             } else {
-                currentAttributes = entryTextView.typingAttributes
+                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
             }
             
             currentAttributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
@@ -152,15 +152,15 @@ class AttributedText {
         }
     }
     
-    func changeTextColor(color: UIColor) {
+    func changeTextColor(_ color: UIColor) {
         if let entryTextView = entryTextView {
             let selectedRange = entryTextView.selectedRange
             var currentAttributes = [String: AnyObject]()
             
             if selectedRange.length > 0 {
-                currentAttributes = entryTextView.textStorage.attributesAtIndex(selectedRange.location, effectiveRange: nil)
+                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
             } else {
-                currentAttributes = entryTextView.typingAttributes
+                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
             }
             
             if (currentAttributes[NSForegroundColorAttributeName] == nil) ||
@@ -183,20 +183,20 @@ class AttributedText {
     }
     
     
-    private func toggleButton(forStyle style: String, isOn: Bool) {
+    fileprivate func toggleButton(forStyle style: String, isOn: Bool) {
         switch style {
         case "bold":
-            delegate?.buttonToggled(forButtonName: EditingToolbarButtonName.Bold, isOn: isOn)
+            delegate?.buttonToggled(forButtonName: EditingToolbarButtonName.bold, isOn: isOn)
         case "oblique":
-            delegate?.buttonToggled(forButtonName: EditingToolbarButtonName.Italic, isOn: isOn)
+            delegate?.buttonToggled(forButtonName: EditingToolbarButtonName.italic, isOn: isOn)
         case "underline":
-            delegate?.buttonToggled(forButtonName: EditingToolbarButtonName.Underline, isOn: isOn)
+            delegate?.buttonToggled(forButtonName: EditingToolbarButtonName.underline, isOn: isOn)
         default:
             return
         }
     }
     
-    private func toggleButton(forColor color: UIColor) {
+    fileprivate func toggleButton(forColor color: UIColor) {
         delegate?.buttonToggled(forColor: color)
     }
 

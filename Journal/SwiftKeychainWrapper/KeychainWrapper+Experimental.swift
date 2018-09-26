@@ -18,7 +18,7 @@ public extension KeychainWrapper {
                 return nil
             }
             
-            return NSString(data: data, encoding: NSUTF8StringEncoding) as String?
+            return NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String?
         }
         set(value) {
             if let value = value {
@@ -29,22 +29,22 @@ public extension KeychainWrapper {
     
     /// subscript convenience access currently supports String, NSData and NSCoding return type.
     
-    public func get<T: Any>(keyName: String) -> T? {
+    public func get<T: Any>(_ keyName: String) -> T? {
         guard let data = self.dataForKey(keyName) else {
             return nil
         }
         
-        if T.self == NSData.self {
+        if T.self == Data.self {
             return data as? T
         }
         
-        if T.self == String.self, let stringValue = NSString(data: data, encoding: NSUTF8StringEncoding) as String? {
+        if T.self == String.self, let stringValue = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
             return stringValue as? T
         }
         
         // TODO: does not work for protocol. Sees T as TestObject in unit test... can't use ==, need to figure out if "is" works or better way
         if T.self == NSCoding.self {
-            if let objectValue = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? NSCoding {
+            if let objectValue = NSKeyedUnarchiver.unarchiveObject(with: data) as? NSCoding {
                 return objectValue as? T
             }
         }

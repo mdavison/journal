@@ -30,14 +30,14 @@ class SettingsTableViewController: UITableViewController {
         setupView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Remove duplicate nav controller
-        tabBarController?.navigationController?.navigationBarHidden = true
+        tabBarController?.navigationController?.isNavigationBarHidden = true
         
         //changePasswordButton.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
-        changePasswordLabel.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
+        changePasswordLabel.isEnabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,7 +48,7 @@ class SettingsTableViewController: UITableViewController {
     
     // MARK: - Navigation
     
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == Storyboard.ChangePasswordSegueIdentifier {
             if !KeychainWrapper.standardKeychainAccess().hasValueForKey("password") {
                 return false
@@ -59,18 +59,18 @@ class SettingsTableViewController: UITableViewController {
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
             case Storyboard.SetPasswordSegueIdentifier:
-                guard let navigationController = segue.destinationViewController as? UINavigationController,
+                guard let navigationController = segue.destination as? UINavigationController,
                     let controller = navigationController.topViewController as? SetPasswordTableViewController
                     else { break }
                 
                 controller.delegate = self
                 
             case Storyboard.ChangePasswordSegueIdentifier:
-                guard let navigationController = segue.destinationViewController as? UINavigationController,
+                guard let navigationController = segue.destination as? UINavigationController,
                     let controller = navigationController.topViewController as? ChangePasswordTableViewController
                     else { break }
                 
@@ -85,8 +85,8 @@ class SettingsTableViewController: UITableViewController {
     
     // MARK: - Actions
     
-    @IBAction func requirePasswordSwitchChanged(sender: UISwitch) {
-        if sender.on { // Switched On
+    @IBAction func requirePasswordSwitchChanged(_ sender: UISwitch) {
+        if sender.isOn { // Switched On
             //let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
             let passwordIsSet = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
             
@@ -94,14 +94,14 @@ class SettingsTableViewController: UITableViewController {
                 saveSettings(true, password: nil, hint: nil, touchID: nil)
                 JournalVariables.userIsAuthenticated = false
             } else { // No password set
-                performSegueWithIdentifier(Storyboard.SetPasswordSegueIdentifier, sender: nil)
+                performSegue(withIdentifier: Storyboard.SetPasswordSegueIdentifier, sender: nil)
             }
         } else { // Switched Off
             saveSettings(false, password: nil, hint: nil, touchID: false)
         }
     }
     
-    @IBAction func exportEntries(sender: UIButton) {
+    @IBAction func exportEntries(_ sender: UIButton) {
         let (urlForExportData, error) = Entry.getURLForExportData(withCoreDataStack: coreDataStack)
         
         if let url = urlForExportData {
@@ -111,36 +111,36 @@ class SettingsTableViewController: UITableViewController {
                 popoverController.sourceView = sender
             }
             
-            presentViewController(activityViewController, animated: true, completion: nil)
+            present(activityViewController, animated: true, completion: nil)
         } else {
             // Show error alert
             if let error = error {
-                let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
-                let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alertController.addAction(action)
                 
-                presentViewController(alertController, animated: true, completion: nil)
+                present(alertController, animated: true, completion: nil)
             }
         }
     }
     
     // MARK: - Helper Methods
     
-    private func setSettings() {
+    fileprivate func setSettings() {
         if let settings = Settings.getSettings(withCoreDataStack: coreDataStack) {
             self.settings = settings
         }
     }
     
-    private func setupView() {
+    fileprivate func setupView() {
         if let settings = settings {
             if settings.password_required == true {
-                passwordRequiredSwitch.on = true
+                passwordRequiredSwitch.isOn = true
             }
         }
     }
     
-    private func saveSettings(passwordRequired: Bool?, password: String?, hint: String?, touchID: Bool?) {
+    fileprivate func saveSettings(_ passwordRequired: Bool?, password: String?, hint: String?, touchID: Bool?) {
         if let settings = Settings.saveSettings(withCoreDataStack: coreDataStack,
                                                 passwordRequired: passwordRequired,
                                                 password: password,
@@ -153,7 +153,7 @@ class SettingsTableViewController: UITableViewController {
 
     
     // For development 
-    private func clearAllSettings() {
+    fileprivate func clearAllSettings() {
         Settings.clearAllSettings(withCoreDataStack: coreDataStack)
     }
     
@@ -161,17 +161,17 @@ class SettingsTableViewController: UITableViewController {
 
 
 extension SettingsTableViewController: SetPasswordTableViewControllerDelegate {
-    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, hint: String?, touchID: Bool) {
-        saveSettings(passwordRequiredSwitch.on, password: password, hint: hint, touchID: touchID)
+    func setPasswordTableViewController(_ controller: SetPasswordTableViewController, didFinishSettingPassword password: String, hint: String?, touchID: Bool) {
+        saveSettings(passwordRequiredSwitch.isOn, password: password, hint: hint, touchID: touchID)
     }
     
-    func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController) {
-        passwordRequiredSwitch.on = false
+    func setPasswordTableViewControllerDidCancel(_ controller: SetPasswordTableViewController) {
+        passwordRequiredSwitch.isOn = false
     }
 }
 
 extension SettingsTableViewController: ChangePasswordTableViewControllerDelegate {
-    func changePasswordTableViewController(controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, hint: String?,  touchID: Bool) {
-        saveSettings(passwordRequiredSwitch.on, password: password, hint: hint, touchID: touchID)
+    func changePasswordTableViewController(_ controller: ChangePasswordTableViewController, didFinishChangingPassword password: String, hint: String?,  touchID: Bool) {
+        saveSettings(passwordRequiredSwitch.isOn, password: password, hint: hint, touchID: touchID)
     }
 }

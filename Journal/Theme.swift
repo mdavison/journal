@@ -27,7 +27,7 @@ class Theme {
                 if let avenir = UIFont(name: "Avenir", size: 20) {
                     return avenir
                 } else {
-                    return UIFont.systemFontOfSize(20)
+                    return UIFont.systemFont(ofSize: 20)
                 }
             }
         }

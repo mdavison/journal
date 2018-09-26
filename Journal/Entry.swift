@@ -12,10 +12,10 @@ import CoreData
 
 class Entry: NSManagedObject {
     
-    static func getFetchedResultsController(coreDataStack: CoreDataStack) -> NSFetchedResultsController {
-        let fetchRequest = NSFetchRequest()
+    static func getFetchedResultsController(_ coreDataStack: CoreDataStack) -> NSFetchedResultsController<NSFetchRequestResult> {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         // Edit the entity name as appropriate.
-        let entity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: coreDataStack.managedObjectContext)
+        let entity = NSEntityDescription.entity(forEntityName: "Entry", in: coreDataStack.managedObjectContext)
         fetchRequest.entity = entity
         
         // Set the batch size to a suitable number.
@@ -37,28 +37,28 @@ class Entry: NSManagedObject {
         return fetchedResultsController
     }
     
-    static func entryExists(forDate date: NSDate, coreDataStack: CoreDataStack) -> Bool {
-        let calendar = NSCalendar.currentCalendar()
-        let formatter = NSDateFormatter()
+    static func entryExists(forDate date: Date, coreDataStack: CoreDataStack) -> Bool {
+        let calendar = Foundation.Calendar.current
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: date)
-        let predicateDateBeginString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
-        let predicateDateEndString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
-        let predicateDateBegin = formatter.dateFromString(predicateDateBeginString)
-        let predicateDateEnd = formatter.dateFromString(predicateDateEndString)
+        let entryDateComponents = (calendar as NSCalendar).components([.day, .month, .year], from: date)
+        let predicateDateBeginString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 00:00:00"
+        let predicateDateEndString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 23:59:59"
+        let predicateDateBegin = formatter.date(from: predicateDateBeginString)
+        let predicateDateEnd = formatter.date(from: predicateDateEndString)
         
         guard let begin = predicateDateBegin, let end = predicateDateEnd else {
             NSLog("Could not determine predicateDateBegin or predicateDateEnd")
             return false
         }
         
-        let fetchRequest = NSFetchRequest(entityName: "Entry")
-        let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin, end)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Entry")
+        let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin as CVarArg, end as CVarArg)
         fetchRequest.predicate = predicate
         
         do {
-            if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
+            if let results = try coreDataStack.managedObjectContext.fetch(fetchRequest) as? [Entry] {
                 if let _ = results.first {
                     return true
                 }
@@ -70,28 +70,28 @@ class Entry: NSManagedObject {
         return false
     }
     
-    static func getEntry(forDate date: NSDate, coreDataStack: CoreDataStack) -> Entry? {
-        let calendar = NSCalendar.currentCalendar()
-        let formatter = NSDateFormatter()
+    static func getEntry(forDate date: Date, coreDataStack: CoreDataStack) -> Entry? {
+        let calendar = Foundation.Calendar.current
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        let entryDateComponents = calendar.components([.Day, .Month, .Year], fromDate: date)
-        let predicateDateBeginString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 00:00:00"
-        let predicateDateEndString = "\(entryDateComponents.year)-\(entryDateComponents.month)-\(entryDateComponents.day) 23:59:59"
-        let predicateDateBegin = formatter.dateFromString(predicateDateBeginString)
-        let predicateDateEnd = formatter.dateFromString(predicateDateEndString)
+        let entryDateComponents = (calendar as NSCalendar).components([.day, .month, .year], from: date)
+        let predicateDateBeginString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 00:00:00"
+        let predicateDateEndString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 23:59:59"
+        let predicateDateBegin = formatter.date(from: predicateDateBeginString)
+        let predicateDateEnd = formatter.date(from: predicateDateEndString)
         
         guard let begin = predicateDateBegin, let end = predicateDateEnd else {
             NSLog("Could not determine predicateDateBegin or predicateDateEnd")
             return nil
         }
         
-        let fetchRequest = NSFetchRequest(entityName: "Entry")
-        let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin, end)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Entry")
+        let predicate = NSPredicate(format: "(created_at >= %@) AND (created_at <= %@)", begin as CVarArg, end as CVarArg)
         fetchRequest.predicate = predicate
         
         do {
-            if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
+            if let results = try coreDataStack.managedObjectContext.fetch(fetchRequest) as? [Entry] {
                 return results.first
             }
         } catch let error as NSError {
@@ -101,13 +101,13 @@ class Entry: NSManagedObject {
         return nil 
     }
     
-    static func getAllEntries(coreDataStack: CoreDataStack) -> [Entry]? {
-        let fetchRequest = NSFetchRequest(entityName: "Entry")
+    static func getAllEntries(_ coreDataStack: CoreDataStack) -> [Entry]? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Entry")
         let nameSortDescriptor = NSSortDescriptor(key: "created_at", ascending: false)
         fetchRequest.sortDescriptors = [nameSortDescriptor]
         
         do {
-            if let results = try coreDataStack.managedObjectContext.executeFetchRequest(fetchRequest) as? [Entry] {
+            if let results = try coreDataStack.managedObjectContext.fetch(fetchRequest) as? [Entry] {
                 return results
             }
         } catch let error as NSError {
@@ -117,21 +117,21 @@ class Entry: NSManagedObject {
         return nil
     }
     
-    static func save(withEntry entry: Entry?, withDate date: NSDate, withText text: NSAttributedString, withCoreDataStack coreDataStack: CoreDataStack) -> Entry? {
+    static func save(withEntry entry: Entry?, withDate date: Date, withText text: NSAttributedString, withCoreDataStack coreDataStack: CoreDataStack) -> Entry? {
         
         var savedEntry: Entry? = nil
         
         if let entry = entry {
             // Save existing
             entry.created_at = date
-            entry.updated_at = NSDate()
+            entry.updated_at = Date()
             //entry.text = entryTextView.text
             entry.attributed_text = text
             savedEntry = entry
         } else {
             // Create new
-            let entryEntity = NSEntityDescription.entityForName("Entry", inManagedObjectContext: coreDataStack.managedObjectContext)
-            savedEntry = Entry(entity: entryEntity!, insertIntoManagedObjectContext: coreDataStack.managedObjectContext)
+            let entryEntity = NSEntityDescription.entity(forEntityName: "Entry", in: coreDataStack.managedObjectContext)
+            savedEntry = Entry(entity: entryEntity!, insertInto: coreDataStack.managedObjectContext)
             savedEntry?.created_at = date
             //savedEntry?.text = entryTextView.text
             savedEntry?.attributed_text = text
@@ -144,15 +144,15 @@ class Entry: NSManagedObject {
         return savedEntry
     }
     
-    static func getExportData(forEntries entries: [Entry]) -> NSData? {
+    static func getExportData(forEntries entries: [Entry]) -> Data? {
         var entriesString = ""
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .MediumStyle
-        formatter.timeStyle = .MediumStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
 
         for entry in entries {
             if let date = entry.created_at {
-                entriesString += formatter.stringFromDate(date) + "\n\n"
+                entriesString += formatter.string(from: date as Date) + "\n\n"
             } else {
                 entriesString += "No Date\n\n"
             }
@@ -174,43 +174,43 @@ class Entry: NSManagedObject {
             entriesString += "***\n\n"
         }
         
-        return entriesString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        return entriesString.data(using: String.Encoding.utf8, allowLossyConversion: false)
     }
     
-    static func getURLForExportData(withCoreDataStack coreDataStack: CoreDataStack) -> (NSURL?, String?) {
+    static func getURLForExportData(withCoreDataStack coreDataStack: CoreDataStack) -> (URL?, String?) {
         if let entries = Entry.getAllEntries(coreDataStack) {
             if entries.count == 0 {
                 return (nil, "There are no entries to export")
             }
             
             if let data = Entry.getExportData(forEntries: entries) {
-                let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+                let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
                 let documentsDirectory = paths[0] as NSString
-                let filename = documentsDirectory.stringByAppendingPathComponent("journal_entries.txt")
+                let filename = documentsDirectory.appendingPathComponent("journal_entries.txt")
                 
-                data.writeToFile(filename, atomically: true)
+                try? data.write(to: URL(fileURLWithPath: filename), options: [.atomic])
                 
-                return (NSURL(fileURLWithPath: filename), nil)
+                return (URL(fileURLWithPath: filename), nil)
             }
         }
         
         return (nil, "Unable to export entries")
     }
     
-    static func getButtonDate(forButton button: UIButton) -> NSDate {
+    static func getButtonDate(forButton button: UIButton) -> Date {
         let formatter = Entry.getFormatter()
-        let buttonDate = formatter.dateFromString(button.currentTitle!)
+        let buttonDate = formatter.date(from: button.currentTitle!)
         if let date = buttonDate {
             return date
         }
         
-        return NSDate()
+        return Date()
     }
     
-    static func getFormatter() -> NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .MediumStyle
-        formatter.timeStyle = .ShortStyle
+    static func getFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
         
         return formatter
     }
@@ -218,17 +218,17 @@ class Entry: NSManagedObject {
     static func setDateButton(forDateButton dateButton: UIButton, withEntry entry: Entry?) {
         if let entry = entry {
             let formatter = Entry.getFormatter()
-            dateButton.setTitle(formatter.stringFromDate(entry.created_at!), forState: .Normal)
+            dateButton.setTitle(formatter.string(from: entry.created_at! as Date), for: UIControlState())
         } else {
             let formatter = Entry.getFormatter()
-            dateButton.setTitle(formatter.stringFromDate(NSDate()), forState: .Normal)
+            dateButton.setTitle(formatter.string(from: Date()), for: UIControlState())
         }
     }
     
-    static func setDateButton(forDateButton dateButton: UIButton, withDate date: NSDate) {
+    static func setDateButton(forDateButton dateButton: UIButton, withDate date: Date) {
         let formatter = Entry.getFormatter()
         
-        dateButton.setTitle(formatter.stringFromDate(date), forState: .Normal)
+        dateButton.setTitle(formatter.string(from: date), for: UIControlState())
     }
 
     

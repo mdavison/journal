@@ -31,8 +31,8 @@ public struct KeychainItemOptions {
     let itemClass: KeychainItemClass
     let itemAccessibility: KeychainItemAccessibility
     
-    init(itemClass: KeychainItemClass = .GenericPassword,
-         itemAccessibility: KeychainItemAccessibility = .WhenUnlocked) {
+    init(itemClass: KeychainItemClass = .genericPassword,
+         itemAccessibility: KeychainItemAccessibility = .whenUnlocked) {
         self.itemClass = itemClass
         self.itemAccessibility = itemAccessibility
     }
@@ -68,7 +68,7 @@ public enum KeychainItemClass {
      - kSecAttrGeneric
     */
     @available(iOS 2, *)
-    case GenericPassword
+    case genericPassword
     
     /**
      Internet password item.
@@ -94,7 +94,7 @@ public enum KeychainItemClass {
      - kSecAttrPath
     */
     @available(iOS 2, *)
-    case InternetPassword
+    case internetPassword
     
     /**
      Certificate item.
@@ -112,7 +112,7 @@ public enum KeychainItemClass {
      - kSecAttrPublicKeyHash
      */
     @available(iOS 2, *)
-    case Certificate
+    case certificate
     
     /**
      Cryptographic key item.
@@ -137,21 +137,21 @@ public enum KeychainItemClass {
      - kSecAttrCanUnwrap
      */
     @available(iOS 2, *)
-    case Key
+    case key
     
     /**
      An identity is a certificate together with its associated private key. Because an identity is the combination of a private key and a certificate, this class shares attributes of both kSecClassKey and kSecClassCertificate.
      */
     @available(iOS 2, *)
-    case Identity
+    case identity
 }
 
 private let keychainItemClassLookup: [KeychainItemClass:CFString] = [
-    .GenericPassword: kSecClassGenericPassword,
-    .InternetPassword: kSecClassInternetPassword,
-    .Certificate: kSecClassCertificate,
-    .Key: kSecClassKey,
-    .Identity: kSecClassIdentity
+    .genericPassword: kSecClassGenericPassword,
+    .internetPassword: kSecClassInternetPassword,
+    .certificate: kSecClassCertificate,
+    .key: kSecClassKey,
+    .identity: kSecClassIdentity
 ]
 
 extension KeychainItemClass : KeychainAttrRepresentable {
@@ -169,7 +169,7 @@ public enum KeychainItemAccessibility {
      After the first unlock, the data remains accessible until the next restart. This is recommended for items that need to be accessed by background applications. Items with this attribute migrate to a new device when using encrypted backups.
     */
     @available(iOS 4, *)
-    case AfterFirstUnlock
+    case afterFirstUnlock
     
     /**
      The data in the keychain item cannot be accessed after a restart until the device has been unlocked once by the user.
@@ -177,7 +177,7 @@ public enum KeychainItemAccessibility {
      After the first unlock, the data remains accessible until the next restart. This is recommended for items that need to be accessed by background applications. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
      */
     @available(iOS 4, *)
-    case AfterFirstUnlockThisDeviceOnly
+    case afterFirstUnlockThisDeviceOnly
     
     /**
      The data in the keychain item can always be accessed regardless of whether the device is locked.
@@ -185,7 +185,7 @@ public enum KeychainItemAccessibility {
      This is not recommended for application use. Items with this attribute migrate to a new device when using encrypted backups.
      */
     @available(iOS 4, *)
-    case Always
+    case always
     
     /**
      The data in the keychain can only be accessed when the device is unlocked. Only available if a passcode is set on the device.
@@ -193,7 +193,7 @@ public enum KeychainItemAccessibility {
      This is recommended for items that only need to be accessible while the application is in the foreground. Items with this attribute never migrate to a new device. After a backup is restored to a new device, these items are missing. No items can be stored in this class on devices without a passcode. Disabling the device passcode causes all items in this class to be deleted.
      */
     @available(iOS 8, *)
-    case WhenPasscodeSetThisDeviceOnly
+    case whenPasscodeSetThisDeviceOnly
     
     /**
      The data in the keychain item can always be accessed regardless of whether the device is locked.
@@ -201,7 +201,7 @@ public enum KeychainItemAccessibility {
      This is not recommended for application use. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
      */
     @available(iOS 4, *)
-    case AlwaysThisDeviceOnly
+    case alwaysThisDeviceOnly
     
     /**
      The data in the keychain item can be accessed only while the device is unlocked by the user.
@@ -211,7 +211,7 @@ public enum KeychainItemAccessibility {
      This is the default value for keychain items added without explicitly setting an accessibility constant.
      */
     @available(iOS 4, *)
-    case WhenUnlocked
+    case whenUnlocked
     
     /**
      The data in the keychain item can be accessed only while the device is unlocked by the user.
@@ -219,17 +219,17 @@ public enum KeychainItemAccessibility {
      This is recommended for items that need to be accessible only while the application is in the foreground. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
      */
     @available(iOS 4, *)
-    case WhenUnlockedThisDeviceOnly
+    case whenUnlockedThisDeviceOnly
 }
 
 private let keychainItemAccessibilityLookup: [KeychainItemAccessibility:CFString] = [
-    .AfterFirstUnlock: kSecAttrAccessibleAfterFirstUnlock,
-    .AfterFirstUnlockThisDeviceOnly: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
-    .Always: kSecAttrAccessibleAlways,
-    .WhenPasscodeSetThisDeviceOnly: kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-    .AlwaysThisDeviceOnly : kSecAttrAccessibleAlwaysThisDeviceOnly,
-    .WhenUnlocked: kSecAttrAccessibleWhenUnlocked,
-    .WhenUnlockedThisDeviceOnly: kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+    .afterFirstUnlock: kSecAttrAccessibleAfterFirstUnlock,
+    .afterFirstUnlockThisDeviceOnly: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+    .always: kSecAttrAccessibleAlways,
+    .whenPasscodeSetThisDeviceOnly: kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+    .alwaysThisDeviceOnly : kSecAttrAccessibleAlwaysThisDeviceOnly,
+    .whenUnlocked: kSecAttrAccessibleWhenUnlocked,
+    .whenUnlockedThisDeviceOnly: kSecAttrAccessibleWhenUnlockedThisDeviceOnly
 ]
 
 extension KeychainItemAccessibility : KeychainAttrRepresentable {

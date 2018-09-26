@@ -10,8 +10,8 @@ import UIKit
 import LocalAuthentication
 
 protocol SetPasswordTableViewControllerDelegate: class {
-    func setPasswordTableViewController(controller: SetPasswordTableViewController, didFinishSettingPassword password: String, hint: String?, touchID: Bool)
-    func setPasswordTableViewControllerDidCancel(controller: SetPasswordTableViewController)
+    func setPasswordTableViewController(_ controller: SetPasswordTableViewController, didFinishSettingPassword password: String, hint: String?, touchID: Bool)
+    func setPasswordTableViewControllerDidCancel(_ controller: SetPasswordTableViewController)
 }
 
 class SetPasswordTableViewController: UITableViewController {
@@ -38,7 +38,7 @@ class SetPasswordTableViewController: UITableViewController {
     
     // MARK: - Table View data source
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return 3
@@ -49,8 +49,8 @@ class SetPasswordTableViewController: UITableViewController {
     }
 
     // Change header text from default all caps
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if view.isKindOfClass(UITableViewHeaderFooterView) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if view.isKind(of: UITableViewHeaderFooterView.self) {
             if let tableViewHeaderFooterView = view as? UITableViewHeaderFooterView {
                 tableViewHeaderFooterView.textLabel!.text = NSLocalizedString("Create a password for all your journal entries", comment: "")
             }
@@ -59,29 +59,29 @@ class SetPasswordTableViewController: UITableViewController {
     
     // MARK: - Actions
     
-    @IBAction func done(sender: UIBarButtonItem) {
+    @IBAction func done(_ sender: UIBarButtonItem) {
         validatePassword()
         if passwordIsValid {
             if let password = passwordTextField.text {
-                delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password, hint: hintTextField.text, touchID: useTouchIDSwitch.on)
-                dismissViewControllerAnimated(true, completion: nil)
+                delegate?.setPasswordTableViewController(self, didFinishSettingPassword: password, hint: hintTextField.text, touchID: useTouchIDSwitch.isOn)
+                dismiss(animated: true, completion: nil)
             }
         }
     }
     
-    @IBAction func cancel(sender: UIBarButtonItem) {
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
         delegate?.setPasswordTableViewControllerDidCancel(self)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func useTouchIdSwitchChanged(sender: UISwitch) {
+    @IBAction func useTouchIdSwitchChanged(_ sender: UISwitch) {
         //useTouchID = sender.on
         //print("useTouchID?: \(useTouchID)")
     }
     
     // MARK: - Helper Methods
     
-    private func validatePassword() {
+    fileprivate func validatePassword() {
         if passwordTextField.text!.characters.count == 0 {
             passwordIsValid = false
             
@@ -100,21 +100,21 @@ class SetPasswordTableViewController: UITableViewController {
         passwordIsValid = true
     }
     
-    private func invalidPasswordAlert(title: String, titleComment: String) {
+    fileprivate func invalidPasswordAlert(_ title: String, titleComment: String) {
         let alertTitle = NSLocalizedString(title, comment: titleComment)
-        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         
         alert.addAction(action)
-        presentViewController(alert, animated: true, completion:nil)
+        present(alert, animated: true, completion:nil)
 
     }
     
-    private func touchIDEnabled() -> Bool {
+    fileprivate func touchIDEnabled() -> Bool {
         let laContext = LAContext()
         var error: NSError? = nil
         
-        if laContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             return true
         }
         

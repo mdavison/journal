@@ -31,63 +31,63 @@ class JournalUITests: XCTestCase {
     
     
     func testCalendarTab() {
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
         
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
-        } else if device == UIUserInterfaceIdiom.Phone {
-            XCUIApplication().tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            XCUIApplication().tabBars.children(matching: .button).element(boundBy: 1).tap()
         }
     }
     
     func testSettingsTab() {
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
         
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
-        } else if device == UIUserInterfaceIdiom.Phone {
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+            app.tabBars.children(matching: .button).element(boundBy: 2).tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            app.tabBars.children(matching: .button).element(boundBy: 2).tap()
         }
     }
     
     func testInsertNewEntry() {
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
         
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
             app.navigationBars["List"].buttons["Add"].tap()
             app.otherElements["PopoverDismissRegion"].tap()
-        } else if device == UIUserInterfaceIdiom.Phone {
+        } else if device == UIUserInterfaceIdiom.phone {
             app.navigationBars["List"].buttons["Add"].tap()
         }
     }
     
     func testInsertNewEntryFromCalendarTab() {
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
         
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
             
             let app2 = app
-            app2.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+            app2.tabBars.children(matching: .button).element(boundBy: 1).tap()
             app2.navigationBars["Calendar"].buttons["Add"].tap()
             app.otherElements["PopoverDismissRegion"].tap()
-        } else if device == UIUserInterfaceIdiom.Phone {
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
             //app.navigationBars["List"].buttons["Add"].tap()
             app.navigationBars["Calendar"].buttons["Add"].tap()
         }
@@ -95,44 +95,44 @@ class JournalUITests: XCTestCase {
     
     func testSaveEntry() {
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
-            app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.TextView).element
+        if device == UIUserInterfaceIdiom.pad {
+            app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .textView).element
             app.navigationBars["New Entry"].buttons["Save"].tap()
         }
     }
     
     func testAddEntryFromCalendarBySelectingDate() {
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
-        } else if device == UIUserInterfaceIdiom.Phone {
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(1).tap()
+            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
             //app.collectionViews.childrenMatchingType(.Cell).elementBoundByIndex(41).staticTexts["6"].tap()
         }
     }
     
     func testExportEntries() {
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
         
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+            app.tabBars.children(matching: .button).element(boundBy: 2).tap()
             app.tables.buttons["Export Entries"].tap()
             
             // Assert that the action sheet appears
             //XCTAssert(app.sheets.collectionViews.collectionViews.buttons["More"].exists)
-        } else if device == UIUserInterfaceIdiom.Phone {
-            XCUIDevice.sharedDevice().orientation = .Portrait
+        } else if device == UIUserInterfaceIdiom.phone {
+            XCUIDevice.shared().orientation = .portrait
             
-            app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+            app.tabBars.children(matching: .button).element(boundBy: 2).tap()
             
             // Can't get this to work
 //            app.tables.buttons["Export Entries"].tap()
@@ -142,17 +142,17 @@ class JournalUITests: XCTestCase {
     }
     
     func testChangeDateOfEntry() {
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
         
         let app = XCUIApplication()
-        let device = UIDevice.currentDevice().userInterfaceIdiom
+        let device = UIDevice.current.userInterfaceIdiom
         
-        if device == UIUserInterfaceIdiom.Pad {
+        if device == UIUserInterfaceIdiom.pad {
             app.buttons["Tap to change date"].tap()
             app.datePickers.pickerWheels["Today"].tap()
             app.navigationBars["Select Date"].buttons["Save"].tap()
-        } else if device == UIUserInterfaceIdiom.Phone {
-            XCUIDevice.sharedDevice().orientation = .Portrait
+        } else if device == UIUserInterfaceIdiom.phone {
+            XCUIDevice.shared().orientation = .portrait
             
             app.navigationBars["List"].buttons["Add"].tap()
             

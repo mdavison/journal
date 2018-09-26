@@ -24,14 +24,14 @@ class SignInViewController: UIViewController {
     var failedAttempts = 0
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             coreDataStack = appDelegate.coreDataStack
             settings = appDelegate.settings
         }
@@ -40,12 +40,12 @@ class SignInViewController: UIViewController {
         passwordTextField.becomeFirstResponder()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // If already authenticated, dismiss
         if JournalVariables.userIsAuthenticated {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         } else {
             if let settings = settings {
                 // Touch ID
@@ -65,58 +65,58 @@ class SignInViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func submit(sender: UIButton) {       
+    @IBAction func submit(_ sender: UIButton) {       
         checkPassword()
     }
     
     
     // MARK: - Notification Handling
     
-    @objc private func keyboardDidToggle(notification: NSNotification) {
+    @objc fileprivate func keyboardDidToggle(_ notification: Notification) {
         print("keyboardDidToggle notification handled")
     }
     
-    @objc private func keyboardDidShow(notification: NSNotification) {
+    @objc fileprivate func keyboardDidShow(_ notification: Notification) {
         print("keyboardDidShow notification handled")
     }
 
-    @objc private func keyboardDidHide(notification: NSNotification) {
+    @objc fileprivate func keyboardDidHide(_ notification: Notification) {
         print("keyboardDidHide notification handled")
     }
     
     
     // MARK: - Helper Methods
     
-    private func authenticateWithTouchID() {
+    fileprivate func authenticateWithTouchID() {
         let laContext = LAContext()
         var error: NSError? = nil
         
-        if laContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             // Authenticate user
-            laContext.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics,
+            laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics,
                                      localizedReason: "Sign in with Touch ID",
                                      reply: { (success, evaluationError) in
 
                 if success {
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                    OperationQueue.main.addOperation({
                         JournalVariables.userIsAuthenticated = true
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                     })
                     //JournalVariables.userIsAuthenticated = true
                     //self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
                     //print("not the owner")
-                    if let error = evaluationError {
+                    if let error = evaluationError as NSError? {
                         switch error.code {
-                        case LAError.SystemCancel.rawValue:
+                        case LAError.Code.systemCancel.rawValue:
                             // Cancelled by user
                             NSLog("SystemCancel")
-                        case LAError.UserCancel.rawValue:
+                        case LAError.Code.userCancel.rawValue:
                             NSLog("UserCancel")
-                        case LAError.UserFallback.rawValue:
+                        case LAError.Code.userFallback.rawValue:
                             // user selected "Enter password"
                             NSLog("UserFallback")
-                            NSOperationQueue.mainQueue().addOperationWithBlock({
+                            OperationQueue.main.addOperation({
                                 // dismiss the touch ID
                                 return
                             })
@@ -126,7 +126,7 @@ class SignInViewController: UIViewController {
                     }
                     
                     print("Authentication Failed")
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                    OperationQueue.main.addOperation({
                         // dismiss the touch ID
                         return
                     })
@@ -136,9 +136,9 @@ class SignInViewController: UIViewController {
             NSLog("Device doesn't have touch id")
             if let error = error {
                 switch error.code {
-                case LAError.TouchIDNotEnrolled.rawValue:
+                case LAError.Code.touchIDNotEnrolled.rawValue:
                     NSLog("TouchID not enrolled")
-                case LAError.PasscodeNotSet.rawValue:
+                case LAError.Code.passcodeNotSet.rawValue:
                     NSLog("Passcode not set")
                 default:
                     NSLog("Touch ID not available")
@@ -148,19 +148,19 @@ class SignInViewController: UIViewController {
         
     }
     
-    private func checkPassword() {
+    fileprivate func checkPassword() {
         if passwordTextField.text == keychainPassword {
             JournalVariables.userIsAuthenticated = true
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         } else {
             // Password is wrong - make the stackView shake
             let animation = CABasicAnimation(keyPath: "position")
             animation.duration = 0.05
             animation.repeatCount = 2
             animation.autoreverses = true
-            animation.fromValue = NSValue(CGPoint: CGPointMake(stackView.center.x - 6.0, stackView.center.y))
-            animation.toValue = NSValue(CGPoint: CGPointMake(stackView.center.x + 6.0, stackView.center.y))
-            stackView.layer.addAnimation(animation, forKey: "position")
+            animation.fromValue = NSValue(cgPoint: CGPoint(x: stackView.center.x - 6.0, y: stackView.center.y))
+            animation.toValue = NSValue(cgPoint: CGPoint(x: stackView.center.x + 6.0, y: stackView.center.y))
+            stackView.layer.add(animation, forKey: "position")
             
             
             failedAttempts += 1
@@ -180,14 +180,14 @@ class SignInViewController: UIViewController {
 
 extension SignInViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         checkPassword()
         resignFirstResponder()
         
         return true
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
 //        
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardDidHide(_:)), name: UIKeyboardDidHideNotification, object: nil)

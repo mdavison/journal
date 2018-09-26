@@ -9,7 +9,7 @@
 import UIKit
 
 protocol EntryDateViewControllerDelegate: class {
-    func entryDateViewController(controller: EntryDateViewController, didSaveDate date: NSDate)
+    func entryDateViewController(_ controller: EntryDateViewController, didSaveDate date: Date)
 }
 
 class EntryDateViewController: UIViewController {
@@ -26,11 +26,11 @@ class EntryDateViewController: UIViewController {
         super.viewDidLoad()
         
         // Prevent future dates
-        entryDatePicker.maximumDate = NSDate()
+        entryDatePicker.maximumDate = Date()
         
         if showMessageLabel {
-            messageLabel.hidden = false
-            saveButton.enabled = false
+            messageLabel.isHidden = false
+            saveButton.isEnabled = false
         }
         
         // Theme
@@ -46,27 +46,27 @@ class EntryDateViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func dateChanged(sender: UIDatePicker) {
+    @IBAction func dateChanged(_ sender: UIDatePicker) {
         validateSelectedDate(sender.date)
     }
     
-    @IBAction func cancel(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func save(sender: UIBarButtonItem) {
+    @IBAction func save(_ sender: UIBarButtonItem) {
         delegate?.entryDateViewController(self, didSaveDate: entryDatePicker.date)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     
     // MARK: - Helper Methods
     
-    private func validateSelectedDate(date: NSDate) {
+    fileprivate func validateSelectedDate(_ date: Date) {
         let entryExists = Entry.entryExists(forDate: date, coreDataStack: coreDataStack)
         
-        saveButton.enabled = !entryExists
-        messageLabel.hidden = !entryExists
+        saveButton.isEnabled = !entryExists
+        messageLabel.isHidden = !entryExists
     }
 
 }

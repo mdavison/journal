@@ -11,9 +11,9 @@ import XCTest
 
 class CalendarTests: XCTestCase {
     
-    var calendar = Calendar()
+    var calendar = Journal.Calendar()
     var coreDataStack: TestCoreDataStack!
-    var entryDate: NSDate! // June 1, 2016
+    var entryDate: Date! // June 1, 2016
     var numberOfDaysInMonth = 30 // June 2016
     var numberOfBlankDaysToAddForPadding = 3 // June 2016
     
@@ -23,9 +23,9 @@ class CalendarTests: XCTestCase {
         coreDataStack = TestCoreDataStack()
         
         // Insert a new entry for entryDate
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        entryDate = formatter.dateFromString("2016-06-01")
+        entryDate = formatter.date(from: "2016-06-01")
         Entry.save(withEntry: nil, withDate: entryDate, withText: NSAttributedString(string: "Test entry"), withCoreDataStack: coreDataStack)
     }
     
@@ -33,7 +33,7 @@ class CalendarTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         if let allEntries = Entry.getAllEntries(coreDataStack) {
             for entry in allEntries {
-                coreDataStack.managedObjectContext.deleteObject(entry)
+                coreDataStack.managedObjectContext.delete(entry)
             }
         }
         
@@ -51,7 +51,7 @@ class CalendarTests: XCTestCase {
         XCTAssertTrue(monthsYears.count == 1)
         
         // Get month and year components from entryDate
-        let components = NSCalendar.currentCalendar().components([.Month, .Year], fromDate: entryDate)
+        let components = (Foundation.Calendar.current as NSCalendar).components([.month, .year], from: entryDate)
         
         XCTAssertTrue(monthsYears.first!.entries.count == 1)
         XCTAssertTrue(monthsYears.first!.month == components.month)
@@ -77,7 +77,7 @@ class CalendarTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }

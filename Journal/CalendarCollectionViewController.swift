@@ -24,40 +24,40 @@ class CalendarCollectionViewController: UICollectionViewController {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(CalendarCollectionViewController.insertNewEntry(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(CalendarCollectionViewController.insertNewEntry(_:)))
         navigationItem.rightBarButtonItem = addButton
 
         // Do any additional setup after loading the view.
         if let split = self.splitViewController {
             let controllers = split.viewControllers
             entryViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? EntryViewController
-            split.view.backgroundColor = UIColor.whiteColor()
+            split.view.backgroundColor = UIColor.white
             //split.delegate = self
         }
                 
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
             selector: #selector(CalendarCollectionViewController.entryHasSaved(_:)),
-            name: HasSavedEntryNotificationKey,
+            name: NSNotification.Name(rawValue: HasSavedEntryNotificationKey),
             object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
             selector: #selector(CalendarCollectionViewController.persistentStoreCoordinatorStoresDidChange(_:)),
-            name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
+            name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange,
             object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Remove duplicate nav controller
-        tabBarController?.navigationController?.navigationBarHidden = true
+        tabBarController?.navigationController?.isNavigationBarHidden = true
 
         setEntries()
         setMonthsYears()
@@ -66,15 +66,15 @@ class CalendarCollectionViewController: UICollectionViewController {
     }
     
     // Redraw view when switches orientation
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        coordinator.animateAlongsideTransition({ (context: UIViewControllerTransitionCoordinatorContext) -> Void in
+        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
             self.collectionView?.reloadData()
         }) { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
             // complete
         }
         
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,14 +85,14 @@ class CalendarCollectionViewController: UICollectionViewController {
     
     // MARK: - Actions
     
-    @IBAction func insertNewEntry(sender: UIBarButtonItem) {
-        performSegueWithIdentifier(Storyboard.AddEntrySegueIdentifier, sender: sender)
+    @IBAction func insertNewEntry(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: Storyboard.AddEntrySegueIdentifier, sender: sender)
     }
     
 
     // MARK: - Navigation
     
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == Storyboard.ShowEntrySegueIdentifier {
             return !calendar.dateIsFuture(forCollectionView: collectionView, withMonthsYears: monthsYears)
         }
@@ -100,8 +100,8 @@ class CalendarCollectionViewController: UICollectionViewController {
         return true
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let controller = (segue.destinationViewController as! UINavigationController).topViewController as! EntryViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let controller = (segue.destination as! UINavigationController).topViewController as! EntryViewController
         
         if segue.identifier == Storyboard.AddEntrySegueIdentifier {
             controller.title = "New Entry"
@@ -109,10 +109,10 @@ class CalendarCollectionViewController: UICollectionViewController {
         } else if segue.identifier == Storyboard.ShowEntrySegueIdentifier {
             controller.coreDataStack = coreDataStack
             
-            if let indexPaths = collectionView?.indexPathsForSelectedItems() {
+            if let indexPaths = collectionView?.indexPathsForSelectedItems {
                 let indexPath = indexPaths[0]
                 
-                if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarCollectionViewCell {
+                if let cell = collectionView?.cellForItem(at: indexPath) as? CalendarCollectionViewCell {
                     // get date from cell
                     if let dayString = cell.dayNumberLabel.text {
                         if let day = Int(dayString) {
@@ -133,29 +133,29 @@ class CalendarCollectionViewController: UICollectionViewController {
 
     // MARK: - UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return calendar.getNumberOfMonths(forEntries: entries)
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return calendar.numberOfDaysInMonth(forMonthAndYear: monthsYears[section])
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Storyboard.CalendarCellReuseIdentifier, forIndexPath: indexPath) as! CalendarCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.CalendarCellReuseIdentifier, for: indexPath) as! CalendarCollectionViewCell
     
         calendar.configureCell(forCell: cell, withIndexPath: indexPath, withMonthsYears: monthsYears)
     
         return cell
     }
     
-    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         if kind == UICollectionElementKindSectionHeader {
             return calendar.getHeaderView(forCollectionView: collectionView, withIndexPath: indexPath, withMonthsYears: monthsYears)
         } else {
-            let footerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Footer", forIndexPath: indexPath)
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
             
             return footerView
         }
@@ -165,13 +165,13 @@ class CalendarCollectionViewController: UICollectionViewController {
     
     // MARK: - Notification Handling
     
-    @objc func entryHasSaved(notification: NSNotification) {
+    @objc func entryHasSaved(_ notification: Notification) {
         setEntries()
         setMonthsYears()
         collectionView?.reloadData()
     }
     
-    @objc private func persistentStoreCoordinatorStoresDidChange(notification: NSNotification) {
+    @objc fileprivate func persistentStoreCoordinatorStoresDidChange(_ notification: Notification) {
         setEntries()
         setMonthsYears()
         collectionView?.reloadData()
@@ -180,13 +180,13 @@ class CalendarCollectionViewController: UICollectionViewController {
     
     // MARK: - Helper Methods
     
-    private func setEntries() {
+    fileprivate func setEntries() {
         if let entries = Entry.getAllEntries(coreDataStack) {
             self.entries = entries
         }
     }
     
-    private func setMonthsYears() {
+    fileprivate func setMonthsYears() {
         // Empty the array, otherwise it keeps appending every time view loads
         monthsYears.removeAll()
         monthsYears = calendar.getMonthsYears(forEntries: entries)
@@ -197,24 +197,24 @@ class CalendarCollectionViewController: UICollectionViewController {
 
 extension CalendarCollectionViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = floor(view.frame.size.width / 7.0)
         return CGSize(width: width, height: width)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         
         return 0
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
         return 0
     }
     
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
