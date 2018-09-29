@@ -66,7 +66,7 @@ class EntryTests: XCTestCase {
     
     func testGetEntryForDate() {
         let entryForDate = Entry.getEntry(forDate: entryDate, coreDataStack: coreDataStack)
-        print("test entryForDate: \(entryForDate!.attributed_text!)")
+        //print("test entryForDate: \(entryForDate!.attributed_text!)")
         
         XCTAssertTrue(entryForDate!.attributed_text == NSAttributedString(string: "Test entry"))
     }
@@ -76,8 +76,6 @@ class EntryTests: XCTestCase {
         
         XCTAssertTrue(allEntries!.count == 1)
     }
-    
-    
     
     
     func testPerformanceExample() {

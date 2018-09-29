@@ -22,7 +22,6 @@ class Calendar {
             let components = (currentCalendar as NSCalendar).components([.month, .year], from: firstEntryDate as Date)
             
             // Create var to hold month component of each item in the loop,
-            // Initial value set to first headache
             var nsDateCounter = currentCalendar.date(from: components)
             
             if monthSpan > 0 {
@@ -71,13 +70,19 @@ class Calendar {
     }
     
     func numberOfDaysInMonth(forMonthAndYear monthYear: MonthYear) -> Int {
-        //let calendar = NSCalendar.currentCalendar()
         let date = getNSDateFromComponents(monthYear.year, month: monthYear.month, day: nil)
-        let numberOfDaysInMonth = (currentCalendar as NSCalendar).range(of: .day, in: .month, for: date)
-        let padding = getPadding(forMonthAndYear: monthYear)
-        let lastItem = numberOfDaysInMonth.toRange()!.upperBound
+        var numberOfDaysInMonth = 0
         
-        return lastItem + padding
+        if #available(iOS 10.0, *) {
+            let interval = currentCalendar.dateInterval(of: .month, for: date)!
+            numberOfDaysInMonth = currentCalendar.dateComponents([.day], from: interval.start, to: interval.end).day!
+        } else {
+            numberOfDaysInMonth = (currentCalendar as NSCalendar).range(of: .day, in: .month, for: date).toRange()?.count ?? 0
+        }
+        
+        let padding = getPadding(forMonthAndYear: monthYear)
+        
+        return numberOfDaysInMonth + padding
     }
     
     func configureCell(forCell cell: CalendarCollectionViewCell, withIndexPath indexPath: IndexPath, withMonthsYears monthsYears: [MonthYear]) {

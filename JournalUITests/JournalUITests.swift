@@ -98,7 +98,6 @@ class JournalUITests: XCTestCase {
         let device = UIDevice.current.userInterfaceIdiom
         
         if device == UIUserInterfaceIdiom.pad {
-            app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .textView).element
             app.navigationBars["New Entry"].buttons["Save"].tap()
         }
     }
@@ -156,11 +155,53 @@ class JournalUITests: XCTestCase {
             
             app.navigationBars["List"].buttons["Add"].tap()
             
-            // Can't get this to work
-//            app.buttons["Tap to change date"].tap()
-//            app.datePickers.pickerWheels["Today"].tap()
-//            app.navigationBars["Select Date"].buttons["Save"].tap()
+            app.buttons["Tap to change date"].tap()
+            app.datePickers.pickerWheels["Today"].tap()
+            app.navigationBars["Select Date"].buttons["Save"].tap()
         }
+    }
+    
+    // Test when adding a new entry for a date that already has an entry
+    func testNewEntryForDateAlreadyExists() {
+        XCUIDevice.shared().orientation = .portrait
+        let app = XCUIApplication()
+        let device = UIDevice.current.userInterfaceIdiom
+        let newEntryNavigationBar = app.navigationBars["New Entry"]
+        let listEntryNavigationBar = app.navigationBars["List"]
+
+        // Enter first entry
+        if device == UIUserInterfaceIdiom.pad {
+            newEntryNavigationBar.buttons["List"].tap()
+            app.navigationBars["List"].buttons["Add"].tap()
+            app.otherElements["PopoverDismissRegion"].tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            listEntryNavigationBar.buttons["Add"].tap()
+        }
+        let textView = app.tables.cells.children(matching: .textView).element
+        textView.tap()
+        app.typeText("test entry one")
+
+        // Save
+        newEntryNavigationBar.buttons["Save"].tap()
+        
+        // Go back to list
+        newEntryNavigationBar.buttons["List"].tap()
+        
+        // Enter second entry
+        if device == UIUserInterfaceIdiom.pad {
+            newEntryNavigationBar.buttons["List"].tap()
+            app.navigationBars["List"].buttons["Add"].tap()
+            app.otherElements["PopoverDismissRegion"].tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            listEntryNavigationBar.buttons["Add"].tap()
+        }
+        
+        
+        app.datePickers.pickerWheels["Today"].swipeDown()
+        app.navigationBars["Select Date"].buttons["Save"].tap()
+        textView.tap()
+        app.typeText("test entry two")
+        app.navigationBars["New Entry"].buttons["Save"].tap()
     }
     
 }

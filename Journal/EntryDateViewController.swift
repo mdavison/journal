@@ -51,12 +51,14 @@ class EntryDateViewController: UIViewController {
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func save(_ sender: UIBarButtonItem) {
         delegate?.entryDateViewController(self, didSaveDate: entryDatePicker.date)
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     

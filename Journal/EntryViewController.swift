@@ -94,7 +94,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     // MARK: - UITextViewDelegate Methods
     
     func textViewDidChange(_ textView: UITextView) {
-        edited = true 
+        edited = true
         saveButton.title = "Save"
         if invalidDate == false {
             saveButton.isEnabled = true

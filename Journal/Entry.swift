@@ -43,8 +43,17 @@ class Entry: NSManagedObject {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         let entryDateComponents = (calendar as NSCalendar).components([.day, .month, .year], from: date)
-        let predicateDateBeginString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 00:00:00"
-        let predicateDateEndString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 23:59:59"
+        
+        let predicateDateBeginString = "\(entryDateComponents.year ?? 0)" +
+            "-" + "\(entryDateComponents.month ?? 0)" +
+            "-" + "\(entryDateComponents.day ?? 0)" +
+            " 00:00:00"
+        
+        let predicateDateEndString = "\(entryDateComponents.year ?? 0)" +
+            "-" + "\(entryDateComponents.month ?? 0)" +
+            "-" + "\(entryDateComponents.day ?? 0)" +
+            " 23:59:59"
+        
         let predicateDateBegin = formatter.date(from: predicateDateBeginString)
         let predicateDateEnd = formatter.date(from: predicateDateEndString)
         
@@ -76,8 +85,17 @@ class Entry: NSManagedObject {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         let entryDateComponents = (calendar as NSCalendar).components([.day, .month, .year], from: date)
-        let predicateDateBeginString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 00:00:00"
-        let predicateDateEndString = "\(String(describing: entryDateComponents.year))-\(String(describing: entryDateComponents.month))-\(String(describing: entryDateComponents.day)) 23:59:59"
+        
+        let predicateDateBeginString = "\(entryDateComponents.year ?? 0)" +
+            "-" + "\(entryDateComponents.month ?? 0)" +
+            "-" + "\(entryDateComponents.day ?? 0)" +
+        " 00:00:00"
+        
+        let predicateDateEndString = "\(entryDateComponents.year ?? 0)" +
+            "-" + "\(entryDateComponents.month ?? 0)" +
+            "-" + "\(entryDateComponents.day ?? 0)" +
+        " 23:59:59"
+        
         let predicateDateBegin = formatter.date(from: predicateDateBeginString)
         let predicateDateEnd = formatter.date(from: predicateDateEndString)
         

@@ -68,7 +68,7 @@ class CalendarTests: XCTestCase {
     func testGetNumberOfDaysInMonthForMonthYear() {
         let entries = Entry.getAllEntries(coreDataStack)
         let monthsYears = calendar.getMonthsYears(forEntries: entries!)
-        
+                
         let numberOfDaysInMonthForMonthYear = calendar.numberOfDaysInMonth(forMonthAndYear: monthsYears.first!)
         
         XCTAssertTrue(numberOfDaysInMonthForMonthYear == numberOfDaysInMonth + numberOfBlankDaysToAddForPadding)
