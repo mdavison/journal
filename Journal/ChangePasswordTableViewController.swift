@@ -90,7 +90,7 @@ class ChangePasswordTableViewController: UITableViewController {
     
     fileprivate func validatePassword() {
         // Current password field can't be blank
-        if currentPasswordTextField.text!.characters.count == 0 {
+        if currentPasswordTextField.text!.count == 0 {
             passwordIsValid = false
             
             invalidPasswordAlert("Enter current password", alertTitleComment: "Current password text field is blank.")
@@ -110,7 +110,7 @@ class ChangePasswordTableViewController: UITableViewController {
         }
         
         // Password field can't be blank
-        if passwordTextField.text!.characters.count == 0 {
+        if passwordTextField.text!.count == 0 {
             passwordIsValid = false
 
             invalidPasswordAlert("Enter a password", alertTitleComment: "Password text field is blank.")

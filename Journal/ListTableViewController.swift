@@ -24,8 +24,9 @@ class ListTableViewController: UITableViewController {
 
 
     override func viewDidLoad() {
+        print("viewDidLoad")
         super.viewDidLoad()
-                                        
+        
         self.navigationController?.isNavigationBarHidden = true
         tabBarController?.navigationItem.leftBarButtonItem = self.editButtonItem
         tabBarController?.title = "List"
@@ -45,14 +46,16 @@ class ListTableViewController: UITableViewController {
                                                          selector: #selector(ListTableViewController.preferredContentSizeChanged(_:)),
                                                          name: NSNotification.Name.UIContentSizeCategoryDidChange,
                                                          object: nil)
-        
         NotificationCenter.default.addObserver(self,
                                                          selector: #selector(ListTableViewController.persistentStoreCoordinatorStoresDidChange(_:)),
                                                          name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange,
                                                          object: nil)
+        
+        coreDataStack.updateContextWithUbiquitousContentUpdates = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        print("viewWillAppear")
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
         super.viewWillAppear(animated)
         
@@ -61,18 +64,21 @@ class ListTableViewController: UITableViewController {
         if JournalVariables.userIsAuthenticated {
             tableView.isHidden = false
         }
-        
-        // Check for changes in iCloud
-        coreDataStack.updateContextWithUbiquitousContentUpdates = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print("viewDidAppear")
         super.viewDidAppear(animated)
         
-        tableView.reloadData()
-        
         // Reset to get latest results
-        _fetchedResultsController = nil 
+        _fetchedResultsController = nil
+        
+        tableView.reloadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(NSNotification.Name.UIContentSizeCategoryDidChange)
+        NotificationCenter.default.removeObserver(NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange)
     }
 
     override func didReceiveMemoryWarning() {
@@ -177,13 +183,17 @@ class ListTableViewController: UITableViewController {
     
     @objc fileprivate func persistentStoreCoordinatorStoresDidChange(_ notification: Notification) {
         _fetchedResultsController = nil
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            print("Received updated data")
+            self.tableView.reloadData()
+        }
     }
     
     
     // MARK: - Helper Methods
     
     fileprivate func configureCell(_ cell: ListTableViewCell, atIndexPath indexPath: IndexPath) {
+        print("configuring cell")
         if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
             if let entryText = entry.attributed_text {
                 cell.entryTextLabel.text = entryText.string

@@ -82,7 +82,8 @@ class SetPasswordTableViewController: UITableViewController {
     // MARK: - Helper Methods
     
     fileprivate func validatePassword() {
-        if passwordTextField.text!.characters.count == 0 {
+        if passwordTextField.text!.count == 0 {
+        //if passwordTextField.text!.characters.count == 0 {
             passwordIsValid = false
             
             invalidPasswordAlert("Enter a Password", titleComment: "Password text field is blank.")

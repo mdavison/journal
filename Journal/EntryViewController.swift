@@ -60,6 +60,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         addNotificationObservers()
         attributedTextModel.entryTextView = entryTextView
         attributedTextModel.delegate = self
+        //edgesForExtendedLayout = []
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +89,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        NSLog("Received memory warning in EntryViewController")
     }
     
     
@@ -109,6 +111,8 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        // LEFT OFF HERE - find out why toolbar is interfering with keyboard
+        
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
@@ -271,7 +275,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     
     // MARK: - Notification Handling
     
-    func entryWasDeleted(_ notification: Notification) {
+    @objc func entryWasDeleted(_ notification: Notification) {
         if let notificationEntry = notification.object as? Entry {
             if notificationEntry == entry {
                 entry = nil
@@ -288,7 +292,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         entryTextView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: styleApplied))
     }
     
-    func hideEditingToolbar() {
+    @objc func hideEditingToolbar() {
         entryTextView.inputAccessoryView = nil
         //entryTextView.reloadInputViews()
         entryTextView.resignFirstResponder()
@@ -429,6 +433,11 @@ extension EntryViewController: EntryDateViewControllerDelegate {
         if let entry = entry {
             entry.created_at = date
             coreDataStack.saveContext()
+        }
+        
+        if let toolbar = toolbar {
+            entryTextView.inputAccessoryView = toolbar
+            entryTextView.reloadInputViews()
         }
     }
 }

@@ -81,6 +81,7 @@ class CoreDataStack {
     
     
     // MARK: - iCloud Sync
+    // Deprecated but should still work for a long time: https://forums.developer.apple.com/thread/48869
     
     var updateContextWithUbiquitousContentUpdates: Bool = false {
         willSet {

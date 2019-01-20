@@ -39,7 +39,7 @@ class Theme {
     static func setup(withNavigationController navigationController: UINavigationController?) {
         navigationController?.navigationBar.barTintColor = Theme.Colors.barTint
         navigationController?.navigationBar.tintColor = Theme.Colors.tint
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Theme.TextAttributes.color]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: Theme.TextAttributes.color]
     }
     
 }
