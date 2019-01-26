@@ -296,9 +296,23 @@ open class KeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when setting the keychain item.
     /// - returns: True if the save was successful, false otherwise.
     @discardableResult open func set(_ value: NSCoding, forKey key: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
-        let data = NSKeyedArchiver.archivedData(withRootObject: value)
+//        let data = NSKeyedArchiver.archivedData(withRootObject: value)
+//        return set(data, forKey: key, withAccessibility: accessibility)
         
-        return set(data, forKey: key, withAccessibility: accessibility)
+        do {
+            if let value = value as? Data, let data = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(value) {
+                guard let data = data as? Data else {
+                    return false
+                }
+                
+                return set(data, forKey: key, withAccessibility: accessibility)
+            }
+        } catch {
+            NSLog("KeychainWrapper: Couldn't open value object")
+            return false
+        }
+        
+        return false
     }
     
     /// Save a Data object to the keychain associated with a specified key. If data already exists for the given key, the data will be overwritten with the new value.

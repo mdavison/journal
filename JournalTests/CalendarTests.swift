@@ -26,7 +26,7 @@ class CalendarTests: XCTestCase {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         entryDate = formatter.date(from: "2016-06-01")
-        let _ = Entry.save(withEntry: nil, withDate: entryDate, withText: NSAttributedString(string: "Test entry"), withCoreDataStack: coreDataStack)
+        Entry.save(withEntry: nil, withDate: entryDate, withText: NSAttributedString(string: "Test entry"), withCoreDataStack: coreDataStack)
     }
     
     override func tearDown() {

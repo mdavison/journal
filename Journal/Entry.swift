@@ -135,7 +135,7 @@ class Entry: NSManagedObject {
         return nil
     }
     
-    static func save(withEntry entry: Entry?, withDate date: Date, withText text: NSAttributedString, withCoreDataStack coreDataStack: CoreDataStack) -> Entry? {
+    @discardableResult static func save(withEntry entry: Entry?, withDate date: Date, withText text: NSAttributedString, withCoreDataStack coreDataStack: CoreDataStack) -> Entry? {
         
         var savedEntry: Entry? = nil
         

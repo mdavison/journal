@@ -136,8 +136,10 @@ class SignInViewController: UIViewController {
             NSLog("Device doesn't have touch id")
             if let error = error {
                 switch error.code {
-                case LAError.Code.touchIDNotEnrolled.rawValue:
+                case Int(kLAErrorBiometryNotEnrolled):
                     NSLog("TouchID not enrolled")
+//                case LAError.Code.touchIDNotEnrolled.rawValue:
+//                    NSLog("TouchID not enrolled")
                 case LAError.Code.passcodeNotSet.rawValue:
                     NSLog("Passcode not set")
                 default:
