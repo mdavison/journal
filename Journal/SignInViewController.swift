@@ -151,6 +151,10 @@ class SignInViewController: UIViewController {
     }
     
     fileprivate func checkPassword() {
+        // Sometimes switching branches resets the password so check for nil as workaround
+//        if keychainPassword == nil {
+//            passwordTextField.text = nil
+//        }
         if passwordTextField.text == keychainPassword {
             JournalVariables.userIsAuthenticated = true
             dismiss(animated: true, completion: nil)
