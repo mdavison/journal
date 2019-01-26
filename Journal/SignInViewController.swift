@@ -20,7 +20,7 @@ class SignInViewController: UIViewController {
     
     var coreDataStack: CoreDataStack!
     var settings: Settings?
-    let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
+    let keychainPassword = KeychainWrapper.standard.string(forKey: "password")
     var failedAttempts = 0
     
     deinit {

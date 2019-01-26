@@ -35,6 +35,7 @@
 		905456D51C971D7A00645C39 /* Entry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456D31C971D7A00645C39 /* Entry+CoreDataProperties.swift */; };
 		905456D61C971D7A00645C39 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905456D41C971D7A00645C39 /* Entry.swift */; };
 		907720E31CD9468E0007FF72 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 907720E21CD9468E0007FF72 /* CloudKit.framework */; };
+		9088707021FCE28A0012D626 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9088706F21FCE28A0012D626 /* KeychainItemAccessibility.swift */; };
 		909F714D1CE0DE250085C617 /* ChangePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909F714C1CE0DE250085C617 /* ChangePasswordTableViewController.swift */; };
 		90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */; };
 		90A559F01CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */; };
@@ -102,6 +103,7 @@
 		905456D41C971D7A00645C39 /* Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		907720E11CD9464C0007FF72 /* Journal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Journal.entitlements; sourceTree = "<group>"; };
 		907720E21CD9468E0007FF72 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		9088706F21FCE28A0012D626 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
 		909F714C1CE0DE250085C617 /* ChangePasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordTableViewController.swift; sourceTree = "<group>"; };
 		90A559ED1CADCD950085F72A /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		90A559EF1CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionReusableHeaderView.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				9038CB131CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift */,
 				9038CB141CDF9D59000F4F71 /* KeychainWrapper.swift */,
 				9038CB151CDF9D59000F4F71 /* SwiftKeychainWrapper.h */,
+				9088706F21FCE28A0012D626 /* KeychainItemAccessibility.swift */,
 			);
 			path = SwiftKeychainWrapper;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				904C49EB1CFA535A00574139 /* EditingToolbar.swift in Sources */,
 				90A559F01CADCE870085F72A /* CalendarCollectionReusableHeaderView.swift in Sources */,
 				904C4A121CFCCD3300574139 /* ListTableViewCell.swift in Sources */,
+				9088707021FCE28A0012D626 /* KeychainItemAccessibility.swift in Sources */,
 				905456D51C971D7A00645C39 /* Entry+CoreDataProperties.swift in Sources */,
 				90A559EE1CADCD950085F72A /* CalendarCollectionViewCell.swift in Sources */,
 				9038CB181CDF9D59000F4F71 /* KeychainWrapper+Experimental.swift in Sources */,
@@ -546,7 +550,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -596,7 +600,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -617,7 +621,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Journal/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.morgandavison.Journal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -635,7 +639,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Journal/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.morgandavison.Journal;
 				PRODUCT_NAME = "$(TARGET_NAME)";

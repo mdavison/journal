@@ -98,7 +98,7 @@ class ChangePasswordTableViewController: UITableViewController {
             return
         }
         // Get current password from keychain
-        let currentPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
+        let currentPassword = KeychainWrapper.standard.string(forKey: "password")
         
         // Current password field must match current password
         if currentPasswordTextField.text != currentPassword {

@@ -37,7 +37,7 @@ class SettingsTableViewController: UITableViewController {
         tabBarController?.navigationController?.isNavigationBarHidden = true
         
         //changePasswordButton.enabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
-        changePasswordLabel.isEnabled = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
+        changePasswordLabel.isEnabled = KeychainWrapper.standard.hasValue(forKey: "password")
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,7 +50,7 @@ class SettingsTableViewController: UITableViewController {
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == Storyboard.ChangePasswordSegueIdentifier {
-            if !KeychainWrapper.standardKeychainAccess().hasValueForKey("password") {
+            if !KeychainWrapper.standard.hasValue(forKey: "password") {
                 return false
             }
         }
@@ -88,7 +88,7 @@ class SettingsTableViewController: UITableViewController {
     @IBAction func requirePasswordSwitchChanged(_ sender: UISwitch) {
         if sender.isOn { // Switched On
             //let keychainPassword = KeychainWrapper.standardKeychainAccess().stringForKey("password")
-            let passwordIsSet = KeychainWrapper.standardKeychainAccess().hasValueForKey("password")
+            let passwordIsSet = KeychainWrapper.standard.hasValue(forKey: "password")
             
             if passwordIsSet { // Password already in keychain, save settings to require password
                 saveSettings(true, password: nil, hint: nil, touchID: nil)

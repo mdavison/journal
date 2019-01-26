@@ -65,7 +65,7 @@ class Settings: NSManagedObject {
         }
         
         if let password = password {
-            KeychainWrapper.standardKeychainAccess().setString(password, forKey: "password")
+            KeychainWrapper.standard.set(password, forKey: "password")
         }
         
         coreDataStack.saveContext()
@@ -90,7 +90,7 @@ class Settings: NSManagedObject {
         }
         
         // Clear keychain password
-        KeychainWrapper.standardKeychainAccess().removeObjectForKey("password")
+        KeychainWrapper.standard.removeObject(forKey: "password")
     }
 
 }
