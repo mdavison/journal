@@ -18,12 +18,13 @@ class AttributedText {
     
     var entryTextView: UITextView?
     //var currentAttributes = [String: AnyObject]()
+//    var currentAttributes = [NSAttributedString.NSAttributedString.Key: Any]()
     var currentAttributes = [NSAttributedString.Key: Any]()
     //var currentAttributes = [String: Any]()
     weak var delegate: AttributedTextDelegate?
     
     
-    func addOrRemoveFontTrait(withName name: String, withTrait trait: UIFontDescriptorSymbolicTraits) {
+    func addOrRemoveFontTrait(withName name: String, withTrait trait: UIFontDescriptor.SymbolicTraits) {
         if let entryTextView = entryTextView {
             var isOn = true
             let selectedRange = entryTextView.selectedRange
@@ -32,11 +33,12 @@ class AttributedText {
 //                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
                 currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil)
             } else {
-                //currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
-                currentAttributes = convertTypingAttributes(from: entryTextView.typingAttributes)
+//                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
+//                currentAttributes = convertTypingAttributes(from: convertFromNSAttributedStringKeyDictionary(entryTextView.typingAttributes))
+                currentAttributes = entryTextView.typingAttributes
             }
             
-            let currentFontAttributes = currentAttributes[NSAttributedStringKey.font] as! UIFont // TODO: wrap this in a guard
+            let currentFontAttributes = currentAttributes[NSAttributedString.Key.font] as! UIFont // TODO: wrap this in a guard
             let fontDescriptor = currentFontAttributes.fontDescriptor
             //let currentFontSize = CGFloat(fontDescriptor.fontAttributes["NSFontSizeAttribute"]! as! NSNumber)
             let currentFontSize = CGFloat(truncating: fontDescriptor.object(forKey: .size) as! NSNumber)
@@ -49,11 +51,11 @@ class AttributedText {
             if let fontNameAttribute = fontName {
                 if fontNameAttribute.lowercased().range(of: name) == nil {
                     let existingTraitsRaw = (fontDescriptor.symbolicTraits.rawValue) | trait.rawValue
-                    let existingTraits = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsRaw)
+                    let existingTraits = UIFontDescriptor.SymbolicTraits(rawValue: existingTraitsRaw)
                     changedFontDescriptor = UIFontDescriptor().withSymbolicTraits(existingTraits)
                 } else {
                     let existingTraitsWithoutTraitRaw = (fontDescriptor.symbolicTraits.rawValue) & ~trait.rawValue
-                    let existingTraitsWithoutTrait = UIFontDescriptorSymbolicTraits(rawValue: existingTraitsWithoutTraitRaw)
+                    let existingTraitsWithoutTrait = UIFontDescriptor.SymbolicTraits(rawValue: existingTraitsWithoutTraitRaw)
                     changedFontDescriptor = UIFontDescriptor().withSymbolicTraits(existingTraitsWithoutTrait)
                     isOn = false
                 }
@@ -62,7 +64,7 @@ class AttributedText {
             let updatedFont = UIFont(descriptor: changedFontDescriptor!, size: currentFontSize)
             
             //currentAttributes.updateValue(updatedFont, forKey: NSFontAttributeName)
-            currentAttributes.updateValue(updatedFont, forKey: NSAttributedStringKey.font)
+            currentAttributes.updateValue(updatedFont, forKey: NSAttributedString.Key.font)
             
             if selectedRange.length > 0 {
                 entryTextView.textStorage.beginEditing()
@@ -70,8 +72,8 @@ class AttributedText {
                 entryTextView.textStorage.endEditing()
                 delegate?.textWasEdited()
             } else {
-                //entryTextView.typingAttributes = currentAttributes
-                entryTextView.typingAttributes = convertCurrentAttributes(from: currentAttributes)
+                entryTextView.typingAttributes = currentAttributes
+//                entryTextView.typingAttributes = convertToNSAttributedStringKeyDictionary(convertCurrentAttributes(from: currentAttributes))
             }
             
             toggleButton(forStyle: name, isOn: isOn)
@@ -88,21 +90,22 @@ class AttributedText {
 //                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
                 currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil)
             } else {
-                //currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
-                currentAttributes = convertTypingAttributes(from: entryTextView.typingAttributes)
+//                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
+//                currentAttributes = convertTypingAttributes(from: convertFromNSAttributedStringKeyDictionary(entryTextView.typingAttributes))
+                currentAttributes = entryTextView.typingAttributes
             }
             
             // let fontName = fontDescriptor.object(forKey: .name) as? String
-            let underlineStyleAttribute = currentAttributes[NSAttributedStringKey.underlineStyle] as? NSNumber
+            let underlineStyleAttribute = currentAttributes[NSAttributedString.Key.underlineStyle] as? NSNumber
             
 //            if (currentAttributes[NSUnderlineStyleAttributeName] == nil) ||
 //                (currentAttributes[NSUnderlineStyleAttributeName]?.intValue == 0) {
             if (underlineStyleAttribute == nil) || (underlineStyleAttribute?.intValue == 0) {
                 //currentAttributes.updateValue(1 as AnyObject, forKey: NSUnderlineStyleAttributeName)
-                currentAttributes.updateValue(1 as Any, forKey: NSAttributedStringKey.underlineStyle)
+                currentAttributes.updateValue(1 as Any, forKey: NSAttributedString.Key.underlineStyle)
             } else {
                 //currentAttributes.updateValue(0 as AnyObject, forKey: NSUnderlineStyleAttributeName)
-                currentAttributes.updateValue(0 as Any, forKey: NSAttributedStringKey.underlineStyle)
+                currentAttributes.updateValue(0 as Any, forKey: NSAttributedString.Key.underlineStyle)
                 isOn = false
             }
             
@@ -112,8 +115,8 @@ class AttributedText {
                 entryTextView.textStorage.endEditing()
                 delegate?.textWasEdited()
             } else {
-                //entryTextView.typingAttributes = currentAttributes
-                entryTextView.typingAttributes = convertCurrentAttributes(from: currentAttributes)
+                entryTextView.typingAttributes = currentAttributes
+//                entryTextView.typingAttributes = convertToNSAttributedStringKeyDictionary(convertCurrentAttributes(from: currentAttributes))
             }
             
             toggleButton(forStyle: "underline", isOn: isOn)
@@ -123,19 +126,20 @@ class AttributedText {
     func applyStyleToSelection(_ style: String) {
         if let entryTextView = entryTextView {
             let selectedRange = entryTextView.selectedRange
-            let styledFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: style))
+            let styledFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle(rawValue: style))
             //var currentAttributes = [String: AnyObject]()
             
             if selectedRange.length > 0 {
 //                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
                 currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil)
             } else {
-                //currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
-                currentAttributes = convertTypingAttributes(from: entryTextView.typingAttributes)
+//                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
+//                currentAttributes = convertTypingAttributes(from: convertFromNSAttributedStringKeyDictionary(entryTextView.typingAttributes))
+                currentAttributes = entryTextView.typingAttributes
             }
             
             //currentAttributes.updateValue(styledFont, forKey: NSFontAttributeName)
-            currentAttributes.updateValue(styledFont, forKey: NSAttributedStringKey.font)
+            currentAttributes.updateValue(styledFont, forKey: NSAttributedString.Key.font)
             
             if selectedRange.length > 0 {
                 entryTextView.textStorage.beginEditing()
@@ -143,8 +147,8 @@ class AttributedText {
                 entryTextView.textStorage.endEditing()
                 delegate?.textWasEdited()
             } else {
-                //entryTextView.typingAttributes = currentAttributes
-                entryTextView.typingAttributes = convertCurrentAttributes(from: currentAttributes)
+                entryTextView.typingAttributes = currentAttributes
+//                entryTextView.typingAttributes = convertToNSAttributedStringKeyDictionary(convertCurrentAttributes(from: currentAttributes))
             }
         }
     }
@@ -160,12 +164,13 @@ class AttributedText {
 //                currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
                 currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil)
             } else {
-                //currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
-                currentAttributes = convertTypingAttributes(from: entryTextView.typingAttributes)
+//                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
+//                currentAttributes = convertTypingAttributes(from: convertFromNSAttributedStringKeyDictionary(entryTextView.typingAttributes))
+                currentAttributes = entryTextView.typingAttributes
             }
             
             //currentAttributes.updateValue(newParagraphStyle, forKey: NSParagraphStyleAttributeName)
-            currentAttributes.updateValue(newParagraphStyle, forKey: NSAttributedStringKey.paragraphStyle)
+            currentAttributes.updateValue(newParagraphStyle, forKey: NSAttributedString.Key.paragraphStyle)
             
             if selectedRange.length > 0 {
                 entryTextView.textStorage.beginEditing()
@@ -173,8 +178,8 @@ class AttributedText {
                 entryTextView.textStorage.endEditing()
                 delegate?.textWasEdited()
             } else {
-                //entryTextView.typingAttributes = currentAttributes
-                entryTextView.typingAttributes = convertCurrentAttributes(from: currentAttributes)
+                entryTextView.typingAttributes = currentAttributes
+//                entryTextView.typingAttributes = convertToNSAttributedStringKeyDictionary(convertCurrentAttributes(from: currentAttributes))
             }
         }
     }
@@ -188,16 +193,17 @@ class AttributedText {
                 //currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil) as [String : AnyObject]
                 currentAttributes = entryTextView.textStorage.attributes(at: selectedRange.location, effectiveRange: nil)
             } else {
-                //currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
-                currentAttributes = convertTypingAttributes(from: entryTextView.typingAttributes)
+//                currentAttributes = entryTextView.typingAttributes as [String : AnyObject]
+//                currentAttributes = convertTypingAttributes(from: convertFromNSAttributedStringKeyDictionary(entryTextView.typingAttributes))
+                currentAttributes = entryTextView.typingAttributes
             }
             
-            let fontColor = currentAttributes[NSAttributedStringKey.foregroundColor] as? UIColor
+            let fontColor = currentAttributes[NSAttributedString.Key.foregroundColor] as? UIColor
             //if (currentAttributes[NSForegroundColorAttributeName] == nil) ||
             //(currentAttributes[NSForegroundColorAttributeName] as! UIColor != color) {
             if (fontColor == nil) || (fontColor != color) {
                 //currentAttributes.updateValue(color, forKey: NSForegroundColorAttributeName)
-                currentAttributes.updateValue(color, forKey: NSAttributedStringKey.foregroundColor)
+                currentAttributes.updateValue(color, forKey: NSAttributedString.Key.foregroundColor)
             }
             
             if selectedRange.length > 0 {
@@ -206,8 +212,8 @@ class AttributedText {
                 entryTextView.textStorage.endEditing()
                 delegate?.textWasEdited()
             } else {
-                //entryTextView.typingAttributes = currentAttributes
-                entryTextView.typingAttributes = convertCurrentAttributes(from: currentAttributes)
+                entryTextView.typingAttributes = currentAttributes
+//                entryTextView.typingAttributes = convertToNSAttributedStringKeyDictionary(convertCurrentAttributes(from: currentAttributes))
             }
             
             toggleButton(forColor: color)
@@ -232,23 +238,26 @@ class AttributedText {
         delegate?.buttonToggled(forColor: color)
     }
     
-    fileprivate func convertTypingAttributes(from stringTuple: [String: Any]) -> [NSAttributedString.Key: Any] {
-        // Convert UITextView.typingAttributes from [String: Any] to [NSAttributedString.Key: Any]
-        let convertedTuple = Dictionary(uniqueKeysWithValues: stringTuple.map { key, value in
-            (NSAttributedString.Key(key), value)
-        })
-        
-        return convertedTuple
-    }
+//    fileprivate func convertTypingAttributes(from stringTuple: [String: Any]) -> [NSAttributedString.NSAttributedString.Key: Any] {
+//        // Convert UITextView.typingAttributes from [String: Any] to [NSAttributedString.Key: Any]
+//        let convertedTuple = Dictionary<<#Key: Hashable#>, Any>(uniqueKeysWithValues: stringTuple.map { (arg) -> <#Result#> in
+//
+//            let (key, value) = arg
+//            return (NSAttributedString.NSAttributedString.Key(key), value)
+//        })
+//
+//        return convertedTuple
+//    }
+    
 
-    fileprivate func convertCurrentAttributes(from attribTuple: [NSAttributedString.Key: Any]) -> [String: Any] {
-        // Convert currentAttributes to [String: Any]
-        let attribToString = Dictionary(uniqueKeysWithValues: attribTuple.map { key, value in
-            (String(key.rawValue), value)
-        })
-        
-        return attribToString
-    }
+//    fileprivate func convertCurrentAttributes(from attribTuple: [NSAttributedString.NSAttributedString.Key: Any]) -> [String: Any] {
+//        // Convert currentAttributes to [String: Any]
+//        let attribToString = Dictionary(uniqueKeysWithValues: attribTuple.map { key, value in
+//            (String(key.rawValue), value)
+//        })
+//
+//        return attribToString
+//    }
 }
 
 
@@ -265,3 +274,13 @@ class AttributedText {
 //    }
 //
 //}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}

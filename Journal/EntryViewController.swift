@@ -142,11 +142,11 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     }
     
     @IBAction func applyBoldStyle(_ sender: UIBarButtonItem) {
-        attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptorSymbolicTraits.traitBold)
+        attributedTextModel.addOrRemoveFontTrait(withName: "bold", withTrait: UIFontDescriptor.SymbolicTraits.traitBold)
     }
     
     @IBAction func applyItalicsStyle(_ sender: UIBarButtonItem) {
-        attributedTextModel.addOrRemoveFontTrait(withName: "oblique", withTrait: UIFontDescriptorSymbolicTraits.traitItalic)
+        attributedTextModel.addOrRemoveFontTrait(withName: "oblique", withTrait: UIFontDescriptor.SymbolicTraits.traitItalic)
     }
     
     @IBAction func applyUnderlineStyle(_ sender: UIBarButtonItem) {
@@ -159,23 +159,23 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         
         let titleActionTitle = NSLocalizedString("Title", comment: "")
         let titleAction = UIAlertAction(title: titleActionTitle, style: .default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.title1.rawValue)
+            self.attributedTextModel.applyStyleToSelection(UIFont.TextStyle.title1.rawValue)
         }
         let subHeadlineActionTitle = NSLocalizedString("SubHeading", comment: "")
         let subHeadlineAction = UIAlertAction(title: subHeadlineActionTitle, style: .default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.subheadline.rawValue)
+            self.attributedTextModel.applyStyleToSelection(UIFont.TextStyle.subheadline.rawValue)
         }
         let bodyActionTitle = NSLocalizedString("Body", comment: "")
         let bodyAction = UIAlertAction(title: bodyActionTitle, style: .default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.body.rawValue)
+            self.attributedTextModel.applyStyleToSelection(UIFont.TextStyle.body.rawValue)
         }
         let footnoteActionTitle = NSLocalizedString("Footnote", comment: "")
         let footnoteAction = UIAlertAction(title: footnoteActionTitle, style: .default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.footnote.rawValue)
+            self.attributedTextModel.applyStyleToSelection(UIFont.TextStyle.footnote.rawValue)
         }
         let captionActionTitle = NSLocalizedString("Caption", comment: "")
         let captionAction = UIAlertAction(title: captionActionTitle, style: .default) { (action) in
-            self.attributedTextModel.applyStyleToSelection(UIFontTextStyle.caption1.rawValue)
+            self.attributedTextModel.applyStyleToSelection(UIFont.TextStyle.caption1.rawValue)
         }
         
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "")
@@ -289,7 +289,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     // Not working on simulator - http://www.openradar.me/radar?id=6083508816576512
     @objc fileprivate func preferredContentSizeChanged(_ notification: Notification) {
         print("preferredContentSizeChanged in entry")
-        entryTextView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: styleApplied))
+        entryTextView.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle(rawValue: styleApplied))
     }
     
     @objc func hideEditingToolbar() {
@@ -341,7 +341,7 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
             }
             saveButton.isEnabled = false
             entryTextView.attributedText = NSAttributedString()
-            entryTextView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+            entryTextView.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
             
             title = "New Entry"
         }
@@ -403,13 +403,13 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         notificationCenter.addObserver(
             self,
             selector: #selector(EntryViewController.preferredContentSizeChanged(_:)),
-            name: NSNotification.Name.UIContentSizeCategoryDidChange,
+            name: UIContentSizeCategory.didChangeNotification,
             object: nil)
         
         notificationCenter.addObserver(
             self,
             selector: #selector(EntryViewController.hideEditingToolbar),
-            name: NSNotification.Name.UIKeyboardDidHide,
+            name: UIResponder.keyboardDidHideNotification,
             object: nil)
     }
     

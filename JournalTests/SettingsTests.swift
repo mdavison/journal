@@ -21,7 +21,7 @@ class SettingsTests: XCTestCase {
         coreDataStack = TestCoreDataStack()
         
         // Create settings
-        Settings.saveSettings(withCoreDataStack: coreDataStack, passwordRequired: true, password: "hello", hint: "greeting", touchID: true)
+        let _ = Settings.saveSettings(withCoreDataStack: coreDataStack, passwordRequired: true, password: "hello", hint: "greeting", touchID: true)
     }
     
     override func tearDown() {

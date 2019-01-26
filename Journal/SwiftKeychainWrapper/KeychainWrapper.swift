@@ -200,7 +200,17 @@ open class KeychainWrapper {
             return nil
         }
         
-        return NSKeyedUnarchiver.unarchiveObject(with: keychainData) as? NSCoding
+//        return NSKeyedUnarchiver.unarchiveObject(with: keychainData) as? NSCoding
+        
+        do {
+            if let unarchived = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(keychainData) {
+                return unarchived as? NSCoding
+            }
+        } catch {
+            print("KeychainWrapper: Couldn't get object for key")
+        }
+        
+        return nil 
     }
     
     

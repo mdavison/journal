@@ -236,17 +236,17 @@ class Entry: NSManagedObject {
     static func setDateButton(forDateButton dateButton: UIButton, withEntry entry: Entry?) {
         if let entry = entry {
             let formatter = Entry.getFormatter()
-            dateButton.setTitle(formatter.string(from: entry.created_at! as Date), for: UIControlState())
+            dateButton.setTitle(formatter.string(from: entry.created_at! as Date), for: UIControl.State())
         } else {
             let formatter = Entry.getFormatter()
-            dateButton.setTitle(formatter.string(from: Date()), for: UIControlState())
+            dateButton.setTitle(formatter.string(from: Date()), for: UIControl.State())
         }
     }
     
     static func setDateButton(forDateButton dateButton: UIButton, withDate date: Date) {
         let formatter = Entry.getFormatter()
         
-        dateButton.setTitle(formatter.string(from: date), for: UIControlState())
+        dateButton.setTitle(formatter.string(from: date), for: UIControl.State())
     }
 
     

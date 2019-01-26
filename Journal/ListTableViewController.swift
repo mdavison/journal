@@ -43,7 +43,7 @@ class ListTableViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self,
              selector: #selector(ListTableViewController.preferredContentSizeChanged(_:)),
-             name: NSNotification.Name.UIContentSizeCategoryDidChange,
+             name: UIContentSizeCategory.didChangeNotification,
              object: nil)
         NotificationCenter.default.addObserver(self,
              selector: #selector(ListTableViewController.persistentStoreCoordinatorStoresDidChange(_:)),
@@ -74,7 +74,7 @@ class ListTableViewController: UITableViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(NSNotification.Name.UIContentSizeCategoryDidChange)
+        NotificationCenter.default.removeObserver(UIContentSizeCategory.didChangeNotification)
         NotificationCenter.default.removeObserver(NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange)
     }
 
@@ -138,7 +138,7 @@ class ListTableViewController: UITableViewController {
         return true
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
             let entry = fetchedResultsController.object(at: indexPath) as? Entry

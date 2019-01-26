@@ -156,7 +156,7 @@ class Calendar {
     }
     
     func getHeaderView(forCollectionView collectionView: UICollectionView, withIndexPath indexPath: IndexPath, withMonthsYears monthsYears: [MonthYear]) -> CalendarCollectionReusableHeaderView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as! CalendarCollectionReusableHeaderView
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath) as! CalendarCollectionReusableHeaderView
         
         //headerView.backgroundColor = UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1)
         headerView.backgroundColor = Theme.Colors.sky
