@@ -111,8 +111,6 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        // LEFT OFF HERE - find out why toolbar is interfering with keyboard
-        
         if let toolbar = toolbar {
             entryTextView.inputAccessoryView = toolbar
             entryTextView.reloadInputViews()
@@ -298,7 +296,9 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
         entryTextView.resignFirstResponder()
     }
 
-
+    @objc func entryHasSaved() {
+        tableView.reloadData()
+    }
     
     
     // MARK: - Navigation
@@ -410,6 +410,12 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
             self,
             selector: #selector(EntryViewController.hideEditingToolbar),
             name: UIResponder.keyboardDidHideNotification,
+            object: nil)
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(EntryViewController.entryHasSaved),
+            name: NSNotification.Name(rawValue: HasSavedEntryNotificationKey),
             object: nil)
     }
     

@@ -78,12 +78,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="5tj-gw-SN2">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="qkM-rf-cfm"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="qkM-rf-cfm">
+                            <connections>
+                                <action selector="save:" destination="yOJ-ue-aRd" id="usT-VW-WXT"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateButton" destination="b1z-KL-2mv" id="7VB-D7-xP7"/>
                         <outlet property="entryTextView" destination="4L3-Fu-EXo" id="YuI-Wn-nB7"/>
-                        <outlet property="saveButton" destination="qkM-rf-cfm" id="qjK-h1-HYX"/>
+                        <outlet property="saveButton" destination="qkM-rf-cfm" id="EzZ-6M-fki"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fkm-4d-MjY" userLabel="First Responder" sceneMemberID="firstResponder"/>

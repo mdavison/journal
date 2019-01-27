@@ -36,13 +36,21 @@ class JournalUITests: XCTestCase {
         
         let app = XCUIApplication()
         let device = UIDevice.current.userInterfaceIdiom
-        
+
         if device == UIUserInterfaceIdiom.pad {
             app.navigationBars["New Entry"].buttons["List"].tap()
-            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
+            app/*@START_MENU_TOKEN@*/.tabBars/*[[".otherElements[\"dismiss popup\"].tabBars",".otherElements[\"PopoverDismissRegion\"].tabBars",".tabBars"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .button).element(boundBy: 1).tap()
+            app.collectionViews.children(matching: .cell).element(boundBy: 8).tap();
+            app/*@START_MENU_TOKEN@*/.otherElements["PopoverDismissRegion"]/*[[".otherElements[\"dismiss popup\"]",".otherElements[\"PopoverDismissRegion\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         } else if device == UIUserInterfaceIdiom.phone {
-            XCUIApplication().tabBars.children(matching: .button).element(boundBy: 1).tap()
+            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
+            app.navigationBars["Calendar"].buttons["Add"].tap()
         }
+        
+        let textView = app.tables.cells.children(matching: .textView).element
+        textView.tap()
+        
+        // todo: assert the date day value is the same as the calendar button tapped
     }
     
     func testSettingsTab() {
@@ -57,6 +65,8 @@ class JournalUITests: XCTestCase {
         } else if device == UIUserInterfaceIdiom.phone {
             app.tabBars.children(matching: .button).element(boundBy: 2).tap()
         }
+        
+        XCTAssert(app.staticTexts.element(matching: .any, identifier: "Require Password").exists)
     }
     
     func testInsertNewEntry() {
@@ -66,53 +76,41 @@ class JournalUITests: XCTestCase {
         let device = UIDevice.current.userInterfaceIdiom
         
         if device == UIUserInterfaceIdiom.pad {
+            deleteLastEntry()
             app.navigationBars["New Entry"].buttons["List"].tap()
             app.navigationBars["List"].buttons["Add"].tap()
             app.otherElements["PopoverDismissRegion"].tap()
         } else if device == UIUserInterfaceIdiom.phone {
             app.navigationBars["List"].buttons["Add"].tap()
-        }
-    }
-    
-    func testInsertNewEntryFromCalendarTab() {
-        XCUIDevice.shared.orientation = .portrait
-        
-        let app = XCUIApplication()
-        let device = UIDevice.current.userInterfaceIdiom
-        
-        if device == UIUserInterfaceIdiom.pad {
-            app.navigationBars["New Entry"].buttons["List"].tap()
-            
-            let app2 = app
-            app2.tabBars.children(matching: .button).element(boundBy: 1).tap()
-            app2.navigationBars["Calendar"].buttons["Add"].tap()
-            app.otherElements["PopoverDismissRegion"].tap()
-        } else if device == UIUserInterfaceIdiom.phone {
-            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
-            //app.navigationBars["List"].buttons["Add"].tap()
-            app.navigationBars["Calendar"].buttons["Add"].tap()
         }
     }
     
     func testSaveEntry() {
         let app = XCUIApplication()
         let device = UIDevice.current.userInterfaceIdiom
-        
+
         if device == UIUserInterfaceIdiom.pad {
+            let textView = app.tables.cells.children(matching: .textView).element
+            textView.tap()
+            textView.typeText("Foo")
+            
             app.navigationBars["New Entry"].buttons["Save"].tap()
-        }
-    }
-    
-    func testAddEntryFromCalendarBySelectingDate() {
-        let app = XCUIApplication()
-        let device = UIDevice.current.userInterfaceIdiom
-        
-        if device == UIUserInterfaceIdiom.pad {
-            app.navigationBars["New Entry"].buttons["List"].tap()
-            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
+            
+            let button = app.navigationBars["Journal Entry"].buttons["Save"]
+            XCTAssertFalse(button.isEnabled)
         } else if device == UIUserInterfaceIdiom.phone {
-            app.tabBars.children(matching: .button).element(boundBy: 1).tap()
-            //app.collectionViews.childrenMatchingType(.Cell).elementBoundByIndex(41).staticTexts["6"].tap()
+            deleteLastEntry()
+            app.navigationBars["List"].buttons["Add"].tap()
+            
+            let textView = app.tables.cells.children(matching: .textView).element
+            textView.tap()
+            textView.typeText("Foo")
+            
+            app.navigationBars["New Entry"].buttons["Save"].tap()
+            
+            let button = app.navigationBars["Journal Entry"].buttons["Save"]
+            button.tap()
+            XCTAssertFalse(button.isEnabled)
         }
     }
     
@@ -128,16 +126,12 @@ class JournalUITests: XCTestCase {
             app.tables.buttons["Export Entries"].tap()
             
             // Assert that the action sheet appears
-            //XCTAssert(app.sheets.collectionViews.collectionViews.buttons["More"].exists)
+            app.otherElements["ActivityListView"].tap()
         } else if device == UIUserInterfaceIdiom.phone {
-            XCUIDevice.shared.orientation = .portrait
-            
             app.tabBars.children(matching: .button).element(boundBy: 2).tap()
             
-            // Can't get this to work
-//            app.tables.buttons["Export Entries"].tap()
-//            XCTAssert(app.sheets.collectionViews.collectionViews.buttons["Mail"].exists)
-            
+            app.tables.buttons["Export Entries"].tap()
+            app.buttons["Cancel"].tap()
         }
     }
     
@@ -152,6 +146,8 @@ class JournalUITests: XCTestCase {
             app.datePickers.pickerWheels["Today"].tap()
             app.navigationBars["Select Date"].buttons["Save"].tap()
         } else if device == UIUserInterfaceIdiom.phone {
+            deleteLastEntry()
+            
             XCUIDevice.shared.orientation = .portrait
             
             app.navigationBars["List"].buttons["Add"].tap()
@@ -169,6 +165,8 @@ class JournalUITests: XCTestCase {
         let device = UIDevice.current.userInterfaceIdiom
         let newEntryNavigationBar = app.navigationBars["New Entry"]
         let listEntryNavigationBar = app.navigationBars["List"]
+        
+        deleteLastEntry()
 
         // Enter first entry
         if device == UIUserInterfaceIdiom.pad {
@@ -188,26 +186,53 @@ class JournalUITests: XCTestCase {
         newEntryNavigationBar.buttons["Save"].tap()
         
         // Go back to list
-        newEntryNavigationBar.buttons["List"].tap()
+        if device == UIUserInterfaceIdiom.pad {
+            textView.swipeRight()
+        } else {
+//            newEntryNavigationBar.buttons["List"].tap()
+            app.navigationBars["Journal Entry"].buttons["List"].tap()
+        }
         
         // Enter second entry
         if device == UIUserInterfaceIdiom.pad {
-            newEntryNavigationBar.buttons["List"].tap()
             app.navigationBars["List"].buttons["Add"].tap()
-            app.otherElements["PopoverDismissRegion"].tap()
         } else if device == UIUserInterfaceIdiom.phone {
             listEntryNavigationBar.buttons["Add"].tap()
         }
         
         app.datePickers.pickerWheels["Today"].swipeDown()
         app.navigationBars["Select Date"].buttons["Save"].tap()
+    }
+
+    
+    // MARK: Helper functions
+    
+    func deleteLastEntry() {
+        XCUIDevice.shared.orientation = .portrait
         
-        // Fixme
-//        textView.tap()
-//        app.typeText("test entry two")
-//        app.navigationBars["New Entry"].buttons["Save"].tap()
+        let device = UIDevice.current.userInterfaceIdiom
+        let app = XCUIApplication()
         
-        // todo: delete the entry(ies)
+        if device == UIUserInterfaceIdiom.pad {
+            app.navigationBars["New Entry"].buttons["List"].tap()
+            
+            // What a mess - got this thing from recording and just couldn't find a clean
+            // way to get the master view table
+            app/*@START_MENU_TOKEN@*/.otherElements["PopoverDismissRegion"]/*[[".otherElements[\"dismiss popup\"]",".otherElements[\"PopoverDismissRegion\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .table).element.cells.element(boundBy: 0).swipeLeft()
+            
+//            app.tables.cells.firstMatch.swipeLeft() // this dismisses the master view
+            
+            if app.tables.buttons["Delete"].exists {
+                app/*@START_MENU_TOKEN@*/.tables/*[[".otherElements[\"dismiss popup\"].tables",".otherElements[\"PopoverDismissRegion\"].tables",".tables"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.buttons["Delete"].tap()
+            }
+            
+            app.tables.firstMatch.swipeLeft()
+        } else if device == UIUserInterfaceIdiom.phone {
+            app.tables.cells.firstMatch.swipeLeft()
+            if app.tables.buttons["Delete"].exists {
+                app.tables.buttons["Delete"].tap()
+            }
+        }
     }
     
 }
