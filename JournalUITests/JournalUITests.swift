@@ -120,8 +120,10 @@ class JournalUITests: XCTestCase {
         let app = XCUIApplication()
         let device = UIDevice.current.userInterfaceIdiom
         
+        // Make sure we have at least one entry to export
+        addNewEntry()
+        
         if device == UIUserInterfaceIdiom.pad {
-            app.navigationBars["New Entry"].buttons["List"].tap()
             app.tabBars.children(matching: .button).element(boundBy: 2).tap()
             app.tables.buttons["Export Entries"].tap()
             
@@ -231,6 +233,32 @@ class JournalUITests: XCTestCase {
             app.tables.cells.firstMatch.swipeLeft()
             if app.tables.buttons["Delete"].exists {
                 app.tables.buttons["Delete"].tap()
+            }
+        }
+    }
+    
+    func addNewEntry() {
+        XCUIDevice.shared.orientation = .portrait
+        
+        let app = XCUIApplication()
+        let device = UIDevice.current.userInterfaceIdiom
+        
+        if device == UIUserInterfaceIdiom.pad {
+            let textView = app.tables.cells.children(matching: .textView).element
+            textView.tap()
+            textView.typeText("Foo")
+            
+            app.navigationBars["New Entry"].buttons["Save"].tap()
+            app.navigationBars["Journal Entry"].buttons["List"].tap()
+        } else if device == UIUserInterfaceIdiom.phone {
+            if app.tables.cells.count < 1 {
+                app.navigationBars["List"].buttons["Add"].tap()
+                
+                let textView = app.tables.cells.children(matching: .textView).element
+                textView.tap()
+                textView.typeText("Foo")
+                
+                app.navigationBars["New Entry"].buttons["Save"].tap()
             }
         }
     }
