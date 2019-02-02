@@ -37,6 +37,24 @@ class Entry: NSManagedObject {
         return fetchedResultsController
     }
     
+    static func getSearchResults(for searchText: String?, _ coreDataStack: CoreDataStack) -> [Entry] {
+        let fetchedResultsController = self.getFetchedResultsController(coreDataStack)
+        
+        // Can't do a predicate to search on NSAttributedString so we get the fetched results and convert
+        // the NSAttributedStrings to plain Strings and perform the search on those, then return the resulting array of Entry objects
+        var filteredEntries: [Entry] = []
+        if let entries = fetchedResultsController.fetchedObjects as? [Entry], let searchTextLowercased = searchText?.lowercased() {
+            for entry in entries {
+                let plainText = entry.attributed_text?.string.lowercased()
+                if plainText?.contains(searchTextLowercased) == true {
+                    filteredEntries.append(entry)
+                }
+            }
+        }
+        
+        return filteredEntries
+    }
+    
     static func entryExists(forDate date: Date, coreDataStack: CoreDataStack) -> Bool {
         let calendar = Foundation.Calendar.current
         let formatter = DateFormatter()

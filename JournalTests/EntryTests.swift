@@ -77,6 +77,14 @@ class EntryTests: XCTestCase {
         XCTAssertTrue(allEntries!.count == 1)
     }
     
+    func testGetSearchResults() {
+        let searchResults1 = Entry.getSearchResults(for: "foo", coreDataStack)
+        XCTAssertEqual(0, searchResults1.count)
+        
+        let searchResults2 = Entry.getSearchResults(for: "entry", coreDataStack)
+        XCTAssertEqual(1, searchResults2.count)
+    }
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

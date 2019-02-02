@@ -12,9 +12,13 @@ import CoreData
 let EntryWasDeletedNotificationKey = "com.morgandavison.entryWasDeletedNotificationKey"
 
 class ListTableViewController: UITableViewController {
-
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var coreDataStack: CoreDataStack!
     //var managedObjectContext: NSManagedObjectContext? = nil
+    var searchResults: [Entry] = []
+    var isSearching = false
     
     struct Storyboard {
         static var AddEntrySegueIdentifier = "AddEntry"
@@ -123,6 +127,10 @@ class ListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearching == true {
+            return searchResults.count
+        }
+        
         let sectionInfo = self.fetchedResultsController.sections![section]
         return sectionInfo.numberOfObjects
     }
@@ -188,7 +196,7 @@ class ListTableViewController: UITableViewController {
     // MARK: - Helper Methods
     
     fileprivate func configureCell(_ cell: ListTableViewCell, atIndexPath indexPath: IndexPath) {
-        if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
+        func setCellProperties(for entry: Entry) {
             if let entryText = entry.attributed_text {
                 cell.entryTextLabel.text = entryText.string
             }
@@ -199,6 +207,41 @@ class ListTableViewController: UITableViewController {
                 cell.dayLabel.text = formatter.string(from: entryDate as Date)
                 formatter.dateFormat = "MMM yyyy"
                 cell.monthYearLabel.text = formatter.string(from: entryDate as Date)
+            }
+        }
+        
+        if searchResults.count > 0 {
+            let entry = searchResults[indexPath.row]
+            setCellProperties(for: entry)
+        } else {
+            if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
+                setCellProperties(for: entry)
+            }
+        }
+    }
+    
+    fileprivate func performSearch() {
+        searchBar.resignFirstResponder()
+        
+        var searchText: String?
+        if let text = searchBar.text {
+            if !text.isEmpty && text != "" {
+                searchText = searchBar.text
+            }
+        }
+        
+        searchResults = Entry.getSearchResults(for: searchText, coreDataStack)
+        
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            self.searchResults = Entry.getSearchResults(for: searchText, self.coreDataStack)
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+                self?.isSearching = false
             }
         }
     }
@@ -253,4 +296,17 @@ extension ListTableViewController: NSFetchedResultsControllerDelegate {
     */
 
     
+}
+
+extension ListTableViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = true
+        performSearch()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = nil
+        isSearching = false
+        performSearch()
+    }
 }
