@@ -66,6 +66,11 @@ class ListTableViewController: UITableViewController {
         if JournalVariables.userIsAuthenticated {
             tableView.isHidden = false
         }
+        
+        // Clear any search results so we don't crash when the table view methods try to populate rows
+        isSearching = false
+        searchBar.text = nil
+        searchResults.removeAll()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -224,10 +229,14 @@ class ListTableViewController: UITableViewController {
         searchBar.resignFirstResponder()
         
         var searchText: String?
-        if let text = searchBar.text {
-            if !text.isEmpty && text != "" {
-                searchText = searchBar.text
-            }
+        guard let text = searchBar.text else {
+            isSearching = false
+            tableView.reloadData()
+            return
+        }
+        
+        if !text.isEmpty && text != "" {
+            searchText = searchBar.text
         }
         
         searchResults = Entry.getSearchResults(for: searchText, coreDataStack)
