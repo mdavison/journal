@@ -15,7 +15,8 @@ class Theme {
         static var tint = UIColor(red: 38.0/255.0, green: 165.0/255.0, blue: 1.0, alpha: 1)
         
         // Nav bar and toolbar backgrounds
-        static var barTint = UIColor(red: 241.0/255.0, green: 255.0/255.0, blue: 1.0, alpha: 1)
+//        static var barTint = UIColor(red: 241.0/255.0, green: 255.0/255.0, blue: 1.0, alpha: 1)
+        static var barTint = UIColor.white 
         
         // Other colors
         static var sky = UIColor(red: 102.0/255.0, green: 204.0/255.0, blue: 1.0, alpha: 1)
