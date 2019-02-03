@@ -66,11 +66,6 @@ class ListTableViewController: UITableViewController {
         if JournalVariables.userIsAuthenticated {
             tableView.isHidden = false
         }
-        
-        // Clear any search results so we don't crash when the table view methods try to populate rows
-        isSearching = false
-        searchBar.text = nil
-        searchResults.removeAll()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,7 +73,7 @@ class ListTableViewController: UITableViewController {
         
         // Reset to get latest results
         _fetchedResultsController = nil
-        
+
         tableView.reloadData()
     }
     
@@ -115,10 +110,17 @@ class ListTableViewController: UITableViewController {
                 controller.coreDataStack = coreDataStack
                 
                 if let indexPath = tableView.indexPathForSelectedRow {
-                    if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
+                    if searchResults.count > 0 {
+                        let entry = searchResults[indexPath.row] as Entry
                         controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                         controller.navigationItem.leftItemsSupplementBackButton = true
                         controller.entry = entry
+                    } else {
+                        if let entry = fetchedResultsController.object(at: indexPath) as? Entry {
+                            controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+                            controller.navigationItem.leftItemsSupplementBackButton = true
+                            controller.entry = entry
+                        }
                     }
                 }
             }
@@ -230,7 +232,7 @@ class ListTableViewController: UITableViewController {
         
         var searchText: String?
         guard let text = searchBar.text else {
-            isSearching = false
+            isSearching = false 
             tableView.reloadData()
             return
         }
@@ -250,7 +252,6 @@ class ListTableViewController: UITableViewController {
             
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
-                self?.isSearching = false
             }
         }
     }

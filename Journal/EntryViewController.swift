@@ -66,6 +66,12 @@ class EntryViewController: UITableViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Clear search results to prevent index out of range crashes when in split view 
+        if let listTableViewController = presentingViewController as? ListTableViewController {
+            listTableViewController.isSearching = false 
+            listTableViewController.searchResults.removeAll()
+        }
+        
         navigationController?.isNavigationBarHidden = false
     }
     
